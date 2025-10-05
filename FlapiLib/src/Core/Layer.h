@@ -1,5 +1,6 @@
 #pragma once
 #include "pch.h"
+#include "Event/Event.h"
 
 namespace FL
 {
@@ -13,6 +14,7 @@ namespace FL
 		virtual void OnDetach() {}
 		virtual void OnUpdate() {}
 		virtual void OnRender() {}
+		virtual void OnEvent(Event& e) {}
 	private:
 		std::string m_LayerDebugName;
 	};

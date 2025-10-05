@@ -29,6 +29,9 @@ public:
 	virtual void OnRender() override
 	{
 	}
+	virtual void OnEvent(FL::Event& e) 
+	{
+	}
 };
 
 class ExampleApp : public FL::App

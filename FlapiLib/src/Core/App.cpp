@@ -30,6 +30,15 @@ namespace FL
 		}
 	}
 
+	void App::OnEvent(Event& event)
+	{
+		EventHandler hander(event);
+		hander.Handle<WindowCloseEvent>([this](const WindowCloseEvent& ev) {OnWindowCloseEvent(ev); });
+
+		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
+			(*it)->OnEvent(event);
+	}
+
 	void App::Close()
 	{
 		m_Running = false;
@@ -45,5 +54,10 @@ namespace FL
 	{
 		layer->OnDetach();
 		m_LayerStack.PopLayer(layer);
+	}
+
+	void App::OnWindowCloseEvent(const WindowCloseEvent& e)
+	{
+		m_Running = false;
 	}
 }
