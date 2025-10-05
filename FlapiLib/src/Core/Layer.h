@@ -15,6 +15,7 @@ namespace FL
 		virtual void OnUpdate() {}
 		virtual void OnRender() {}
 		virtual void OnEvent(Event& e) {}
+		virtual void OnImGuiRender() {};
 	private:
 		std::string m_LayerDebugName;
 	};

@@ -2,6 +2,7 @@
 #include "Core/App.h"
 #include "Core/Core.h"
 #include "Core/Layer.h"
+#include "Core/Log.h"
 
 #include "Event/AppEvent.h"
 #include "Event/Event.h"

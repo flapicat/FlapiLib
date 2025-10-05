@@ -8,6 +8,12 @@ namespace FL
 	App::App()
 	{
 		s_Instace = this;
+		WindowInitData data(1600, 900, "Example");
+		m_Window.reset(new Window(data));
+		m_Window->SetEventCallback([this](Event& e) { OnEvent(e); });
+
+		m_ImGuiLayer = new ImGuiLayer();
+		PushLayer(m_ImGuiLayer);
 	}
 
 	App::~App()
@@ -27,6 +33,15 @@ namespace FL
 			{
 				layer->OnRender();
 			}
+
+			m_ImGuiLayer->Begin();
+			for (auto& layer : m_LayerStack)
+			{
+				layer->OnImGuiRender();
+			}
+			m_ImGuiLayer->End();
+
+			m_Window->OnUpdate();
 		}
 	}
 
