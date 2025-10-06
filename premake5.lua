@@ -104,7 +104,12 @@ project "Examples"
 		"FlapiLib/vendor/spdlog/include",
 		"FlapiLib/src",
 		"FlapiLib/vendor",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.glad}",
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.ImGui}/backends",
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.stb}"
 	}
 
 	links

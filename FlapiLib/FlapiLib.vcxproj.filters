@@ -50,6 +50,8 @@
       <Filter>ImGui</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Render\VertexArray.h" />
+    <ClInclude Include="src\Render\Buffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\App.cpp">
@@ -74,5 +76,7 @@
       <Filter>ImGui</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\Render\VertexArray.cpp" />
+    <ClCompile Include="src\Render\Buffer.cpp" />
   </ItemGroup>
 </Project>

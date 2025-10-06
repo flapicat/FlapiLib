@@ -8,3 +8,6 @@
 #include "Event/Event.h"
 #include "Event/KeyboardEennt.h"
 #include "Event/MouseEvent.h"
+
+#include "Render/Buffer.h"
+#include "Render/VertexArray.h"

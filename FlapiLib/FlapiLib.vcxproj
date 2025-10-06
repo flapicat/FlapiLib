@@ -115,6 +115,8 @@
     <ClInclude Include="src\FlapiLib.h" />
     <ClInclude Include="src\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Render\VertexArray.h" />
+    <ClInclude Include="src\Render\Buffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\App.cpp" />
@@ -127,6 +129,8 @@
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Render\VertexArray.cpp" />
+    <ClCompile Include="src\Render\Buffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vendor\GLFW\GLFW.vcxproj">
