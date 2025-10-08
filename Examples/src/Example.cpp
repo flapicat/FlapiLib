@@ -29,19 +29,15 @@ public:
 			0,1,2
 		};
 
-		glGenVertexArrays(1, &VA);
-		glBindVertexArray(VA);
+		m_VertexArray->Create();
 
-		glGenBuffers(1, &VB);
-		glBindBuffer(GL_ARRAY_BUFFER, VB);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	
-		glGenBuffers(1, &EB);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EB);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+		Ref<FL::VertexBuffer>VB = FL::VertexBuffer::Create(vertices, sizeof(vertices));
+		Ref<FL::IndexBuffer>IB = FL::IndexBuffer::Create(indices, 3);
 
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(0);
+		m_VertexArray->SetVB(VB);
+		m_VertexArray->SetIB(IB);
+
+		m_VertexArray->Unbind();
 	}
 
 	virtual void OnDetach() override
@@ -57,9 +53,9 @@ public:
 		glClearColor(0.1, 0.1, 0.1, 0.1);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glBindVertexArray(VA);
-		glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
-		glBindVertexArray(0);
+		m_VertexArray->Bind();
+		glDrawElements(GL_TRIANGLES, m_VertexArray->GetIB()->GetCount(), GL_UNSIGNED_INT, 0);
+		m_VertexArray->Unbind();
 	}
 
 	virtual void OnEvent(FL::Event& e) 
@@ -67,7 +63,7 @@ public:
 	}
 
 private:
-	uint32_t VA, VB, EB;
+	Ref<FL::VertexArray> m_VertexArray;
 };
 
 class ExampleApp : public FL::App
