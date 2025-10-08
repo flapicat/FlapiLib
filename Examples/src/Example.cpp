@@ -32,6 +32,8 @@ public:
 			0,1,2,2,3,1 
 		};
 
+		m_Shader = FL::Shader::Create("Assets/Shaders/shader.vert", "Assets/Shaders/shader.frag");
+
 		m_VertexArray = FL::VertexArray::Create();
 		m_VertexArray->Bind();
 
@@ -54,12 +56,11 @@ public:
 
 	virtual void OnRender() override
 	{
-		glClearColor(0.1, 0.1, 0.1, 0.1);
-		glClear(GL_COLOR_BUFFER_BIT);
+		FL::Renderer::ClearColor(glm::vec4(0.1, 0.1, 0.1, 0.1));
+		FL::Renderer::ClearBuffer();
 
-		m_VertexArray->Bind();
-		glDrawElements(GL_TRIANGLES, m_VertexArray->GetIB()->GetCount(), GL_UNSIGNED_INT, 0);
-		m_VertexArray->Unbind();
+		m_Shader->Use();
+		FL::Renderer::DrawFromVertexArray(m_VertexArray);
 	}
 
 	virtual void OnEvent(FL::Event& e) 
@@ -68,6 +69,7 @@ public:
 
 private:
 	Ref<FL::VertexArray> m_VertexArray;
+	Ref<FL::Shader> m_Shader;
 };
 
 class ExampleApp : public FL::App
