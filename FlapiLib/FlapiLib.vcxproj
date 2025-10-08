@@ -114,9 +114,9 @@
     <ClInclude Include="src\Event\MouseEvent.h" />
     <ClInclude Include="src\FlapiLib.h" />
     <ClInclude Include="src\ImGui\ImGuiLayer.h" />
-    <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\Render\VertexArray.h" />
     <ClInclude Include="src\Render\Buffer.h" />
+    <ClInclude Include="src\Render\VertexArray.h" />
+    <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\App.cpp" />
@@ -126,11 +126,11 @@
     <ClCompile Include="src\Core\Window.cpp" />
     <ClCompile Include="src\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\ImGui\ImGuiLayer.cpp" />
+    <ClCompile Include="src\Render\Buffer.cpp" />
+    <ClCompile Include="src\Render\VertexArray.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\Render\VertexArray.cpp" />
-    <ClCompile Include="src\Render\Buffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vendor\GLFW\GLFW.vcxproj">

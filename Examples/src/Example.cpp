@@ -19,20 +19,24 @@ public:
 
 	virtual void OnAttach() override
 	{
-		float vertices[9] = {
-			0.0,0.5,0.0,
-			-0.5,-0.5,0.0,
-			0.5,-0.5,0.0
-		};
-		uint32_t indices[3] =
+		std::vector<float> vertices = 
 		{
-			0,1,2
+			-0.5,0.5,0.0, //lu
+			0.5,0.5,0.0, //ru
+			-0.5,-0.5,0.0,//ld
+			0.5,-0.5,0.0//rd
 		};
 
-		m_VertexArray->Create();
+		std::vector<uint32_t> indices = 
+		{
+			0,1,2,2,3,1 
+		};
 
-		Ref<FL::VertexBuffer>VB = FL::VertexBuffer::Create(vertices, sizeof(vertices));
-		Ref<FL::IndexBuffer>IB = FL::IndexBuffer::Create(indices, 3);
+		m_VertexArray = FL::VertexArray::Create();
+		m_VertexArray->Bind();
+
+		Ref<FL::VertexBuffer>VB = FL::VertexBuffer::Create(vertices.data(), vertices.size() * sizeof(float));
+		Ref<FL::IndexBuffer>IB = FL::IndexBuffer::Create(indices.data(), indices.size());
 
 		m_VertexArray->SetVB(VB);
 		m_VertexArray->SetIB(IB);

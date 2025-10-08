@@ -32,13 +32,12 @@ namespace FL
 
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
-
-		m_VertexBuffer->UnBind();
 	}
 
 	void VertexArray::SetIB(const Ref<IndexBuffer>& IB)
 	{
 		m_IndexBuffer = IB;
+		m_IndexBuffer->Bind();
 	}
 
 	Ref<VertexArray> VertexArray::Create()

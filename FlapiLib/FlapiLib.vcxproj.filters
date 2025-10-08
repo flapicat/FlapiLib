@@ -10,6 +10,9 @@
     <Filter Include="ImGui">
       <UniqueIdentifier>{C0FF640D-2C14-8DBE-F595-301E616989EF}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Render">
+      <UniqueIdentifier>{C5BB87CE-B15D-B2A4-9A18-C6F8865939F5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\App.h">
@@ -49,9 +52,13 @@
     <ClInclude Include="src\ImGui\ImGuiLayer.h">
       <Filter>ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="src\Render\Buffer.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Render\VertexArray.h">
+      <Filter>Render</Filter>
+    </ClInclude>
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\Render\VertexArray.h" />
-    <ClInclude Include="src\Render\Buffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\App.cpp">
@@ -75,8 +82,12 @@
     <ClCompile Include="src\ImGui\ImGuiLayer.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="src\Render\Buffer.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Render\VertexArray.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\Render\VertexArray.cpp" />
-    <ClCompile Include="src\Render\Buffer.cpp" />
   </ItemGroup>
 </Project>
