@@ -64,6 +64,7 @@
     <ClInclude Include="src\Render\Camera.h" />
     <ClInclude Include="src\Render\OrthoCamera.h" />
     <ClInclude Include="src\Render\ProjectionCamera.h" />
+    <ClInclude Include="src\Core\TimeStep.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\App.cpp">
@@ -98,5 +99,6 @@
     <ClCompile Include="src\Render\Shader.cpp" />
     <ClCompile Include="src\Render\OrthoCamera.cpp" />
     <ClCompile Include="src\Render\ProjectionCamera.cpp" />
+    <ClCompile Include="src\Core\TimeStep.cpp" />
   </ItemGroup>
 </Project>

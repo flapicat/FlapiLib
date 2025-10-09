@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "App.h"
 
+#include "TimeStep.h"
+
 namespace FL
 {
 	App* App::s_Instace = nullptr;
@@ -24,9 +26,13 @@ namespace FL
 	{
 		while (m_Running)
 		{
+			float time = glfwGetTime();
+			TimeStep timeStep = time - m_LastFrame;
+			m_LastFrame = time;
+
 			for (auto& layer : m_LayerStack)
 			{
-				layer->OnUpdate();
+				layer->OnUpdate(timeStep);
 			}
 
 			for (auto& layer : m_LayerStack)

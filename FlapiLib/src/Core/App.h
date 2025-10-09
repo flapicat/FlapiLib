@@ -26,6 +26,7 @@ namespace FL
 	private:
 		void OnWindowCloseEvent(const WindowCloseEvent& e);
 	private:
+		float m_LastFrame = 0;
 		static App* s_Instace;
 		bool m_Running = true;
 		LayerStack m_LayerStack;

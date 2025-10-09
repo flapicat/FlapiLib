@@ -50,7 +50,7 @@ public:
 	{
 	}
 
-	virtual void OnUpdate() override
+	virtual void OnUpdate(FL::TimeStep ts) override
 	{
 	}
 

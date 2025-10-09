@@ -1,6 +1,7 @@
 #pragma once
 #include "pch.h"
 #include "Event/Event.h"
+#include "TimeStep.h"
 
 namespace FL
 {
@@ -12,7 +13,7 @@ namespace FL
 
 		virtual void OnAttach() {}
 		virtual void OnDetach() {}
-		virtual void OnUpdate() {}
+		virtual void OnUpdate(TimeStep ts) {}
 		virtual void OnRender() {}
 		virtual void OnEvent(Event& e) {}
 		virtual void OnImGuiRender() {};
