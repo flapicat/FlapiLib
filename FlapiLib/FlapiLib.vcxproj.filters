@@ -59,6 +59,11 @@
       <Filter>Render</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Render\Renderer.h" />
+    <ClInclude Include="src\Render\Shader.h" />
+    <ClInclude Include="src\Render\Camera.h" />
+    <ClInclude Include="src\Render\OrthoCamera.h" />
+    <ClInclude Include="src\Render\ProjectionCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\App.cpp">
@@ -89,5 +94,9 @@
       <Filter>Render</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\Render\Renderer.cpp" />
+    <ClCompile Include="src\Render\Shader.cpp" />
+    <ClCompile Include="src\Render\OrthoCamera.cpp" />
+    <ClCompile Include="src\Render\ProjectionCamera.cpp" />
   </ItemGroup>
 </Project>

@@ -8,7 +8,7 @@ class ExampleLayer : public FL::Layer
 {
 public:
 	ExampleLayer()
-		:Layer("Example")
+		:Layer("Example"), m_Camera((float)1600/(float)900)
 	{
 
 	}
@@ -21,10 +21,10 @@ public:
 	{
 		std::vector<float> vertices = 
 		{
-			-0.5,0.5,0.0, //lu
-			0.5,0.5,0.0, //ru
-			-0.5,-0.5,0.0,//ld
-			0.5,-0.5,0.0//rd
+			-0.5,0.5,0.0,  //lu
+			0.5,0.5,0.0,   //ru
+			-0.5,-0.5,0.0, //ld
+			0.5,-0.5,0.0   //rd
 		};
 
 		std::vector<uint32_t> indices = 
@@ -56,6 +56,8 @@ public:
 
 	virtual void OnRender() override
 	{
+		m_Shader->setMat4("u_viewProjectionMatrix", m_Camera.GetViewProjectionMatrix());
+
 		FL::Renderer::ClearColor(glm::vec4(0.1, 0.1, 0.1, 0.1));
 		FL::Renderer::ClearBuffer();
 
@@ -70,6 +72,7 @@ public:
 private:
 	Ref<FL::VertexArray> m_VertexArray;
 	Ref<FL::Shader> m_Shader;
+	FL::OrthoCamera m_Camera;
 };
 
 class ExampleApp : public FL::App
