@@ -19,12 +19,13 @@ public:
 
 	virtual void OnAttach() override
 	{
-		std::vector<float> vertices = 
+		std::vector<float> vertices =
 		{
-			-0.5,0.5,0.0,  //lu
-			0.5,0.5,0.0,   //ru
-			-0.5,-0.5,0.0, //ld
-			0.5,-0.5,0.0   //rd
+			// Positions        // Colors (RGBA)
+			-0.5f,  0.5f, 0.0f,  1.0f, 0.0f, 0.0f, 1.0f,  // top-left, red
+			 0.5f,  0.5f, 0.0f,  0.0f, 1.0f, 0.0f, 1.0f,  // top-right, green
+			-0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f, 1.0f,  // bottom-left, blue
+			 0.5f, -0.5f, 0.0f,  1.0f, 1.0f, 1.0f, 1.0f   // bottom-right, white
 		};
 
 		std::vector<uint32_t> indices = 
@@ -38,9 +39,14 @@ public:
 		m_VertexArray->Bind();
 
 		Ref<FL::VertexBuffer>VB = FL::VertexBuffer::Create(vertices.data(), vertices.size() * sizeof(float));
-		Ref<FL::IndexBuffer>IB = FL::IndexBuffer::Create(indices.data(), indices.size());
-
+		FL::BufferLayout layout = {
+			{ FL::ShaderType::Float3, "a_Pos" },
+			{ FL::ShaderType::Float4, "a_Color" }
+		};
+		VB->SetLayout(layout);
 		m_VertexArray->SetVB(VB);
+
+		Ref<FL::IndexBuffer>IB = FL::IndexBuffer::Create(indices.data(), indices.size());
 		m_VertexArray->SetIB(IB);
 
 		m_VertexArray->Unbind();
