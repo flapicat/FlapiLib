@@ -2,6 +2,7 @@
 #include "Buffer.h"
 
 #include <glad/glad.h>
+#include "Texture.h"
 
 namespace FL
 {

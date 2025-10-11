@@ -123,6 +123,8 @@
     <ClInclude Include="src\Render\VertexArray.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Core\TimeStep.h" />
+    <ClInclude Include="src\Render\Texture.h" />
+    <ClInclude Include="vendor\stb\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Render\OrthoCamera.cpp" />
@@ -142,6 +144,8 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Core\TimeStep.cpp" />
+    <ClCompile Include="src\Render\Texture.cpp" />
+    <ClCompile Include="vendor\stb\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vendor\GLFW\GLFW.vcxproj">

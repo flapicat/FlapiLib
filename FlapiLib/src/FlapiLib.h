@@ -15,4 +15,5 @@
 #include "Render/Renderer.h"
 #include "Render/OrthoCamera.h"
 #include "Render/Shader.h"
+#include "Render/Texture.h"
 #include "Render/VertexArray.h"

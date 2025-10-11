@@ -5,6 +5,25 @@
 
 namespace FL
 {
+	static GLenum GetGLTypeFromShaderElementType(ShaderType type)
+	{
+		switch (type)
+		{
+		case FL::ShaderType::Bool:		return GL_BOOL;
+		case FL::ShaderType::Int:		return GL_INT;
+		case FL::ShaderType::Int2:		return GL_INT;
+		case FL::ShaderType::Int3:		return GL_INT;
+		case FL::ShaderType::Int4:		return GL_INT;
+		case FL::ShaderType::Float:		return GL_FLOAT;
+		case FL::ShaderType::Float2:	return GL_FLOAT;
+		case FL::ShaderType::Float3:	return GL_FLOAT;
+		case FL::ShaderType::Float4:	return GL_FLOAT;
+		case FL::ShaderType::Mat2:		return GL_FLOAT;
+		case FL::ShaderType::Mat3:		return GL_FLOAT;
+		case FL::ShaderType::Mat4:		return GL_FLOAT;
+		}
+	}
+
 	VertexArray::VertexArray()
 	{
 		glGenVertexArrays(1, &m_RenderID);
@@ -29,9 +48,20 @@ namespace FL
 	{
 		m_VertexBuffer = VB;
 		m_VertexBuffer->Bind();
+		auto& layout = m_VertexBuffer->GetLayout();
 
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(0);
+		uint32_t index = 0;
+		for (auto& element : layout.GetElements())
+		{
+			glVertexAttribPointer(index,
+				GetLayoutElementCount(element.Type),
+				GetGLTypeFromShaderElementType(element.Type),
+				element.Normalized, 
+				layout.GetStride(),
+				(void*)element.Offset);
+			glEnableVertexAttribArray(index);
+			index++;
+		}
 	}
 
 	void VertexArray::SetIB(const Ref<IndexBuffer>& IB)
