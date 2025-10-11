@@ -22,7 +22,7 @@ public:
 	{
 		std::vector<float> vertices =
 		{
-			// Positions        // Colors (RGBA)         //Texture UV
+			//    Positions        //    Colors         //Texture UV
 			-0.5f,  0.5f, 0.0f,  1.0f, 0.0f, 0.0f, 1.0f,  0.0f,1.0f,  // top-left
 			 0.5f,  0.5f, 0.0f,  0.0f, 1.0f, 0.0f, 1.0f,  1.0f,1.0f,  // top-right
 			-0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f, 1.0f,  0.0f,0.0f,  // bottom-left
@@ -62,6 +62,7 @@ public:
 
 	virtual void OnUpdate(FL::TimeStep ts) override
 	{
+		m_Camera.OnUpdate(ts);
 	}
 
 	virtual void OnRender() override
@@ -79,12 +80,14 @@ public:
 
 	virtual void OnEvent(FL::Event& e) 
 	{
+		FL::EventHandler handler(e);
+		handler.Handle<FL::MouseScrollEvent>([this](const FL::MouseScrollEvent& ev) {m_Camera.OnMouseScrolled(ev); });
 	}
 
 private:
 	Ref<FL::VertexArray> m_VertexArray;
 	Ref<FL::Shader> m_Shader;
-	FL::OrthoCamera m_Camera;
+	FL::OrthoCameraContrl m_Camera;
 	Ref<FL::Texture2D>m_Texture;
 };
 

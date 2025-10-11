@@ -3,6 +3,8 @@
 
 #include <glad/glad.h>
 #include "Event/AppEvent.h"
+#include "Event/MouseEvent.h"
+#include "Event/KeyboardEennt.h"
 
 namespace FL
 {
@@ -51,6 +53,13 @@ namespace FL
 		glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window) {
 			Window* win = (Window*)glfwGetWindowUserPointer(window);
 			WindowCloseEvent event;
+			win->m_WindowProps.EvCallback(event);
+			});
+
+
+		glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double xoffset, double yoffset) {
+			Window* win = (Window*)glfwGetWindowUserPointer(window);
+			MouseScrollEvent event(xoffset, yoffset);
 			win->m_WindowProps.EvCallback(event);
 			});
 	}

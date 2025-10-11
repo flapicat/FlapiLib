@@ -101,6 +101,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Core\Input.h" />
+    <ClInclude Include="src\Render\OrthoCameraContrl.h" />
     <ClInclude Include="src\Render\OrthoCamera.h" />
     <ClInclude Include="src\Render\ProjectionCamera.h" />
     <ClInclude Include="src\Render\Camera.h" />
@@ -127,6 +129,8 @@
     <ClInclude Include="vendor\stb\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Core\Input.cpp" />
+    <ClCompile Include="src\Render\OrthoCameraContrl.cpp" />
     <ClCompile Include="src\Render\OrthoCamera.cpp" />
     <ClCompile Include="src\Render\ProjectionCamera.cpp" />
     <ClCompile Include="src\Render\Shader.cpp" />

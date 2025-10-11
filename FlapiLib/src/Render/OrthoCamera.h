@@ -7,8 +7,6 @@ namespace FL
 	{
 	public:
 		OrthoCamera(float aspectRatio);
-	private:
-
 	};
 
 }
