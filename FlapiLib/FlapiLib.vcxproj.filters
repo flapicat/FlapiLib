@@ -24,6 +24,9 @@
     <ClInclude Include="src\Core\EntryPoint.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Core\Input.h">
+      <Filter>Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Core\Layer.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -31,6 +34,9 @@
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Core\Log.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\TimeStep.h">
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Core\Window.h">
@@ -55,23 +61,37 @@
     <ClInclude Include="src\Render\Buffer.h">
       <Filter>Render</Filter>
     </ClInclude>
+    <ClInclude Include="src\Render\Camera.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Render\OrthoCamera.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Render\OrthoCameraContrl.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Render\ProjectionCamera.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Render\Renderer.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Render\Shader.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Render\Texture.h">
+      <Filter>Render</Filter>
+    </ClInclude>
     <ClInclude Include="src\Render\VertexArray.h">
       <Filter>Render</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\Render\Renderer.h" />
-    <ClInclude Include="src\Render\Shader.h" />
-    <ClInclude Include="src\Render\Camera.h" />
-    <ClInclude Include="src\Render\OrthoCamera.h" />
-    <ClInclude Include="src\Render\ProjectionCamera.h" />
-    <ClInclude Include="src\Core\TimeStep.h" />
-    <ClInclude Include="vendor\stb\stb_image.h" />
-    <ClInclude Include="src\Render\Texture.h" />
-    <ClInclude Include="src\Render\OrthoCameraContrl.h" />
-    <ClInclude Include="src\Core\Input.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\App.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Input.cpp">
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Layer.cpp">
@@ -81,6 +101,9 @@
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Log.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\TimeStep.cpp">
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Window.cpp">
@@ -95,18 +118,27 @@
     <ClCompile Include="src\Render\Buffer.cpp">
       <Filter>Render</Filter>
     </ClCompile>
+    <ClCompile Include="src\Render\OrthoCamera.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Render\OrthoCameraContrl.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Render\ProjectionCamera.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Render\Renderer.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Render\Shader.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Render\Texture.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
     <ClCompile Include="src\Render\VertexArray.cpp">
       <Filter>Render</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\Render\Renderer.cpp" />
-    <ClCompile Include="src\Render\Shader.cpp" />
-    <ClCompile Include="src\Render\OrthoCamera.cpp" />
-    <ClCompile Include="src\Render\ProjectionCamera.cpp" />
-    <ClCompile Include="src\Core\TimeStep.cpp" />
-    <ClCompile Include="vendor\stb\stb_image.cpp" />
-    <ClCompile Include="src\Render\Texture.cpp" />
-    <ClCompile Include="src\Render\OrthoCameraContrl.cpp" />
-    <ClCompile Include="src\Core\Input.cpp" />
   </ItemGroup>
 </Project>

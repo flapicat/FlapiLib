@@ -72,7 +72,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST $(ProjectDir)\Assets\ (xcopy /Q /E /Y /I $(ProjectDir)\Assets ..\bin\Debug-windows-x86_64\Examples\Assets &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)\Assets ..\bin\Debug-windows-x86_64\Examples\Assets &gt; nul)</Command>
+      <Command>xcopy /Q /E /Y /I "$(ProjectDir)\Assets" "..\bin\Debug-windows-x86_64\Examples\Assets"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -97,11 +97,21 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST $(ProjectDir)\Assets\ (xcopy /Q /E /Y /I $(ProjectDir)\Assets ..\bin\Release-windows-x86_64\Examples\Assets &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)\Assets ..\bin\Release-windows-x86_64\Examples\Assets &gt; nul)</Command>
+      <Command>xcopy /Q /E /Y /I "$(ProjectDir)\Assets" "..\bin\Release-windows-x86_64\Examples\Assets"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Example.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Shaders\shader.frag" />
+    <None Include="Assets\Shaders\shader.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Textures\awesomeface.png" />
+    <Image Include="Assets\Textures\checkerboard.png" />
+    <Image Include="Assets\Textures\container.png" />
+    <Image Include="Assets\Textures\tilemap.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FlapiLib\FlapiLib.vcxproj">

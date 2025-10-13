@@ -3,6 +3,10 @@
 
 #include "TimeStep.h"
 
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
 namespace FL
 {
 	App* App::s_Instace = nullptr;
@@ -16,6 +20,17 @@ namespace FL
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushLayer(m_ImGuiLayer);
+
+		Assimp::Importer importer;
+		const aiScene* scene = importer.ReadFile("nonexistent_file.obj", aiProcess_Triangulate);
+
+		if (!scene) {
+			std::cout << "Assimp linked successfully! Error (expected): "
+				<< importer.GetErrorString() << std::endl;
+		}
+		else {
+			std::cout << "Unexpected success — but Assimp works!" << std::endl;
+		}
 	}
 
 	App::~App()

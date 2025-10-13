@@ -9,12 +9,16 @@ workspace "FlapiLib"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+LibDir = {}
+LibDir["Assimp"] = "%{wks.location}/FlapiLib/vendor/assimp/lib"
+
 IncludeDir = {}
 IncludeDir["GLFW"] = "FlapiLib/vendor/GLFW/include"
 IncludeDir["glad"] = "FlapiLib/vendor/glad/include"
 IncludeDir["ImGui"] = "FlapiLib/vendor/imgui"
 IncludeDir["glm"] = "FlapiLib/vendor/glm"
 IncludeDir["stb"] = "FlapiLib/vendor/stb"
+IncludeDir["Assimp"] = "FlapiLib/vendor/assimp/include"
 
 group "Dependencies"
 	include "FlapiLib/vendor/GLFW"
@@ -51,7 +55,8 @@ project "FlapiLib"
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.ImGui}/backends",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.stb}"
+		"%{IncludeDir.stb}",
+		"%{IncludeDir.Assimp}"
 	}
 	
 	links 
@@ -74,11 +79,18 @@ project "FlapiLib"
 		defines "DEBUG"
 		runtime "Debug"
 		symbols "on"
+		links { 
+			"%{LibDir.Assimp}/Debug/assimp-vc143-mtd.lib"
+		}
+
 
 	filter "configurations:Release"
 		defines "RELEASE"
 		runtime "Release"
 		optimize "on"
+		links { 
+			"%{LibDir.Assimp}/Release/assimp-vc143-mt.lib"
+		}
 
 		
 project "Examples"
@@ -92,15 +104,13 @@ project "Examples"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 	
-	files
-	{
+	files{
 		"%{prj.name}/Assets/**",
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp"
 	}
 
-	includedirs
-	{
+	includedirs{
 		"FlapiLib/vendor/spdlog/include",
 		"FlapiLib/src",
 		"FlapiLib/vendor",
@@ -112,14 +122,13 @@ project "Examples"
 		"%{IncludeDir.stb}"
 	}
 
-	links
-	{
+	links{
 		"FlapiLib",
 	} 
 
-	postbuildcommands 
-	{
-		("{COPY} %{prj.location}/Assets %{cfg.targetdir}/Assets")
+
+	postbuildcommands {
+		'{COPYDIR} "%{prj.location}/Assets" "%{cfg.targetdir}/Assets"'
 	}
 
 	filter "system:windows"
