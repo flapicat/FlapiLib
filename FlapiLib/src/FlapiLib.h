@@ -1,6 +1,7 @@
 #pragma once
 #include "Core/App.h"
 #include "Core/Core.h"
+#include "Core/Input.h"
 #include "Core/Layer.h"
 #include "Core/Log.h"
 #include "Core/TimeStep.h"
@@ -14,6 +15,7 @@
 #include "Render/Camera.h"
 #include "Render/Renderer.h"
 #include "Render/OrthoCameraContrl.h"
+#include "Render/ProjectionCameraContrl.h"
 #include "Render/Shader.h"
 #include "Render/Texture.h"
 #include "Render/VertexArray.h"

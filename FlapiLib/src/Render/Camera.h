@@ -3,6 +3,11 @@
 
 namespace FL
 {
+	enum CameraType
+	{
+		Orthographic, Perspective
+	};
+
 	class Camera
 	{
 	public:
@@ -15,7 +20,10 @@ namespace FL
 		const glm::mat4& GetProjectionMatrix() { return m_ProjectionMatrix; }
 		const glm::mat4& GetViewMatrix() { return m_ViewMatrix; }
 		const glm::vec3& GetPosition() { return m_Pos; }
+		CameraType GetType() { return m_type; };
+		void SetPosition(const glm::vec3& pos) { m_Pos = pos; }
 	protected:
+		CameraType m_type;
 		glm::vec3 m_Pos = { 0.0f,0.0f,0.0f };
 		float m_AspectRatio;
 		float m_Near = -1, m_Far = 1;

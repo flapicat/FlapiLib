@@ -19,8 +19,6 @@ namespace FL
 
 	void OrthoCameraContrl::OnUpdate(TimeStep ts)
 	{
-		GLFWwindow* window = glfwGetCurrentContext();
-
 		float velocity = m_CameraSpeed * ts;
 		
 		if (Input::IsKeyPressed(GLFW_KEY_W))

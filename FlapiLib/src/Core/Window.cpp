@@ -62,6 +62,12 @@ namespace FL
 			MouseScrollEvent event(xoffset, yoffset);
 			win->m_WindowProps.EvCallback(event);
 			});
+
+		glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double xpos, double ypos) {
+			Window* win = (Window*)glfwGetWindowUserPointer(window);
+			MouseMovedEvent event(xpos, ypos);
+			win->m_WindowProps.EvCallback(event);
+			});
 	}
 
 	void Window::OnUpdate()

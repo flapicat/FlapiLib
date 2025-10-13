@@ -20,6 +20,9 @@ public:
 
 	virtual void OnAttach() override
 	{
+		m_Camera.SetPosition(glm::vec3(0.0,0.0,1.0));
+		if (m_Camera.GetType() == FL::CameraType::Perspective){	cursorEnable = false;}
+
 		std::vector<float> vertices =
 		{
 			//    Positions        //    Colors         //Texture UV
@@ -62,7 +65,21 @@ public:
 
 	virtual void OnUpdate(FL::TimeStep ts) override
 	{
+		auto window = FL::App::Get().GetWindow().GetNativeWindow();
 		m_Camera.OnUpdate(ts);
+		if (FL::Input::OnKeyPressed(GLFW_KEY_ESCAPE))
+		{
+			if (cursorEnable)
+			{
+				cursorEnable = !cursorEnable;
+				glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+			}
+			else
+			{
+				cursorEnable = !cursorEnable;
+				glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+			}
+		}
 	}
 
 	virtual void OnRender() override
@@ -82,12 +99,15 @@ public:
 	{
 		FL::EventHandler handler(e);
 		handler.Handle<FL::MouseScrollEvent>([this](const FL::MouseScrollEvent& ev) {m_Camera.OnMouseScrolled(ev); });
+		if(!cursorEnable)handler.Handle<FL::MouseMovedEvent>([this](const FL::MouseMovedEvent& ev) {m_Camera.OnMouseMoved(ev); });
 	}
 
 private:
+	bool cursorEnable = false;
 	Ref<FL::VertexArray> m_VertexArray;
 	Ref<FL::Shader> m_Shader;
-	FL::OrthoCameraContrl m_Camera;
+	//FL::OrthoCameraContrl m_Camera;
+	FL::ProjectionCameraContrl m_Camera;
 	Ref<FL::Texture2D>m_Texture;
 };
 

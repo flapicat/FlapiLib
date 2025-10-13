@@ -9,8 +9,9 @@ namespace FL
 	OrthoCamera::OrthoCamera(float aspectRatio)
 		:Camera(aspectRatio)
 	{
+		m_type = CameraType::Orthographic;
 		m_ProjectionMatrix = glm::ortho(-aspectRatio, aspectRatio,-1.0f,1.0f,m_Near,m_Far);
-		m_ViewMatrix = glm::lookAt(m_Pos,m_Front,m_Up);
+		m_ViewMatrix = glm::lookAt(m_Pos,m_Pos + m_Front,m_Up);
 		m_ProjectionViewMatrix = m_ProjectionMatrix * m_ViewMatrix;
 	}
 }
