@@ -11,10 +11,7 @@ namespace FL
 	class Camera
 	{
 	public:
-		Camera(float aspectRatio)
-			:m_AspectRatio(aspectRatio)
-		{
-		}
+		Camera(float aspectRatio, CameraType type);
 
 		const glm::mat4& GetViewProjectionMatrix() { return m_ProjectionViewMatrix; }
 		const glm::mat4& GetProjectionMatrix() { return m_ProjectionMatrix; }
@@ -22,11 +19,14 @@ namespace FL
 		const glm::vec3& GetPosition() { return m_Pos; }
 		CameraType GetType() { return m_type; };
 		void SetPosition(const glm::vec3& pos) { m_Pos = pos; }
+	private:
+		void SetUpCamera();
 	protected:
 		CameraType m_type;
 		glm::vec3 m_Pos = { 0.0f,0.0f,0.0f };
 		float m_AspectRatio;
 		float m_Near = -1, m_Far = 1;
+		float m_Fov = 60.0f;
 
 		glm::mat4 m_ProjectionMatrix;
 		glm::mat4 m_ViewMatrix;

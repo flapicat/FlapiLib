@@ -8,7 +8,7 @@ class ExampleLayer : public FL::Layer
 {
 public:
 	ExampleLayer()
-		:Layer("Example"), m_Camera((float)1600/(float)900)
+		:Layer("Example"), m_Camera((float)1600/(float)900, FL::CameraType::Perspective)
 	{
 
 	}
@@ -107,7 +107,7 @@ private:
 	Ref<FL::VertexArray> m_VertexArray;
 	Ref<FL::Shader> m_Shader;
 	//FL::OrthoCameraContrl m_Camera;
-	FL::ProjectionCameraContrl m_Camera;
+	FL::CameraController m_Camera;
 	Ref<FL::Texture2D>m_Texture;
 };
 
