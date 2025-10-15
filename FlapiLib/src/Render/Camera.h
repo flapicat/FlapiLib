@@ -13,10 +13,10 @@ namespace FL
 	public:
 		Camera(float aspectRatio, CameraType type);
 
-		const glm::mat4& GetViewProjectionMatrix() { return m_ProjectionViewMatrix; }
-		const glm::mat4& GetProjectionMatrix() { return m_ProjectionMatrix; }
-		const glm::mat4& GetViewMatrix() { return m_ViewMatrix; }
-		const glm::vec3& GetPosition() { return m_Pos; }
+		const glm::mat4& GetViewProjectionMatrix() const { return m_ProjectionViewMatrix; }
+		const glm::mat4& GetProjectionMatrix() const { return m_ProjectionMatrix; }
+		const glm::mat4& GetViewMatrix() const { return m_ViewMatrix; }
+		const glm::vec3& GetPosition() const { return m_Pos; }
 		CameraType GetType() { return m_type; };
 		void SetPosition(const glm::vec3& pos) { m_Pos = pos; }
 	private:

@@ -41,12 +41,14 @@ namespace FL
 	void Texture2D::Bind(uint32_t slot)
 	{
 		m_BindSlot = slot;
-		glBindTextureUnit(slot, m_Texture);
+		glActiveTexture(GL_TEXTURE0 + slot);
+		glBindTexture(GL_TEXTURE_2D, m_Texture);
 	}
 
 	void Texture2D::UnBind()
 	{
-		glBindTextureUnit(m_BindSlot, 0);
+		glActiveTexture(GL_TEXTURE0 + m_BindSlot);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	Ref<Texture2D> Texture2D::Create(const std::string& filePath)

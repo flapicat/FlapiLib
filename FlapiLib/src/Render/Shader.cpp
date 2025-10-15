@@ -73,6 +73,11 @@ namespace FL
         return CreateRef<Shader>(vertexPath,fragmentPath);
     }
 
+    void Shader::setIntArray(const std::string& name, int* values, int count) const
+    {
+        glUniform1iv(glGetUniformLocation(m_RendererID, name.c_str()), count, values);
+    }
+
     void Shader::setBool(const std::string& name, bool value) const
     {
         glUniform1i(glGetUniformLocation(m_RendererID, name.c_str()), (int)value);

@@ -3,6 +3,8 @@
 
 #include "TimeStep.h"
 
+#include "Render/Renderer.h"
+
 namespace FL
 {
 	App* App::s_Instace = nullptr;
@@ -16,6 +18,8 @@ namespace FL
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushLayer(m_ImGuiLayer);
+
+		Renderer::Init();
 	}
 
 	App::~App()

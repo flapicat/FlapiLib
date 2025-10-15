@@ -38,7 +38,7 @@ namespace FL
 	{
 		glGenBuffers(1, &m_RenderID);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RenderID);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_DYNAMIC_DRAW);
 	}
 
 	IndexBuffer::~IndexBuffer()

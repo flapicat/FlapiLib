@@ -2,6 +2,8 @@
 #include <glm/glm.hpp>
 
 #include "VertexArray.h"
+#include "Camera.h"
+#include "Texture.h"
 
 namespace FL
 {
@@ -12,7 +14,14 @@ namespace FL
 		static void ClearColor(glm::vec4 color);
 		static void ClearBuffer();
 
-		static void DrawFromVertexArray(const Ref<VertexArray>& VA);
+		static void SubmitMesh(const std::vector<float>& vertices,const std::vector<uint32_t>& indices,	const Ref<Texture2D>& texture);
+
+		static void BeginScene(const Camera& camera);
+		static void EndScene();
+	private:
+		static void Flush();
+		static void StartBatch();
+		static void NextBatch();
 	};
 
 }

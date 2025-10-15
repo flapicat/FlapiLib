@@ -10,53 +10,66 @@ public:
 	ExampleLayer()
 		:Layer("Example"), m_Camera((float)1600/(float)900, FL::CameraType::Perspective)
 	{
-
 	}
 
 	~ExampleLayer()
 	{
-
 	}
 
 	virtual void OnAttach() override
 	{
-		m_Camera.SetPosition(glm::vec3(0.0,0.0,1.0));
+		m_Camera.SetPosition(glm::vec3(0.0,0.0,0.0));
 		if (m_Camera.GetType() == FL::CameraType::Perspective){	cursorEnable = false;}
 
-		std::vector<float> vertices =
-		{
-			//    Positions        //    Colors         //Texture UV
-			-0.5f,  0.5f, 0.0f,  1.0f, 0.0f, 0.0f, 1.0f,  0.0f,1.0f,  // top-left
-			 0.5f,  0.5f, 0.0f,  0.0f, 1.0f, 0.0f, 1.0f,  1.0f,1.0f,  // top-right
-			-0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f, 1.0f,  0.0f,0.0f,  // bottom-left
-			 0.5f, -0.5f, 0.0f,  1.0f, 1.0f, 1.0f, 1.0f,  1.0f,0.0f   // bottom-right
+		m_vertices = {
+			// Front face
+			-0.5f, -0.5f,  0.5f, 1,1,1,1, 0.0f,0.0f,  1.0f, // bottom-left
+			 0.5f, -0.5f,  0.5f, 1,1,1,1, 1.0f,0.0f,  1.0f, // bottom-right
+			 0.5f,  0.5f,  0.5f, 1,1,1,1, 1.0f,1.0f,  1.0f, // top-right
+			-0.5f,  0.5f,  0.5f, 1,1,1,1, 0.0f,1.0f,  1.0f, // top-left
+													  
+			// Back face							  
+			-0.5f, -0.5f, -0.5f, 1,1,1,1, 1.0f,0.0f,  1.0f,
+			 0.5f, -0.5f, -0.5f, 1,1,1,1, 0.0f,0.0f,  1.0f,
+			 0.5f,  0.5f, -0.5f, 1,1,1,1, 0.0f,1.0f,  1.0f,
+			-0.5f,  0.5f, -0.5f, 1,1,1,1, 1.0f,1.0f,  1.0f,
+													  
+			// Left face							  
+			-0.5f, -0.5f, -0.5f, 1,1,1,1, 0.0f,0.0f,  1.0f,
+			-0.5f, -0.5f,  0.5f, 1,1,1,1, 1.0f,0.0f,  1.0f,
+			-0.5f,  0.5f,  0.5f, 1,1,1,1, 1.0f,1.0f,  1.0f,
+			-0.5f,  0.5f, -0.5f, 1,1,1,1, 0.0f,1.0f,  1.0f,
+													  
+			// Right face							  
+			 0.5f, -0.5f, -0.5f, 1,1,1,1, 1.0f,0.0f,  1.0f,
+			 0.5f, -0.5f,  0.5f, 1,1,1,1, 0.0f,0.0f,  1.0f,
+			 0.5f,  0.5f,  0.5f, 1,1,1,1, 0.0f,1.0f,  1.0f,
+			 0.5f,  0.5f, -0.5f, 1,1,1,1, 1.0f,1.0f,  1.0f,
+													  
+			 // Top face							  
+			 -0.5f, 0.5f,  0.5f, 1,1,1,1, 0.0f,0.0f,  1.0f,
+			  0.5f, 0.5f,  0.5f, 1,1,1,1, 1.0f,0.0f,  1.0f,
+			  0.5f, 0.5f, -0.5f, 1,1,1,1, 1.0f,1.0f,  1.0f,
+			 -0.5f, 0.5f, -0.5f, 1,1,1,1, 0.0f,1.0f,  1.0f,
+													  
+			 // Bottom face							  
+			 -0.5f, -0.5f,  0.5f, 1,1,1,1, 0.0f,0.0f, 1.0f,
+			  0.5f, -0.5f,  0.5f, 1,1,1,1, 1.0f,0.0f, 1.0f,
+			  0.5f, -0.5f, -0.5f, 1,1,1,1, 1.0f,1.0f, 1.0f,
+			 -0.5f, -0.5f, -0.5f, 1,1,1,1, 0.0f,1.0f, 1.0f
 		};
 
-		std::vector<uint32_t> indices = 
-		{
-			0,1,2,2,3,1 
+		m_indices = {
+			0, 1, 2,  2, 3, 0,       // front
+			4, 5, 6,  6, 7, 4,       // back
+			8, 9,10, 10,11, 8,       // left
+		    12,13,14, 14,15,12,       // right
+		    16,17,18, 18,19,16,       // top
+		    20,21,22, 22,23,20        // bottom
 		};
 
-		m_Shader = FL::Shader::Create("Assets/Shaders/shader.vert", "Assets/Shaders/shader.frag");
-
-		m_VertexArray = FL::VertexArray::Create();
-		m_VertexArray->Bind();
-
-		Ref<FL::VertexBuffer>VB = FL::VertexBuffer::Create(vertices.data(), vertices.size() * sizeof(float));
-		FL::BufferLayout layout = {
-			{ FL::ShaderType::Float3, "a_Pos" },
-			{ FL::ShaderType::Float4, "a_Color" },
-			{ FL::ShaderType::Float2, "a_TextureCoords" }
-		};
-		VB->SetLayout(layout);
-		m_VertexArray->SetVB(VB);
-
-		Ref<FL::IndexBuffer>IB = FL::IndexBuffer::Create(indices.data(), indices.size());
-		m_VertexArray->SetIB(IB);
-
-		m_VertexArray->Unbind();
-
-		m_Texture = FL::Texture2D::Create("Assets/Textures/container.png");
+		// Load texture
+		m_ContainerTexture = FL::Texture2D::Create("Assets/Textures/container.png");
 	}
 
 	virtual void OnDetach() override
@@ -84,15 +97,23 @@ public:
 
 	virtual void OnRender() override
 	{
-		m_Shader->setMat4("u_viewProjectionMatrix", m_Camera.GetViewProjectionMatrix());
-
 		FL::Renderer::ClearColor(glm::vec4(0.1, 0.1, 0.1, 0.1));
 		FL::Renderer::ClearBuffer();
 
-		m_Texture->Bind();
-		m_Shader->Use();
-		m_Shader->setInt("u_texture", m_Texture->GetTextureBindSlot());
-		FL::Renderer::DrawFromVertexArray(m_VertexArray);
+		FL::Renderer::BeginScene(m_Camera);
+
+		for (int x = 0; x < 10; x++)
+		{
+			for (int y = 0; y < 10; y++)
+			{
+				for (int z = 0; z < 10; z++)
+				{
+					FL::Renderer::SubmitMesh(m_vertices, m_indices, m_ContainerTexture);
+				}
+			}
+		}
+
+		FL::Renderer::EndScene();
 	}
 
 	virtual void OnEvent(FL::Event& e) 
@@ -104,11 +125,10 @@ public:
 
 private:
 	bool cursorEnable = false;
-	Ref<FL::VertexArray> m_VertexArray;
-	Ref<FL::Shader> m_Shader;
-	//FL::OrthoCameraContrl m_Camera;
 	FL::CameraController m_Camera;
-	Ref<FL::Texture2D>m_Texture;
+	std::vector<float> m_vertices;
+	std::vector<uint32_t> m_indices;
+	Ref<FL::Texture2D> m_ContainerTexture;
 };
 
 class ExampleApp : public FL::App

@@ -13,6 +13,8 @@ namespace FL
 
 		static Ref<Shader> Create(const std::string& vertexPath, const std::string& fragmentPath);
 
+		void setIntArray(const std::string& name, int* values, int count) const;
+
 		void setBool(const std::string& name, bool value) const;
 		void setInt(const std::string& name, int value) const;
 		void setFloat(const std::string& name, float value) const;
