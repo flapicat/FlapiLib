@@ -109,7 +109,6 @@ public:
 		FL::Renderer::BeginScene(m_Camera);
 
 		glm::mat4 transform = glm::mat4(1.0f);
-
 		FL::Renderer::SubmitMesh(m_vertices, m_indices, m_ContainerTexture, transform);
 
 		FL::Renderer::EndScene();

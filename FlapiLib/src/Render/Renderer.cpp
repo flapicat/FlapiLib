@@ -81,7 +81,7 @@ namespace FL
 		StartBatch();
 	}
 
-	void Renderer::SubmitMesh(const std::vector<float>& vertices, const std::vector<uint32_t>& indices, const Ref<Texture2D>& texture)
+	void Renderer::SubmitMesh(const std::vector<float>& vertices, const std::vector<uint32_t>& indices, const Ref<Texture2D>& texture, const glm::mat4& transform)
 	{
 		if (s_Data.VertexCount + vertices.size() / 10 >= s_Data.MaxVertices ||
 			s_Data.IndexCount + indices.size() >= s_Data.MaxIndices)
@@ -105,13 +105,24 @@ namespace FL
 			s_Data.TextureSlots[s_Data.TextureSlotIndex++] = texture;
 		}
 
-		s_Data.VertexBufferCPU.insert(
-			s_Data.VertexBufferCPU.end(),
-			vertices.begin(),
-			vertices.end()
-		);
-
 		uint32_t baseVertex = s_Data.VertexCount;
+
+		for (size_t i = 0; i < vertices.size(); i += 10)
+		{
+			glm::vec4 pos(vertices[i + 0], vertices[i + 1], vertices[i + 2], 1.0f);
+			pos = transform * pos;
+
+			s_Data.VertexBufferCPU.insert(
+				s_Data.VertexBufferCPU.end(),
+				{
+					pos.x, pos.y, pos.z,
+					vertices[i + 3], vertices[i + 4], vertices[i + 5], vertices[i + 6], // color
+					vertices[i + 7], vertices[i + 8],                                   // uv
+					textureIndex                                                        // tex index
+				}
+			);
+		}
+
 		for (auto idx : indices)
 			s_Data.IndexBufferCPU.push_back(baseVertex + idx);
 
