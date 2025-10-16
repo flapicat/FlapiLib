@@ -6,6 +6,8 @@
 
 #include <ImGui/imgui.h>
 
+#include <glm/gtc/matrix_transform.hpp>
+
 class ExampleLayer : public FL::Layer
 {
 public:
@@ -106,9 +108,9 @@ public:
 
 		FL::Renderer::BeginScene(m_Camera);
 
-		FL::Renderer::SubmitMesh(m_vertices, m_indices, m_ContainerTexture);
-		FL::Renderer::SubmitMesh(m_vertices, m_indices, m_ContainerTexture);
-		FL::Renderer::SubmitMesh(m_vertices, m_indices, m_ContainerTexture);
+		glm::mat4 transform = glm::mat4(1.0f);
+
+		FL::Renderer::SubmitMesh(m_vertices, m_indices, m_ContainerTexture, transform);
 
 		FL::Renderer::EndScene();
 	}
