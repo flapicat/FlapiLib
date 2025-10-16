@@ -4,6 +4,8 @@
 
 #include <glad/glad.h>
 
+#include <ImGui/imgui.h>
+
 class ExampleLayer : public FL::Layer
 {
 public:
@@ -18,7 +20,7 @@ public:
 
 	virtual void OnAttach() override
 	{
-		m_Camera.SetPosition(glm::vec3(0.0,0.0,0.0));
+		m_Camera.SetPosition(glm::vec3(0.0,0.0,3.0));
 		if (m_Camera.GetType() == FL::CameraType::Perspective){	cursorEnable = false;}
 
 		m_vertices = {
@@ -78,19 +80,21 @@ public:
 
 	virtual void OnUpdate(FL::TimeStep ts) override
 	{
+		m_fps = 1.0f / ts.GetSeconds();
 		auto window = FL::App::Get().GetWindow().GetNativeWindow();
 		m_Camera.OnUpdate(ts);
 		if (FL::Input::OnKeyPressed(GLFW_KEY_ESCAPE))
 		{
+			cursorEnable = !cursorEnable;
 			if (cursorEnable)
 			{
-				cursorEnable = !cursorEnable;
 				glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+				m_Camera.ResetMouseState();
 			}
 			else
 			{
-				cursorEnable = !cursorEnable;
 				glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+				m_Camera.ResetMouseState();
 			}
 		}
 	}
@@ -102,16 +106,9 @@ public:
 
 		FL::Renderer::BeginScene(m_Camera);
 
-		for (int x = 0; x < 10; x++)
-		{
-			for (int y = 0; y < 10; y++)
-			{
-				for (int z = 0; z < 10; z++)
-				{
-					FL::Renderer::SubmitMesh(m_vertices, m_indices, m_ContainerTexture);
-				}
-			}
-		}
+		FL::Renderer::SubmitMesh(m_vertices, m_indices, m_ContainerTexture);
+		FL::Renderer::SubmitMesh(m_vertices, m_indices, m_ContainerTexture);
+		FL::Renderer::SubmitMesh(m_vertices, m_indices, m_ContainerTexture);
 
 		FL::Renderer::EndScene();
 	}
@@ -119,12 +116,30 @@ public:
 	virtual void OnEvent(FL::Event& e) 
 	{
 		FL::EventHandler handler(e);
+		if (cursorEnable)handler.Handle<FL::MouseMovedEvent>([this](const FL::MouseMovedEvent& ev) {m_Camera.OnMouseMoved(ev); });
 		handler.Handle<FL::MouseScrollEvent>([this](const FL::MouseScrollEvent& ev) {m_Camera.OnMouseScrolled(ev); });
-		if(!cursorEnable)handler.Handle<FL::MouseMovedEvent>([this](const FL::MouseMovedEvent& ev) {m_Camera.OnMouseMoved(ev); });
+		handler.Handle<FL::WindowResizeEvent>([this](const FL::WindowResizeEvent& ev) {m_Camera.OnWindowResize(ev); });
+	}
+
+	virtual void OnImGuiRender() override
+	{
+		auto& stats = FL::Renderer::GetStats();
+
+		ImGui::Begin("Data");
+		ImGui::Text("FPS: %.1f", m_fps);
+		ImGui::Text("Camera position: (%.1f, %.1f, %.1f)", m_Camera.GetPosition().x, m_Camera.GetPosition().y, m_Camera.GetPosition().z);
+		ImGui::Text("Camera Euler: (%.1f, %.1f, %.1f)", m_Camera.GetEuler().x, m_Camera.GetEuler().y, m_Camera.GetEuler().z);
+		ImGui::End();
+		ImGui::Begin("Statistics: ");
+		ImGui::Text("Draw Calls: %u", stats.DrawCalls);
+		ImGui::Text("Vertices:   %u", stats.VertexCount);
+		ImGui::Text("Indices:    %u", stats.IndexCount);
+		ImGui::End();
 	}
 
 private:
-	bool cursorEnable = false;
+	float m_fps = 0.0f;
+	bool cursorEnable = true;
 	FL::CameraController m_Camera;
 	std::vector<float> m_vertices;
 	std::vector<uint32_t> m_indices;

@@ -33,6 +33,12 @@ namespace FL
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
+	void VertexBuffer::SetBufferData(const std::vector<float> vertices)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, m_RenderID);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(float), vertices.data());
+	}
+
 	IndexBuffer::IndexBuffer(uint32_t* indices, uint32_t count)
 		:m_Count(count)
 	{
@@ -60,5 +66,11 @@ namespace FL
 	void IndexBuffer::UnBind()
 	{
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	}
+	
+	void IndexBuffer::SetBufferData(const std::vector<uint32_t> indices)
+	{
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RenderID);
+		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, indices.size() * sizeof(uint32_t), indices.data());
 	}
 }

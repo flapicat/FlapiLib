@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 
 #include "Core/Input.h"
+#include "Core/App.h"
 
 namespace FL
 {
@@ -55,6 +56,16 @@ namespace FL
 		m_ProjectionViewMatrix = m_ProjectionMatrix * m_ViewMatrix;
 	}
 
+	void CameraController::ResetMouseState()
+	{
+		double xpos, ypos;
+		auto window = App::Get().GetWindow().GetNativeWindow();
+		glfwGetCursorPos(window, &xpos, &ypos);
+		m_LastX = xpos;
+		m_LastY = ypos;
+		m_FirstMouse = true;
+	}
+
 	void CameraController::OnMouseScrolled(const MouseScrollEvent& e)
 	{
 		if (m_type == CameraType::Orthographic)
@@ -87,6 +98,7 @@ namespace FL
 		{
 			float xpos = e.GetxPos();
 			float ypos = e.GetyPos();
+			
 
 			if (m_FirstMouse)
 			{
@@ -118,4 +130,11 @@ namespace FL
 			m_Right = glm::normalize(glm::cross(m_Front, m_Up));
 		}
 	}
+
+	void CameraController::OnWindowResize(const WindowResizeEvent& e)
+	{
+		m_AspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
+		RecalculateProjectionViewMatrix();
+	}
+
 }

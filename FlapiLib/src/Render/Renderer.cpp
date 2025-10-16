@@ -15,8 +15,6 @@ namespace FL
 		static const uint32_t MaxTextureSlots = 8;
 
 		Ref<VertexArray> VertexArray;
-		Ref<VertexBuffer> VertexBuffer;
-		Ref<IndexBuffer> IndexBuffer;
 		Ref<Shader> Shader;
 
 		uint32_t VertexCount = 0;
@@ -30,7 +28,7 @@ namespace FL
 	};
 
 	static RenderData s_Data;
-
+	static RenderStats s_Stats;
 
 	void Renderer::ClearColor(glm::vec4 color)
 	{
@@ -47,18 +45,18 @@ namespace FL
 		glEnable(GL_DEPTH_TEST);
 
 		s_Data.VertexArray = VertexArray::Create();
-		s_Data.VertexBuffer = VertexBuffer::Create(nullptr, s_Data.MaxVertices * sizeof(float) * 10);
+		Ref<VertexBuffer> VB = VertexBuffer::Create(nullptr, s_Data.MaxVertices * sizeof(float) * 10);
 		BufferLayout layout = {
 			{ FL::ShaderType::Float3, "a_Pos" },
 			{ FL::ShaderType::Float4, "a_Color" },
 			{ FL::ShaderType::Float2, "a_TextureCoords" },
 			{ FL::ShaderType::Float, "a_TexIndex" }
 		};
-		s_Data.VertexBuffer->SetLayout(layout);
-		s_Data.VertexArray->SetVB(s_Data.VertexBuffer);
+		VB->SetLayout(layout);
+		s_Data.VertexArray->SetVB(VB);
 
-		s_Data.IndexBuffer = IndexBuffer::Create(nullptr, s_Data.MaxIndices);
-		s_Data.VertexArray->SetIB(s_Data.IndexBuffer);
+		Ref<IndexBuffer> IB = IndexBuffer::Create(nullptr, s_Data.MaxIndices);
+		s_Data.VertexArray->SetIB(IB);
 
 		s_Data.Shader = Shader::Create("Assets/Shaders/shader.vert", "Assets/Shaders/shader.frag");
 		int samplers[s_Data.MaxTextureSlots];
@@ -75,6 +73,8 @@ namespace FL
 
 	void Renderer::BeginScene(const Camera& camera)
 	{
+		s_Stats.ResetStats();
+
 		s_Data.Shader->Use();
 		s_Data.Shader->setMat4("u_viewProjectionMatrix", camera.GetViewProjectionMatrix());
 	
@@ -98,6 +98,7 @@ namespace FL
 				break;
 			}
 		}
+
 		if (textureIndex == 0.0f)
 		{
 			textureIndex = (float)s_Data.TextureSlotIndex;
@@ -116,6 +117,9 @@ namespace FL
 
 		s_Data.VertexCount += vertices.size() / 10;
 		s_Data.IndexCount += indices.size();
+
+		s_Stats.VertexCount += vertices.size() / 10; 
+		s_Stats.IndexCount += indices.size();
 	}
 
 	void Renderer::EndScene()
@@ -123,17 +127,18 @@ namespace FL
 		Flush();
 	}
 
+	const RenderStats& Renderer::GetStats()
+	{
+		return s_Stats;
+	}
+
 	void Renderer::Flush()
 	{
 		if (s_Data.IndexCount == 0) return;
 
 		s_Data.VertexArray->Bind();
-
-		s_Data.VertexBuffer->Bind();
-		glBufferSubData(GL_ARRAY_BUFFER, 0, s_Data.VertexBufferCPU.size() * sizeof(float), s_Data.VertexBufferCPU.data());
-
-		s_Data.IndexBuffer->Bind();
-		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, s_Data.IndexBufferCPU.size() * sizeof(uint32_t), s_Data.IndexBufferCPU.data());
+		s_Data.VertexArray->GetVB()->SetBufferData(s_Data.VertexBufferCPU);
+		s_Data.VertexArray->GetIB()->SetBufferData(s_Data.IndexBufferCPU);
 
 		for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++)
 		{
@@ -148,6 +153,7 @@ namespace FL
 		}
 
 		glDrawElements(GL_TRIANGLES, s_Data.IndexCount, GL_UNSIGNED_INT, nullptr);
+		s_Stats.DrawCalls++;
 	}
 
 	void Renderer::StartBatch()

@@ -7,6 +7,20 @@
 
 namespace FL
 {
+	struct RenderStats
+	{
+		uint32_t DrawCalls = 0;
+		uint32_t VertexCount = 0;
+		uint32_t IndexCount = 0;
+
+		void ResetStats()
+		{
+			DrawCalls = 0;
+			VertexCount = 0;
+			IndexCount = 0;
+		}
+	};
+
 	class Renderer
 	{
 	public:
@@ -18,6 +32,8 @@ namespace FL
 
 		static void BeginScene(const Camera& camera);
 		static void EndScene();
+
+		static const RenderStats& GetStats();
 	private:
 		static void Flush();
 		static void StartBatch();

@@ -107,6 +107,8 @@ namespace FL
 
 		void Bind();
 		void UnBind();
+	
+		void SetBufferData(const std::vector<float> vertices);
 	private:
 		BufferLayout m_Layout;
 		uint32_t m_RenderID;
@@ -125,6 +127,8 @@ namespace FL
 
 		void Bind();
 		void UnBind();
+
+		void SetBufferData(const std::vector<uint32_t> indices);
 	private:
 		uint32_t m_RenderID;
 		uint32_t m_Count;

@@ -19,6 +19,7 @@ namespace FL
 		const glm::vec3& GetPosition() const { return m_Pos; }
 		CameraType GetType() { return m_type; };
 		void SetPosition(const glm::vec3& pos) { m_Pos = pos; }
+		void RecalculateProjectionViewMatrix();
 	private:
 		void SetUpCamera();
 	protected:

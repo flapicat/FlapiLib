@@ -12,6 +12,22 @@ namespace FL
 		SetUpCamera();
 	}
 	
+	void Camera::RecalculateProjectionViewMatrix()
+	{
+		if (m_type == CameraType::Orthographic)
+		{
+			m_ProjectionMatrix = glm::ortho(-m_AspectRatio, m_AspectRatio, -1.0f, 1.0f, m_Near, m_Far);
+		}
+
+		if (m_type == CameraType::Perspective)
+		{
+			m_ProjectionMatrix = glm::perspective(glm::radians(m_Fov), m_AspectRatio, m_Near, m_Far);
+		}
+
+		m_ViewMatrix = glm::lookAt(m_Pos, m_Pos + m_Front, m_Up);
+		m_ProjectionViewMatrix = m_ProjectionMatrix * m_ViewMatrix;
+	}
+
 	void Camera::SetUpCamera()
 	{
 		if (m_type == CameraType::Orthographic)

@@ -68,6 +68,13 @@ namespace FL
 			MouseMovedEvent event(xpos, ypos);
 			win->m_WindowProps.EvCallback(event);
 			});
+
+		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height) {
+			glViewport(0, 0, width, height);
+			Window* win = (Window*)glfwGetWindowUserPointer(window);
+			WindowResizeEvent event(width, height);
+			win->m_WindowProps.EvCallback(event);
+			});
 	}
 
 	void Window::OnUpdate()
