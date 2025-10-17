@@ -78,6 +78,7 @@
     </ClInclude>
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Render\CameraControler.h" />
+    <ClInclude Include="src\Core\AssetManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\App.cpp">
@@ -128,5 +129,6 @@
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\Render\CameraControler.cpp" />
     <ClCompile Include="vendor\stb\stb_image.cpp" />
+    <ClCompile Include="src\Core\AssetManager.cpp" />
   </ItemGroup>
 </Project>

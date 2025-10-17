@@ -13,6 +13,11 @@ namespace FL
 		if (!data)
 		{
 			LOG_WARN("Failed to load texture from filepath: {0}", filePath);
+			Loaded = false;
+		}
+		else
+		{
+			Loaded = true;
 		}
 
 		glGenTextures(1, &m_Texture);

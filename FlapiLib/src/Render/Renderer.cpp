@@ -159,7 +159,7 @@ namespace FL
 			}
 			else
 			{
-				LOG_WARN("TRYING TO BIND TEXTURE THAT DONT EXIST");
+				//LOG_WARN("TRYING TO BIND TEXTURE THAT DONT EXIST");
 			}
 		}
 

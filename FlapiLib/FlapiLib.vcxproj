@@ -101,6 +101,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Core\AssetManager.h" />
     <ClInclude Include="src\Render\CameraControler.h" />
     <ClInclude Include="src\Core\App.h" />
     <ClInclude Include="src\Core\Core.h" />
@@ -126,6 +127,7 @@
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Core\AssetManager.cpp" />
     <ClCompile Include="src\Render\CameraControler.cpp" />
     <ClCompile Include="src\Core\App.cpp" />
     <ClCompile Include="src\Core\Input.cpp" />

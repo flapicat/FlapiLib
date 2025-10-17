@@ -4,6 +4,7 @@
 #include "TimeStep.h"
 
 #include "Render/Renderer.h"
+#include "Core/AssetManager.h"
 
 namespace FL
 {
@@ -20,6 +21,7 @@ namespace FL
 		PushLayer(m_ImGuiLayer);
 
 		Renderer::Init();
+		AssetManager::LoadAssets();
 	}
 
 	App::~App()

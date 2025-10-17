@@ -71,9 +71,10 @@ public:
 		    16,17,18, 18,19,16,       // top
 		    20,21,22, 22,23,20        // bottom
 		};
-
 		// Load texture
-		m_ContainerTexture = FL::Texture2D::Create("Assets/Textures/container.png");
+
+		FL::AssetManager::LoadAssetFromFile("checkerboard", "Assets/Textures/checkerboard.png", FL::AssetType::Texture);
+		m_ContainerTexture = FL::AssetManager::GetAssets().GetTexture("container");
 	}
 
 	virtual void OnDetach() override
@@ -111,6 +112,10 @@ public:
 		glm::mat4 transform = glm::mat4(1.0f);
 		FL::Renderer::SubmitMesh(m_vertices, m_indices, m_ContainerTexture, transform);
 
+		transform = glm::translate(glm::mat4(1.0f), {1.0f,1.0f,1.0f});
+		static Ref<FL::Texture2D> tex = FL::AssetManager::GetAssets().GetTexture("checkerboard");
+		FL::Renderer::SubmitMesh(m_vertices, m_indices, tex, transform);
+
 		FL::Renderer::EndScene();
 	}
 
@@ -141,9 +146,9 @@ public:
 private:
 	float m_fps = 0.0f;
 	bool cursorEnable = true;
-	FL::CameraController m_Camera;
 	std::vector<float> m_vertices;
 	std::vector<uint32_t> m_indices;
+	FL::CameraController m_Camera;
 	Ref<FL::Texture2D> m_ContainerTexture;
 };
 

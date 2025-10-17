@@ -1,4 +1,6 @@
 #pragma once
+#include <string>
+#include "Core/Core.h"
 
 namespace FL
 {
@@ -13,6 +15,8 @@ namespace FL
 		uint32_t GetTextureBindSlot() const { return m_BindSlot; }
 
 		static Ref<Texture2D> Create(const std::string& filePath);
+	public:
+		bool Loaded = false;
 	private:
 		uint32_t m_Texture;
 		uint32_t m_BindSlot = 0;
