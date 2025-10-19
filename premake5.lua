@@ -1,5 +1,6 @@
 workspace "FlapiLib"
 	architecture "x64"
+    startproject "Sandbox"
 
 	configurations
 	{
@@ -44,6 +45,7 @@ project "FlapiLib"
 	{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/stb/**"
 	}
 
 	includedirs
@@ -80,7 +82,7 @@ project "FlapiLib"
 		runtime "Debug"
 		symbols "on"
 		links { 
-			"%{LibDir.Assimp}/Debug/assimp-vc143-mtd.lib"
+			"C:/dev/FlapiLib/FlapiLib/vendor/assimp/lib/Debug/assimp-vc143-mtd.lib"
 		}
 
 
@@ -89,12 +91,12 @@ project "FlapiLib"
 		runtime "Release"
 		optimize "on"
 		links { 
-			"%{LibDir.Assimp}/Release/assimp-vc143-mt.lib"
+			"C:/dev/FlapiLib/FlapiLib/vendor/assimp/lib/Release/assimp-vc143-mt.lib"
 		}
 
 		
-project "Examples"
-	location "Examples"
+project "Sandbox"
+	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"
@@ -119,7 +121,8 @@ project "Examples"
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.ImGui}/backends",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.stb}"
+		"%{IncludeDir.stb}",
+		"%{IncludeDir.Assimp}"
 	}
 
 	links{

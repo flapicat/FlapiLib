@@ -97,10 +97,10 @@ namespace FL
 	class VertexBuffer
 	{
 	public:
-		VertexBuffer(float* vertices, uint32_t size);
+		VertexBuffer(void* vertices, uint32_t size);
 		~VertexBuffer();
 
-		static Ref<VertexBuffer> Create(float* vertices, uint32_t size);
+		static Ref<VertexBuffer> Create(void* vertices, uint32_t size);
 
 		const BufferLayout& GetLayout() { return m_Layout; }
 		void SetLayout(const BufferLayout& layout) { m_Layout = layout; }

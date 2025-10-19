@@ -75,6 +75,8 @@ public:
 
 		FL::AssetManager::LoadAssetFromFile("checkerboard", "Assets/Textures/checkerboard.png", FL::AssetType::Texture);
 		m_ContainerTexture = FL::AssetManager::GetAssets().GetTexture("container");
+	
+		m_Model.reset(new FL::Model("Assets/objects/backpack/backpack.obj"));
 	}
 
 	virtual void OnDetach() override
@@ -109,12 +111,19 @@ public:
 
 		FL::Renderer::BeginScene(m_Camera);
 
-		glm::mat4 transform = glm::mat4(1.0f);
-		FL::Renderer::SubmitMesh(m_vertices, m_indices, m_ContainerTexture, transform);
+		FL::Renderer::SubmitRotatedMesh(m_vertices, m_indices, m_ContainerTexture, { -1.0f,-1.0f,-1.0f }, { 30,50,100 }, { 1.0f,1.0f,1.0f });
 
-		transform = glm::translate(glm::mat4(1.0f), {1.0f,1.0f,1.0f});
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), {1.0f,1.0f,1.0f});
 		static Ref<FL::Texture2D> tex = FL::AssetManager::GetAssets().GetTexture("checkerboard");
 		FL::Renderer::SubmitMesh(m_vertices, m_indices, tex, transform);
+
+		static float angle = 0.0f;
+		transform = glm::mat4(1.0f);
+		transform = glm::translate(glm::mat4(1.0f), { 0.0f,0.0f,0.0f }) *
+			glm::rotate(glm::mat4(1.0f), glm::radians(angle), glm::vec3(0, 1, 0)) *
+			glm::scale(glm::mat4(1.0f), {0.5,0.5,0.5});
+		FL::Renderer::SubmitModel(m_Model, transform);
+		angle += 0.1;
 
 		FL::Renderer::EndScene();
 	}
@@ -150,6 +159,8 @@ private:
 	std::vector<uint32_t> m_indices;
 	FL::CameraController m_Camera;
 	Ref<FL::Texture2D> m_ContainerTexture;
+	Ref<FL::Model> m_Model;
+
 };
 
 class ExampleApp : public FL::App

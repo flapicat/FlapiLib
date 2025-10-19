@@ -19,3 +19,5 @@
 #include "Render/Shader.h"
 #include "Render/Texture.h"
 #include "Render/VertexArray.h"
+
+#include "Model/Model.h"

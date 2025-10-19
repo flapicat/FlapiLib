@@ -27,7 +27,7 @@ namespace FL
 		void OnWindowResize(const WindowResizeEvent& e);
 	private:
 		float m_CameraSpeed = 5.0f;
-		float m_ZoomSpeed = 0.1f;
+		float m_ZoomSpeed = 1.0f;
 		float m_Zoom = 1.0f;
 		float m_Roll = 0.0f;
 		float m_Yaw = -90.0f;

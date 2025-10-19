@@ -6,7 +6,7 @@
 
 namespace FL
 {
-	VertexBuffer::VertexBuffer(float* vertices, uint32_t size)
+	VertexBuffer::VertexBuffer(void* vertices, uint32_t size)
 	{
 		glGenBuffers(1, &m_RenderID);
 		glBindBuffer(GL_ARRAY_BUFFER, m_RenderID);
@@ -18,7 +18,7 @@ namespace FL
 		glDeleteBuffers(1, &m_RenderID);
 	}
 
-	Ref<VertexBuffer> VertexBuffer::Create(float* vertices, uint32_t size)
+	Ref<VertexBuffer> VertexBuffer::Create(void* vertices, uint32_t size)
 	{
 		return CreateRef<VertexBuffer>(vertices, size);
 	}

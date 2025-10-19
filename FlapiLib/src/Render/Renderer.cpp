@@ -6,6 +6,10 @@
 #include "Shader.h"
 #include "Texture.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/quaternion.hpp>
+
 namespace FL
 {
 	static struct RenderData
@@ -15,6 +19,7 @@ namespace FL
 		static const uint32_t MaxTextureSlots = 8;
 
 		Ref<VertexArray> VertexArray;
+		Ref<Shader> ModelShader;
 		Ref<Shader> Shader;
 
 		uint32_t VertexCount = 0;
@@ -59,6 +64,7 @@ namespace FL
 		s_Data.VertexArray->SetIB(IB);
 
 		s_Data.Shader = Shader::Create("Assets/Shaders/shader.vert", "Assets/Shaders/shader.frag");
+		s_Data.ModelShader = Shader::Create("Assets/Shaders/model_loading.vert", "Assets/Shaders/model_loading.frag");
 		int samplers[s_Data.MaxTextureSlots];
 		for (int i = 0; i < s_Data.MaxTextureSlots; i++) samplers[i] = i;
 		
@@ -77,8 +83,29 @@ namespace FL
 
 		s_Data.Shader->Use();
 		s_Data.Shader->setMat4("u_viewProjectionMatrix", camera.GetViewProjectionMatrix());
-	
+
+		s_Data.ModelShader->Use();
+		s_Data.ModelShader->setMat4("u_viewProjectionMatrix", camera.GetViewProjectionMatrix());
+
 		StartBatch();
+	}
+
+	void Renderer::SubmitRotatedMesh(const std::vector<float>& vertices, const std::vector<uint32_t>& indices, const Ref<Texture2D>& texture, const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& size)
+	{
+		glm::quat q = glm::quat(glm::radians(rotation));
+		glm::mat4 transform =
+			glm::translate(glm::mat4(1.0f), position) *
+			glm::toMat4(q) *
+			glm::scale(glm::mat4(1.0f), size);
+		SubmitMesh(vertices, indices, texture, transform);
+	}
+
+	void Renderer::SubmitMesh(const std::vector<float>& vertices, const std::vector<uint32_t>& indices, const Ref<Texture2D>& texture, const glm::vec3& position, const glm::vec3& size)
+	{
+		glm::mat4 transform = 
+			glm::translate(glm::mat4(1.0f), position) *
+			glm::scale(glm::mat4(1.0f), size);
+		SubmitMesh(vertices,indices,texture,transform);
 	}
 
 	void Renderer::SubmitMesh(const std::vector<float>& vertices, const std::vector<uint32_t>& indices, const Ref<Texture2D>& texture, const glm::mat4& transform)
@@ -133,6 +160,12 @@ namespace FL
 		s_Stats.IndexCount += indices.size();
 	}
 
+	void Renderer::SubmitModel(Ref<Model> model, const glm::mat4 transform)
+	{
+		s_Data.ModelShader->setMat4("transform", transform);
+		model->Draw(s_Data.ModelShader);
+	}
+
 	void Renderer::EndScene()
 	{
 		Flush();
@@ -163,6 +196,7 @@ namespace FL
 			}
 		}
 
+		s_Data.Shader->Use();
 		glDrawElements(GL_TRIANGLES, s_Data.IndexCount, GL_UNSIGNED_INT, nullptr);
 		s_Stats.DrawCalls++;
 	}
