@@ -39,6 +39,13 @@ namespace FL
 		glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(float), vertices.data());
 	}
 
+	void VertexBuffer::SetBufferData(const void* data, uint32_t size)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, m_RenderID);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
+
+	}
+
 	IndexBuffer::IndexBuffer(uint32_t* indices, uint32_t count)
 		:m_Count(count)
 	{

@@ -8,6 +8,10 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#define TEST3D 0
+
+#if TEST3D
+
 class ExampleLayer : public FL::Layer
 {
 public:
@@ -181,3 +185,114 @@ FL::App* FL::CreateApp()
 	return new ExampleApp();
 }
 
+#else
+
+class ExampleLayer : public FL::Layer
+{
+public:
+	ExampleLayer()
+		:Layer("Example"), m_Camera((float)1600 / (float)900, FL::CameraType::Orthographic)
+	{
+	}
+
+	~ExampleLayer()
+	{
+	}
+
+	virtual void OnAttach() override
+	{
+		m_Camera.SetPosition(glm::vec3(0.0, 0.0, 0.0));
+		if (m_Camera.GetType() == FL::CameraType::Perspective) { cursorEnable = false; }
+
+		FL::AssetManager::LoadAssetFromFile("checkerboard", "Assets/Textures/checkerboard.png", FL::AssetType::Texture);
+		m_ContainerTexture = FL::AssetManager::GetAssets().GetTexture("container");
+	}
+
+	virtual void OnDetach() override
+	{
+	}
+
+	virtual void OnUpdate(FL::TimeStep ts) override
+	{
+		m_fps = 1.0f / ts.GetSeconds();
+		auto window = FL::App::Get().GetWindow().GetNativeWindow();
+		m_Camera.OnUpdate(ts);
+		if (FL::Input::OnKeyPressed(GLFW_KEY_ESCAPE))
+		{
+			cursorEnable = !cursorEnable;
+			if (cursorEnable)
+			{
+				glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+				m_Camera.ResetMouseState();
+			}
+			else
+			{
+				glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+				m_Camera.ResetMouseState();
+			}
+		}
+	}
+
+	virtual void OnRender() override
+	{
+		FL::Renderer::ClearColor(glm::vec4(0.1, 0.1, 0.1, 0.1));
+		FL::Renderer::ClearBuffer();
+
+		FL::Renderer2D::BeginScene(m_Camera);
+
+		auto texture = FL::AssetManager::GetAssets().GetTexture("checkerboard");
+		FL::Renderer2D::DrawQuad({ 0.0,0.0,0.0 }, { 1.0f,1.0f }, {1.0f,0.0f,1.0f,1.0f});
+		FL::Renderer2D::DrawQuad({ 1.0,1.0,1.0 }, { 1.0f,1.0f }, m_ContainerTexture);
+		FL::Renderer2D::DrawQuad({ -1.0,0.0,0.0 }, { 1.0f,1.0f }, {1.0f,1.0f,0.0f,1.0f}, texture);
+
+		FL::Renderer2D::EndScene();
+	}
+
+	virtual void OnEvent(FL::Event& e)
+	{
+		FL::EventHandler handler(e);
+		if (cursorEnable)handler.Handle<FL::MouseMovedEvent>([this](const FL::MouseMovedEvent& ev) {m_Camera.OnMouseMoved(ev); });
+		handler.Handle<FL::MouseScrollEvent>([this](const FL::MouseScrollEvent& ev) {m_Camera.OnMouseScrolled(ev); });
+		handler.Handle<FL::WindowResizeEvent>([this](const FL::WindowResizeEvent& ev) {m_Camera.OnWindowResize(ev); });
+	}
+
+	virtual void OnImGuiRender() override
+	{
+		auto& stats = FL::Renderer2D::s_Statistic;
+
+		ImGui::Begin("Stats");
+		ImGui::Text("Draw Calls: %u", stats.DrawCalls);
+		ImGui::Text("Num Of Quads: %u", stats.NumOfQuads);
+		ImGui::Text("Quad Vertices: %u", stats.GetQuadVertices());
+		ImGui::Text("Quad Indices: %u", stats.GetQuadIndices());
+		ImGui::End();
+
+		FL::Renderer2D::s_Statistic.Reset();
+	}
+
+private:
+	float m_fps = 0.0f; 
+	bool cursorEnable = true;
+	FL::CameraController m_Camera;
+	Ref<FL::Texture2D> m_ContainerTexture;
+};
+
+class ExampleApp : public FL::App
+{
+public:
+	ExampleApp()
+	{
+		PushLayer(new ExampleLayer());
+	}
+	~ExampleApp()
+	{
+	}
+private:
+};
+
+FL::App* FL::CreateApp()
+{
+	return new ExampleApp();
+}
+
+#endif

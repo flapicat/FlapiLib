@@ -4,6 +4,7 @@
 #include "TimeStep.h"
 
 #include "Render/Renderer.h"
+#include "Render/Renderer2D.h"
 #include "Core/AssetManager.h"
 
 namespace FL
@@ -21,6 +22,7 @@ namespace FL
 		PushLayer(m_ImGuiLayer);
 
 		Renderer::Init();
+		Renderer2D::Init();
 		AssetManager::LoadAssets();
 	}
 

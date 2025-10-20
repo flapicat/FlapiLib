@@ -74,7 +74,8 @@ namespace FL
 		s_Data.VertexBufferCPU.reserve(s_Data.MaxVertices * 10);
 		s_Data.IndexBufferCPU.reserve(s_Data.MaxIndices);
 
-		s_Data.TextureSlots[0] = FL::Texture2D::Create("Assets/Textures/white.png");
+		unsigned char WhiteTextureData[4] = { 255,255,255,255 };
+		s_Data.TextureSlots[0] = Texture2D::Create(1, 1, WhiteTextureData);
 	}
 
 	void Renderer::BeginScene(const Camera& camera)

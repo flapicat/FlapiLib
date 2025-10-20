@@ -27,11 +27,11 @@ namespace FL
             if (name == "texture_diffuse")
                 number = std::to_string(diffuseNr++);
             else if (name == "texture_specular")
-                number = std::to_string(specularNr++); // transfer unsigned int to string
+                number = std::to_string(specularNr++);
             else if (name == "texture_normal")
-                number = std::to_string(normalNr++); // transfer unsigned int to string
+                number = std::to_string(normalNr++);
             else if (name == "texture_height")
-                number = std::to_string(heightNr++); // transfer unsigned int to string
+                number = std::to_string(heightNr++);
 
             // now set the sampler to the correct texture unit
             shader->setInt((name + number).c_str(), i);
@@ -48,11 +48,9 @@ namespace FL
 
     void Mesh::setupMesh()
     {
-        //VA
         m_VA = VertexArray::Create();
         m_VA->Bind();
 
-        //VB
         Ref<VertexBuffer> VB = VertexBuffer::Create(&m_vertices[0], m_vertices.size() * sizeof(Vertex));
         BufferLayout  layout =
         {
@@ -67,7 +65,6 @@ namespace FL
         VB->SetLayout(layout);
         m_VA->SetVB(VB);
 
-        //IB
         Ref<IndexBuffer> IB = IndexBuffer::Create(&m_indices[0], m_indices.size());
         m_VA->SetIB(IB);
         m_VA->Unbind();

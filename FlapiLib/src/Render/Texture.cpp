@@ -14,6 +14,7 @@ namespace FL
 		{
 			LOG_WARN("Failed to load texture from filepath: {0}", filePath);
 			Loaded = false;
+			return;
 		}
 		else
 		{
@@ -38,6 +39,24 @@ namespace FL
 		stbi_image_free(data);
 	}
 
+	Texture2D::Texture2D(int width, int height, unsigned char* data)
+		:m_Width(width), m_Height(height), m_Format(GL_RGBA)
+	{
+		glGenTextures(1, &m_Texture);
+		glBindTexture(GL_TEXTURE_2D, m_Texture);
+		glTexImage2D(
+			GL_TEXTURE_2D,		// target
+			0,					// level
+			m_Format,           // internal format (GL_RGBA, GL_RGB, etc.)
+			m_Width,			// width
+			m_Height,			// height
+			0,					// border
+			m_Format,           // format
+			GL_UNSIGNED_BYTE,	// type
+			data				// pointer to pixels
+		);
+	}
+
 	Texture2D::~Texture2D()
 	{
 		glDeleteTextures(1, &m_Texture);
@@ -45,6 +64,7 @@ namespace FL
 
 	void Texture2D::Bind(uint32_t slot)
 	{
+		if (m_Texture == 0) { LOG_WARN("Trying to bind invalid texture"); return; };
 		m_BindSlot = slot;
 		glActiveTexture(GL_TEXTURE0 + slot);
 		glBindTexture(GL_TEXTURE_2D, m_Texture);
@@ -59,5 +79,10 @@ namespace FL
 	Ref<Texture2D> Texture2D::Create(const std::string& filePath)
 	{
 		return CreateRef<Texture2D>(filePath);
+	}
+
+	Ref<Texture2D> Texture2D::Create(int width, int height, unsigned char* data)
+	{
+		return CreateRef<Texture2D>(width, height, data);
 	}
 }

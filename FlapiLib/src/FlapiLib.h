@@ -15,6 +15,7 @@
 #include "Render/Buffer.h"
 #include "Render/Camera.h"
 #include "Render/Renderer.h"
+#include "Render/Renderer2D.h"
 #include "Render/CameraControler.h"
 #include "Render/Shader.h"
 #include "Render/Texture.h"
