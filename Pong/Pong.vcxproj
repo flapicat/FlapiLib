@@ -11,10 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{F4C124E3-60A1-A37E-69B9-2E55D5170AE0}</ProjectGuid>
+    <ProjectGuid>{99D48A7C-850B-8C0D-2EF8-71101A0E080F}</ProjectGuid>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Sandbox</RootNamespace>
+    <RootNamespace>Pong</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -42,16 +42,16 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\bin\Debug-windows-x86_64\Sandbox\</OutDir>
-    <IntDir>..\bin-int\Debug-windows-x86_64\Sandbox\</IntDir>
-    <TargetName>Sandbox</TargetName>
+    <OutDir>..\bin\Debug-windows-x86_64\Pong\</OutDir>
+    <IntDir>..\bin-int\Debug-windows-x86_64\Pong\</IntDir>
+    <TargetName>Pong</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\bin\Release-windows-x86_64\Sandbox\</OutDir>
-    <IntDir>..\bin-int\Release-windows-x86_64\Sandbox\</IntDir>
-    <TargetName>Sandbox</TargetName>
+    <OutDir>..\bin\Release-windows-x86_64\Pong\</OutDir>
+    <IntDir>..\bin-int\Release-windows-x86_64\Pong\</IntDir>
+    <TargetName>Pong</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -72,7 +72,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /Q /E /Y /I "$(ProjectDir)\Assets" "..\bin\Debug-windows-x86_64\Sandbox\Assets"</Command>
+      <Command>xcopy /Q /E /Y /I "$(ProjectDir)\Assets" "..\bin\Debug-windows-x86_64\Pong\Assets"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -97,11 +97,13 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /Q /E /Y /I "$(ProjectDir)\Assets" "..\bin\Release-windows-x86_64\Sandbox\Assets"</Command>
+      <Command>xcopy /Q /E /Y /I "$(ProjectDir)\Assets" "..\bin\Release-windows-x86_64\Pong\Assets"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Sandbox.cpp" />
+    <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\PongLayer.cpp" />
+    <ClCompile Include="src\Pong.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\model_loading.frag" />
@@ -110,25 +112,15 @@
     <None Include="Assets\Shaders\shader.vert" />
     <None Include="Assets\Shaders\shader2D.frag" />
     <None Include="Assets\Shaders\shader2D.vert" />
-    <None Include="Assets\objects\backpack\backpack.mtl" />
-    <None Include="Assets\objects\backpack\backpack.obj" />
-    <None Include="Assets\objects\backpack\source_attribution.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Assets\Textures\awesomeface.png" />
-    <Image Include="Assets\Textures\checkerboard.png" />
-    <Image Include="Assets\Textures\container.png" />
-    <Image Include="Assets\Textures\tilemap.png" />
-    <Image Include="Assets\objects\backpack\ao.jpg" />
-    <Image Include="Assets\objects\backpack\diffuse.jpg" />
-    <Image Include="Assets\objects\backpack\normal.png" />
-    <Image Include="Assets\objects\backpack\roughness.jpg" />
-    <Image Include="Assets\objects\backpack\specular.jpg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FlapiLib\FlapiLib.vcxproj">
       <Project>{6823AF79-54F0-0985-7D09-F82C69353F13}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Player.h" />
+    <ClInclude Include="src\PongLayer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

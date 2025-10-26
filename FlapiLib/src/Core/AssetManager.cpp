@@ -17,11 +17,6 @@ namespace FL
 		}
 	}
 
-	void AssetManager::LoadAssets()
-	{
-		LoadAssetFromFile("container", "Assets/Textures/container.png", AssetType::Texture);
-	}
-
 	Ref<Texture2D>& Assets::GetTexture(const std::string& name)
 	{
 		auto it = Textures.find(name);

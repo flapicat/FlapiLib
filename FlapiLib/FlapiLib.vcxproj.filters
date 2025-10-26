@@ -93,6 +93,9 @@
     <ClInclude Include="src\Render\Renderer.h">
       <Filter>src\Render</Filter>
     </ClInclude>
+    <ClInclude Include="src\Render\Renderer2D.h">
+      <Filter>src\Render</Filter>
+    </ClInclude>
     <ClInclude Include="src\Render\Shader.h">
       <Filter>src\Render</Filter>
     </ClInclude>
@@ -108,7 +111,6 @@
     <ClInclude Include="vendor\stb\stb_image.h">
       <Filter>vendor\stb</Filter>
     </ClInclude>
-    <ClInclude Include="src\Render\Renderer2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\App.cpp">
@@ -159,6 +161,9 @@
     <ClCompile Include="src\Render\Renderer.cpp">
       <Filter>src\Render</Filter>
     </ClCompile>
+    <ClCompile Include="src\Render\Renderer2D.cpp">
+      <Filter>src\Render</Filter>
+    </ClCompile>
     <ClCompile Include="src\Render\Shader.cpp">
       <Filter>src\Render</Filter>
     </ClCompile>
@@ -174,6 +179,5 @@
     <ClCompile Include="vendor\stb\stb_image.cpp">
       <Filter>vendor\stb</Filter>
     </ClCompile>
-    <ClCompile Include="src\Render\Renderer2D.cpp" />
   </ItemGroup>
 </Project>

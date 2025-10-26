@@ -38,6 +38,12 @@
     <None Include="Assets\Shaders\shader.vert">
       <Filter>Assets\Shaders</Filter>
     </None>
+    <None Include="Assets\Shaders\shader2D.frag">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="Assets\Shaders\shader2D.vert">
+      <Filter>Assets\Shaders</Filter>
+    </None>
     <None Include="Assets\objects\backpack\backpack.mtl">
       <Filter>Assets\objects\backpack</Filter>
     </None>
@@ -47,8 +53,6 @@
     <None Include="Assets\objects\backpack\source_attribution.txt">
       <Filter>Assets\objects\backpack</Filter>
     </None>
-    <None Include="Assets\Shaders\shader2D.vert" />
-    <None Include="Assets\Shaders\shader2D.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Textures\awesomeface.png">

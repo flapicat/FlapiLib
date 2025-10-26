@@ -187,15 +187,15 @@ FL::App* FL::CreateApp()
 
 #else
 
-class ExampleLayer : public FL::Layer
+class PongLayer : public FL::Layer
 {
 public:
-	ExampleLayer()
-		:Layer("Example"), m_Camera((float)1600 / (float)900, FL::CameraType::Orthographic)
+	PongLayer()
+		:Layer("Example"), m_Camera(FL::CameraType::Orthographic, (float)1600 / (float)900, FL::CameraMovement::Floating)
 	{
 	}
 
-	~ExampleLayer()
+	~PongLayer()
 	{
 	}
 
@@ -240,10 +240,11 @@ public:
 
 		FL::Renderer2D::BeginScene(m_Camera);
 
-		auto texture = FL::AssetManager::GetAssets().GetTexture("checkerboard");
-		FL::Renderer2D::DrawQuad({ 0.0,0.0,0.0 }, { 1.0f,1.0f }, {1.0f,0.0f,1.0f,1.0f});
+		static auto texture = FL::AssetManager::GetAssets().GetTexture("checkerboard");
+		
+		FL::Renderer2D::DrawQuad({ 0.0,0.0,0.0 }, { 1.0f,1.0f }, { 1.0f,0.0f,1.0f,1.0f });
 		FL::Renderer2D::DrawQuad({ 1.0,1.0,1.0 }, { 1.0f,1.0f }, m_ContainerTexture);
-		FL::Renderer2D::DrawQuad({ -1.0,0.0,0.0 }, { 1.0f,1.0f }, {1.0f,1.0f,0.0f,1.0f}, texture);
+		FL::Renderer2D::DrawQuad({ -1.0,0.0,0.0 }, { 1.0f,1.0f }, { 1.0f,1.0f,0.0f,1.0f }, texture);
 
 		FL::Renderer2D::EndScene();
 	}
@@ -261,6 +262,7 @@ public:
 		auto& stats = FL::Renderer2D::s_Statistic;
 
 		ImGui::Begin("Stats");
+		ImGui::Text("FPS: %.1f", m_fps);
 		ImGui::Text("Draw Calls: %u", stats.DrawCalls);
 		ImGui::Text("Num Of Quads: %u", stats.NumOfQuads);
 		ImGui::Text("Quad Vertices: %u", stats.GetQuadVertices());
@@ -277,14 +279,14 @@ private:
 	Ref<FL::Texture2D> m_ContainerTexture;
 };
 
-class ExampleApp : public FL::App
+class Pong : public FL::App
 {
 public:
-	ExampleApp()
+	Pong()
 	{
-		PushLayer(new ExampleLayer());
+		PushLayer(new PongLayer());
 	}
-	~ExampleApp()
+	~Pong()
 	{
 	}
 private:
@@ -292,7 +294,7 @@ private:
 
 FL::App* FL::CreateApp()
 {
-	return new ExampleApp();
+	return new Pong();
 }
 
 #endif

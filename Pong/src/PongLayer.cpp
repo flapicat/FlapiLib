@@ -1,0 +1,79 @@
+#include "PongLayer.h"
+
+PongLayer::PongLayer()
+	:Layer("Example"), m_Camera(FL::CameraType::Orthographic, (float)1600 / (float)900, FL::CameraMovement::Static), m_Player1(Player::PlayerNum::Player1), m_Player2(Player::PlayerNum::Player2)
+{
+}
+
+PongLayer::~PongLayer()
+{
+}
+
+void PongLayer::OnAttach()
+{
+	m_Camera.SetPosition(glm::vec3(0.0, 0.0, 0.0));
+	m_Player1.GetTransform().Position.x = -m_Camera.GetAspectRatio() + 0.5f;
+	m_Player2.GetTransform().Position.x = m_Camera.GetAspectRatio() - 0.5f;
+}
+
+void PongLayer::OnDetach()
+{
+}
+
+void PongLayer::OnUpdate(FL::TimeStep ts)
+{
+	m_fps = 1.0f / ts.GetSeconds();
+	m_Camera.OnUpdate(ts);
+	m_Player1.OnUpdate(ts);
+	m_Player2.OnUpdate(ts);
+}
+
+void PongLayer::OnRender()
+{
+	FL::Renderer::ClearColor(glm::vec4(0.1, 0.1, 0.1, 0.1));
+	FL::Renderer::ClearBuffer();
+
+	FL::Renderer2D::BeginScene(m_Camera);
+
+	FL::Renderer2D::DrawQuad(m_Player1.GetTransform().Position, m_Player1.GetTransform().Size, glm::vec4(1.0, 1.0, 1.0, 1.0));
+	FL::Renderer2D::DrawQuad(m_Player2.GetTransform().Position, m_Player1.GetTransform().Size, glm::vec4(1.0, 1.0, 1.0, 1.0));
+
+	FL::Renderer2D::EndScene();
+}
+
+void PongLayer::OnEvent(FL::Event& e)
+{
+	FL::EventHandler handler(e);
+	handler.Handle<FL::MouseMovedEvent>([this](const FL::MouseMovedEvent& ev) {m_Camera.OnMouseMoved(ev); });
+	handler.Handle<FL::MouseScrollEvent>([this](const FL::MouseScrollEvent& ev) {m_Camera.OnMouseScrolled(ev); });
+	handler.Handle<FL::WindowResizeEvent>([this](const FL::WindowResizeEvent& ev) 
+		{
+			m_Camera.OnWindowResize(ev); 
+			m_Player1.OnWindowResize(m_Camera);
+			m_Player2.OnWindowResize(m_Camera);
+
+		});
+}
+
+void PongLayer::OnImGuiRender()
+{
+#if DEBUG
+	auto& stats = FL::Renderer2D::s_Statistic;
+
+	ImGui::Begin("Stats");
+	ImGui::Text("FPS: %.1f", m_fps);
+	ImGui::Text("Draw Calls: %u", stats.DrawCalls);
+	ImGui::Text("Num Of Quads: %u", stats.NumOfQuads);
+	ImGui::Text("Quad Vertices: %u", stats.GetQuadVertices());
+	ImGui::Text("Quad Indices: %u", stats.GetQuadIndices());
+	ImGui::End();
+
+	ImGui::Begin("Players");
+	ImGui::Text("Player1 pos: x:%.1f y:%.1f", m_Player1.GetTransform().Position.x, m_Player1.GetTransform().Position.y);
+	ImGui::Text("Player2 pos: x:%.1f y:%.1f", m_Player2.GetTransform().Position.x, m_Player2.GetTransform().Position.y);
+	ImGui::End();
+
+	FL::Renderer2D::s_Statistic.Reset();
+#endif
+}
+

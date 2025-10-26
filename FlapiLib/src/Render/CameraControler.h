@@ -7,10 +7,17 @@
 
 namespace FL
 {
+
+	enum CameraMovement
+	{
+		Static,
+		Floating
+	};
+	
 	class CameraController : public Camera
 	{
 	public:
-		CameraController(float aspectRatio, CameraType type);
+		CameraController(CameraType type, float aspectRatio, CameraMovement CameraMovement = Floating, bool ScrollEnable = false);
 		~CameraController();
 
 		void OnUpdate(TimeStep ts);
@@ -26,6 +33,8 @@ namespace FL
 		void OnMouseMoved(const MouseMovedEvent& e);
 		void OnWindowResize(const WindowResizeEvent& e);
 	private:
+		bool m_ScrollEnabled = true;
+		CameraMovement m_CameraMovement = Floating;
 		float m_CameraSpeed = 5.0f;
 		float m_ZoomSpeed = 1.0f;
 		float m_Zoom = 1.0f;

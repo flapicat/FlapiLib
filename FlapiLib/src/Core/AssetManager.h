@@ -23,7 +23,6 @@ namespace FL
 	{
 	public:
 		static void LoadAssetFromFile(const std::string& name, const std::string& filepath, AssetType type);
-		static void LoadAssets();
 		static Assets& GetAssets() { return s_Assets; }
 	private:
 		static Assets s_Assets;

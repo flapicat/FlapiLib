@@ -10,11 +10,12 @@
 namespace FL
 {
 
-	CameraController::CameraController(float aspectRatio, CameraType type)
-		:Camera(aspectRatio, type)
+	CameraController::CameraController(CameraType type, float aspectRatio, CameraMovement CameraMovement, bool ScrollEnable)
+		:Camera(aspectRatio, type), m_CameraMovement(CameraMovement), m_ScrollEnabled(ScrollEnable)
 	{
 
 	}
+
 	CameraController::~CameraController()
 	{
 
@@ -24,32 +25,35 @@ namespace FL
 	{
 		float velocity = m_CameraSpeed * ts;
 
-		if (m_type == CameraType::Orthographic)
+		if (m_CameraMovement != CameraMovement::Static)
 		{
-			if (Input::IsKeyPressed(GLFW_KEY_W))
-				m_Pos += m_Up * velocity;
-			if (Input::IsKeyPressed(GLFW_KEY_S))
-				m_Pos -= m_Up * velocity;
-			if (Input::IsKeyPressed(GLFW_KEY_A))
-				m_Pos -= m_Right * velocity;
-			if (Input::IsKeyPressed(GLFW_KEY_D))
-				m_Pos += m_Right * velocity;
-		}
+			if (m_type == CameraType::Orthographic)
+			{
+				if (Input::IsKeyPressed(GLFW_KEY_W))
+					m_Pos += m_Up * velocity;
+				if (Input::IsKeyPressed(GLFW_KEY_S))
+					m_Pos -= m_Up * velocity;
+				if (Input::IsKeyPressed(GLFW_KEY_A))
+					m_Pos -= m_Right * velocity;
+				if (Input::IsKeyPressed(GLFW_KEY_D))
+					m_Pos += m_Right * velocity;
+			}
 
-		if (m_type == CameraType::Perspective)
-		{
-			if (Input::IsKeyPressed(GLFW_KEY_W))
-				m_Pos += m_Front * velocity;
-			if (Input::IsKeyPressed(GLFW_KEY_S))
-				m_Pos -= m_Front * velocity;
-			if (Input::IsKeyPressed(GLFW_KEY_E))
-				m_Pos += m_Up * velocity;
-			if (Input::IsKeyPressed(GLFW_KEY_Q))
-				m_Pos -= m_Up * velocity;
-			if (Input::IsKeyPressed(GLFW_KEY_A))
-				m_Pos -= m_Right * velocity;
-			if (Input::IsKeyPressed(GLFW_KEY_D))
-				m_Pos += m_Right * velocity;
+			if (m_type == CameraType::Perspective)
+			{
+				if (Input::IsKeyPressed(GLFW_KEY_W))
+					m_Pos += m_Front * velocity;
+				if (Input::IsKeyPressed(GLFW_KEY_S))
+					m_Pos -= m_Front * velocity;
+				if (Input::IsKeyPressed(GLFW_KEY_E))
+					m_Pos += m_Up * velocity;
+				if (Input::IsKeyPressed(GLFW_KEY_Q))
+					m_Pos -= m_Up * velocity;
+				if (Input::IsKeyPressed(GLFW_KEY_A))
+					m_Pos -= m_Right * velocity;
+				if (Input::IsKeyPressed(GLFW_KEY_D))
+					m_Pos += m_Right * velocity;
+			}
 		}
 
 		m_ViewMatrix = glm::lookAt(m_Pos, m_Pos + m_Front, m_Up);
@@ -68,27 +72,30 @@ namespace FL
 
 	void CameraController::OnMouseScrolled(const MouseScrollEvent& e)
 	{
-		if (m_type == CameraType::Orthographic)
+		if (m_ScrollEnabled)
 		{
-			m_Zoom -= e.GetYoffset() * m_ZoomSpeed;
-			m_Zoom = glm::clamp(m_Zoom, 0.25f, 4.0f);
+			if (m_type == CameraType::Orthographic)
+			{
+				m_Zoom -= e.GetYoffset() * m_ZoomSpeed;
+				m_Zoom = glm::clamp(m_Zoom, 0.25f, 4.0f);
 
-			float orthoLeft = -m_AspectRatio * m_Zoom;
-			float orthoRight = m_AspectRatio * m_Zoom;
-			float orthoBottom = -1.0f * m_Zoom;
-			float orthoTop = 1.0f * m_Zoom;
+				float orthoLeft = -m_AspectRatio * m_Zoom;
+				float orthoRight = m_AspectRatio * m_Zoom;
+				float orthoBottom = -1.0f * m_Zoom;
+				float orthoTop = 1.0f * m_Zoom;
 
-			m_ProjectionMatrix = glm::ortho(orthoLeft, orthoRight, orthoBottom, orthoTop, m_Near, m_Far);
-			m_ProjectionViewMatrix = m_ProjectionMatrix * m_ViewMatrix;
-		}
+				m_ProjectionMatrix = glm::ortho(orthoLeft, orthoRight, orthoBottom, orthoTop, m_Near, m_Far);
+				m_ProjectionViewMatrix = m_ProjectionMatrix * m_ViewMatrix;
+			}
 
-		if (m_type == CameraType::Perspective)
-		{
-			m_Fov -= e.GetYoffset() * m_ZoomSpeed;
-			m_Fov = glm::clamp(m_Fov, 15.0f, 90.0f);
+			if (m_type == CameraType::Perspective)
+			{
+				m_Fov -= e.GetYoffset() * m_ZoomSpeed;
+				m_Fov = glm::clamp(m_Fov, 15.0f, 90.0f);
 
-			m_ProjectionMatrix = glm::perspective(glm::radians(m_Fov), m_AspectRatio, m_Near, m_Far);
-			m_ProjectionViewMatrix = m_ProjectionMatrix * m_ViewMatrix;
+				m_ProjectionMatrix = glm::perspective(glm::radians(m_Fov), m_AspectRatio, m_Near, m_Far);
+				m_ProjectionViewMatrix = m_ProjectionMatrix * m_ViewMatrix;
+			}
 		}
 	}
 

@@ -23,7 +23,6 @@ namespace FL
 
 		Renderer::Init();
 		Renderer2D::Init();
-		AssetManager::LoadAssets();
 	}
 
 	App::~App()
