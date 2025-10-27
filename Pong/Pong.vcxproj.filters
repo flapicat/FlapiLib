@@ -17,6 +17,7 @@
     </ClCompile>
     <ClCompile Include="src\PongLayer.cpp" />
     <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\Ball.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\model_loading.frag">
@@ -41,5 +42,6 @@
   <ItemGroup>
     <ClInclude Include="src\PongLayer.h" />
     <ClInclude Include="src\Player.h" />
+    <ClInclude Include="src\Ball.h" />
   </ItemGroup>
 </Project>

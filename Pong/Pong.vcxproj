@@ -101,6 +101,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Ball.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\PongLayer.cpp" />
     <ClCompile Include="src\Pong.cpp" />
@@ -119,6 +120,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Ball.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\PongLayer.h" />
   </ItemGroup>

@@ -6,6 +6,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "Player.h"
+#include "Ball.h"
 
 class PongLayer : public FL::Layer
 {
@@ -25,5 +26,6 @@ private:
 	FL::CameraController m_Camera;
 	Player m_Player1;
 	Player m_Player2;
+	Ball m_Ball;
 };
 

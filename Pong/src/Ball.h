@@ -1,36 +1,39 @@
 #pragma once
-#include "FlapiLib.h"
 #include <glm/glm.hpp>
 
-#include <Core/TimeStep.h>
+#include "Core/TimeStep.h"
 
 
-class Player
+enum WindowCollisionSide
+{
+	None,
+	LeftSide,
+	RightSide,
+	TopSide,
+	BottomSide
+};
+
+class Ball
 {
 public:
 	struct Transform
 	{
 		glm::vec3 Position = { 0.0f,0.0f,0.0f };
-		glm::vec3 Size = { 0.05f,0.5f,0.0f };
-	};
-	enum PlayerNum
-	{
-		Player1,
-		Player2
+		glm::vec3 Size = { 1.0f,1.0f,0.0f };
 	};
 public:
-	Player(PlayerNum playerNum);
-	~Player();
+	Ball();
+	~Ball();
 
 	void OnUpdate(FL::TimeStep ts);
-	
+
 	Transform& GetTransform() { return m_Transform; }
 	void SetTransform(const Transform& transform) { m_Transform = transform; }
 
-	void OnWindowResize(FL::Camera camera);
+	WindowCollisionSide IsBallCollidingWindow();
 private:
-	PlayerNum m_PLayerNum = Player1;
 	Transform m_Transform;
-	float m_playerSpeed = 2.0f;
+	glm::vec3 m_velocity = {1.0f,1.0f, 0.0f};
+	float m_BallSpeed = 1.0f;
 };
 

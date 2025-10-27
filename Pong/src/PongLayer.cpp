@@ -26,6 +26,7 @@ void PongLayer::OnUpdate(FL::TimeStep ts)
 	m_Camera.OnUpdate(ts);
 	m_Player1.OnUpdate(ts);
 	m_Player2.OnUpdate(ts);
+	m_Ball.OnUpdate(ts);
 }
 
 void PongLayer::OnRender()
@@ -37,6 +38,8 @@ void PongLayer::OnRender()
 
 	FL::Renderer2D::DrawQuad(m_Player1.GetTransform().Position, m_Player1.GetTransform().Size, glm::vec4(1.0, 1.0, 1.0, 1.0));
 	FL::Renderer2D::DrawQuad(m_Player2.GetTransform().Position, m_Player1.GetTransform().Size, glm::vec4(1.0, 1.0, 1.0, 1.0));
+
+	FL::Renderer2D::DrawQuad(m_Ball.GetTransform().Position, m_Ball.GetTransform().Size, glm::vec4(1.0, 1.0, 1.0, 1.0));
 
 	FL::Renderer2D::EndScene();
 }
