@@ -4,23 +4,19 @@
 
 #include <Core/TimeStep.h>
 
+#include "Transform.h"
 
-class Player
+class Rect
 {
 public:
-	struct Transform
+	enum Rects
 	{
-		glm::vec3 Position = { 0.0f,0.0f,0.0f };
-		glm::vec3 Size = { 0.05f,0.5f,0.0f };
-	};
-	enum PlayerNum
-	{
-		Player1,
-		Player2
+		Rect1,
+		Rect2
 	};
 public:
-	Player(PlayerNum playerNum);
-	~Player();
+	Rect(Rects playerNum);
+	~Rect();
 
 	void OnUpdate(FL::TimeStep ts);
 	
@@ -29,8 +25,8 @@ public:
 
 	void OnWindowResize(FL::Camera camera);
 private:
-	PlayerNum m_PLayerNum = Player1;
+	Rects m_RectNum = Rect1;
 	Transform m_Transform;
-	float m_playerSpeed = 2.0f;
+	float m_RectSpeed = 2.0f;
 };
 

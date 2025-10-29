@@ -12,30 +12,27 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Ball.h">
+    <ClInclude Include="src\Rect.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Player.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\PongLayer.h">
+    <ClInclude Include="src\Layer.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Transform.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\Collision.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Ball.cpp">
+    <ClCompile Include="src\Rect.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Player.cpp">
+    <ClCompile Include="src\CollisionTest.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Pong.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\PongLayer.cpp">
+    <ClCompile Include="src\Layer.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

@@ -5,8 +5,7 @@
 #include <ImGui/imgui.h>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "Player.h"
-#include "Ball.h"
+#include "Rect.h"
 
 class Layer : public FL::Layer
 {
@@ -26,6 +25,5 @@ private:
 	FL::CameraController m_Camera;
 	Rect m_Player1;
 	Rect m_Player2;
-	Ball m_Ball;
 };
 

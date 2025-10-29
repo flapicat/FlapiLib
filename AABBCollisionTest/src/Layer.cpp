@@ -1,9 +1,12 @@
-#include "PongLayer.h"
+#include "Layer.h"
+
+#include "Collision.h"
 
 Layer::Layer()
-	:Layer("Example"), m_Camera(FL::CameraType::Orthographic, (float)1600 / (float)900, FL::CameraMovement::Static), m_Player1(Rect::Rects::Rect1), m_Player2(Rect::Rects::Rect2)
+	:FL::Layer("Example"), m_Camera(FL::CameraType::Orthographic, (float)1600 / (float)900, FL::CameraMovement::Static)
 {
 }
+
 
 Layer::~Layer()
 {
@@ -12,8 +15,8 @@ Layer::~Layer()
 void Layer::OnAttach()
 {
 	m_Camera.SetPosition(glm::vec3(0.0, 0.0, 0.0));
+	m_Player1.m_Movable = true;
 	m_Player1.GetTransform().Position.x = -m_Camera.GetAspectRatio() + 0.5f;
-	m_Player2.GetTransform().Position.x = m_Camera.GetAspectRatio() - 0.5f;
 }
 
 void Layer::OnDetach()
@@ -24,10 +27,11 @@ void Layer::OnUpdate(FL::TimeStep ts)
 {
 	m_fps = 1.0f / ts.GetSeconds();
 	m_Camera.OnUpdate(ts);
+
+
 	m_Player1.OnUpdate(ts);
 	m_Player2.OnUpdate(ts);
-
-	m_Ball.OnUpdate(ts);
+	AABBvsAABB(m_Player1.GetTransform(), m_Player2.GetTransform());
 }
 
 void Layer::OnRender()
@@ -37,10 +41,8 @@ void Layer::OnRender()
 
 	FL::Renderer2D::BeginScene(m_Camera);
 
-	FL::Renderer2D::DrawQuad(m_Player1.GetTransform().Position, m_Player1.GetTransform().Size, glm::vec4(1.0, 1.0, 1.0, 1.0));
-	FL::Renderer2D::DrawQuad(m_Player2.GetTransform().Position, m_Player1.GetTransform().Size, glm::vec4(1.0, 1.0, 1.0, 1.0));
-
-	FL::Renderer2D::DrawQuad(m_Ball.GetTransform().Position, m_Ball.GetTransform().Size, glm::vec4(1.0, 1.0, 1.0, 1.0));
+	FL::Renderer2D::DrawQuad(m_Player1.GetTransform().Position, m_Player1.GetTransform().Size, glm::vec4(1.0, 0.0, 0.0, 1.0));
+	FL::Renderer2D::DrawQuad(m_Player2.GetTransform().Position, m_Player1.GetTransform().Size, glm::vec4(0.0, 0.0, 1.0, 1.0));
 
 	FL::Renderer2D::EndScene();
 }

@@ -187,15 +187,15 @@ FL::App* FL::CreateApp()
 
 #else
 
-class PongLayer : public FL::Layer
+class Layer : public FL::Layer
 {
 public:
-	PongLayer()
+	Layer()
 		:Layer("Example"), m_Camera(FL::CameraType::Orthographic, (float)1600 / (float)900, FL::CameraMovement::Floating)
 	{
 	}
 
-	~PongLayer()
+	~Layer()
 	{
 	}
 
@@ -284,7 +284,7 @@ class Pong : public FL::App
 public:
 	Pong()
 	{
-		PushLayer(new PongLayer());
+		PushLayer(new Layer());
 	}
 	~Pong()
 	{

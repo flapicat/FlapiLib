@@ -199,3 +199,56 @@ project "Pong"
 		defines "RELEASE"
 		runtime "Release"
 		optimize "on"
+
+		
+project "AABBCollisionTest"
+	location "AABBCollisionTest"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
+    buildoptions { "/utf-8" }
+
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+	
+	files{
+		"%{prj.name}/Assets/**",
+		"%{prj.name}/src/**.h",
+		"%{prj.name}/src/**.cpp"
+	}
+
+	includedirs{
+		"FlapiLib/vendor/spdlog/include",
+		"FlapiLib/src",
+		"FlapiLib/vendor",
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.glad}",
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.ImGui}/backends",
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.stb}",
+		"%{IncludeDir.Assimp}"
+	}
+
+	links{
+		"FlapiLib",
+	} 
+
+
+	postbuildcommands {
+		'{COPYDIR} "%{prj.location}/Assets" "%{cfg.targetdir}/Assets"'
+	}
+
+	filter "system:windows"
+		systemversion "latest"
+
+	filter "configurations:Debug"
+		defines "DEBUG"
+		runtime "Debug"
+		symbols "on"
+
+	filter "configurations:Release"
+		defines "RELEASE"
+		runtime "Release"
+		optimize "on"
