@@ -59,7 +59,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\FlapiLib\vendor\spdlog\include;..\FlapiLib\src;..\FlapiLib\vendor;..\FlapiLib\vendor\GLFW\include;..\FlapiLib\vendor\glad\include;..\FlapiLib\vendor\imgui;..\FlapiLib\vendor\imgui\backends;..\FlapiLib\vendor\glm;..\FlapiLib\vendor\stb;..\FlapiLib\vendor\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\FlapiLib\vendor\spdlog\include;..\FlapiLib\src;..\FlapiLib\vendor;..\FlapiLib\vendor\GLFW\include;..\FlapiLib\vendor\glad\include;..\FlapiLib\vendor\imgui;..\FlapiLib\vendor\imgui\backends;..\FlapiLib\vendor\glm;..\FlapiLib\vendor\stb;..\FlapiLib\vendor\assimp\include;..\FlapiLib\vendor\irrKlang\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -72,7 +72,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /Q /E /Y /I "$(ProjectDir)\Assets" "..\bin\Debug-windows-x86_64\Pong\Assets"</Command>
+      <Command>if exist "$(ProjectDir)/Assets" xcopy /Q /E /Y /I "$(ProjectDir)/Assets" "../bin/Debug-windows-x86_64/Pong/Assets" &gt; nul
+if exist "$(SolutionDir)/FlapiLib/vendor/irrKlang/bin/irrKlang.dll" copy /Y "$(SolutionDir)/FlapiLib/vendor/irrKlang/bin/irrKlang.dll" "../bin/Debug-windows-x86_64/Pong" &gt; nul</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -80,7 +81,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\FlapiLib\vendor\spdlog\include;..\FlapiLib\src;..\FlapiLib\vendor;..\FlapiLib\vendor\GLFW\include;..\FlapiLib\vendor\glad\include;..\FlapiLib\vendor\imgui;..\FlapiLib\vendor\imgui\backends;..\FlapiLib\vendor\glm;..\FlapiLib\vendor\stb;..\FlapiLib\vendor\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\FlapiLib\vendor\spdlog\include;..\FlapiLib\src;..\FlapiLib\vendor;..\FlapiLib\vendor\GLFW\include;..\FlapiLib\vendor\glad\include;..\FlapiLib\vendor\imgui;..\FlapiLib\vendor\imgui\backends;..\FlapiLib\vendor\glm;..\FlapiLib\vendor\stb;..\FlapiLib\vendor\assimp\include;..\FlapiLib\vendor\irrKlang\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -97,11 +98,13 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /Q /E /Y /I "$(ProjectDir)\Assets" "..\bin\Release-windows-x86_64\Pong\Assets"</Command>
+      <Command>if exist "$(ProjectDir)/Assets" xcopy /Q /E /Y /I "$(ProjectDir)/Assets" "../bin/Release-windows-x86_64/Pong/Assets" &gt; nul
+if exist "$(SolutionDir)/FlapiLib/vendor/irrKlang/bin/irrKlang.dll" copy /Y "$(SolutionDir)/FlapiLib/vendor/irrKlang/bin/irrKlang.dll" "../bin/Release-windows-x86_64/Pong" &gt; nul</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Ball.h" />
+    <ClInclude Include="src\Collision.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\PongLayer.h" />
     <ClInclude Include="src\Transform.h" />

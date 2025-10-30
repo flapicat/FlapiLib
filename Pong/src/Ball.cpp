@@ -16,44 +16,43 @@ void Ball::OnUpdate(FL::TimeStep ts)
 	m_Transform.Position.x += m_velocity.x * m_BallSpeed * ts;
 	m_Transform.Position.y += m_velocity.y * m_BallSpeed * ts;
 
-	auto colliding = IsBallCollidingWindow();
-	if (colliding == TopSide)
-	{
-		m_velocity.y *= -1;
-	}
-	if (colliding == BottomSide)
-	{
-		m_velocity.y *= -1;
-	}
-	if (colliding == RightSide)
-	{
-		m_velocity.x *= -1;
-	}
-	if (colliding == LeftSide)
-	{
-		m_velocity.x *= -1;
-	}
+	ProcessWindowCollision();
 }
 
-WindowCollisionSide Ball::IsBallCollidingWindow()
+void Ball::ProcessWindowCollision()
 {
+	static bool collision = false;
 	auto& window = FL::App::Get().GetWindow();
 	float aspectRatio = (float)window.GetWidth() / (float)window.GetHeight();
 	if (m_Transform.Position.y > 1.0f - m_Transform.Size.y/2)
 	{
-		return TopSide;
+		m_Transform.Position.y = 1.0f - m_Transform.Size.y / 2;
+		m_velocity.y *= -1;
+		collision = true;
 	}
 	if (m_Transform.Position.y < -1.0f + m_Transform.Size.y/2)
 	{
-		return BottomSide;
+		m_Transform.Position.y = -1.0f + m_Transform.Size.y / 2;
+		m_velocity.y *= -1;
+		collision = true;
 	}
 	if (m_Transform.Position.x > aspectRatio - m_Transform.Size.x/2)
 	{
-		return RightSide;
+		m_Transform.Position.x = aspectRatio - m_Transform.Size.x / 2;
+		m_velocity.x *= -1;
+		collision = true;
 	}
 	if (m_Transform.Position.x < -aspectRatio + m_Transform.Size.x/2)
 	{
-		return LeftSide;
+		m_Transform.Position.x = -aspectRatio + m_Transform.Size.x / 2;
+		m_velocity.x *= -1;
+		collision = true;
 	}
-	return None;
+
+	if (collision)
+	{
+		FL::SoundPlayer::PlaySound(FL::AssetManager::GetAssets().GetSound("pong"));
+	}
+
+	collision = false;
 }

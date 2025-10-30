@@ -7,7 +7,8 @@ namespace FL
 {
 	enum class AssetType
 	{
-		Texture
+		Texture,
+		Sound
 	};
 
 	struct Assets
@@ -15,8 +16,10 @@ namespace FL
 	public:
 		friend class AssetManager;
 		Ref<Texture2D>& GetTexture(const std::string& name);
+		std::string_view GetSound(std::string_view sound);
 	private:
-		std::unordered_map<std::string, Ref<Texture2D>>Textures;
+		std::unordered_map<std::string, Ref<Texture2D>> Textures;
+		std::unordered_map<std::string, std::string> SoundsPath;
 	};
 
 	class AssetManager

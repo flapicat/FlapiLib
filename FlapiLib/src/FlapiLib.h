@@ -5,6 +5,7 @@
 #include "Core/Input.h"
 #include "Core/Layer.h"
 #include "Core/Log.h"
+#include "Core/SoundPlayer.h"
 #include "Core/TimeStep.h"
 
 #include "Event/AppEvent.h"

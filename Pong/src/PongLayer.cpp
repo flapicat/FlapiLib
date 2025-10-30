@@ -1,7 +1,9 @@
 #include "PongLayer.h"
 
+#include "Collision.h"
+
 Layer::Layer()
-	:Layer("Example"), m_Camera(FL::CameraType::Orthographic, (float)1600 / (float)900, FL::CameraMovement::Static), m_Player1(Rect::Rects::Rect1), m_Player2(Rect::Rects::Rect2)
+	:FL::Layer("Example"), m_Camera(FL::CameraType::Orthographic, (float)1600 / (float)900, FL::CameraMovement::Static), m_Player1(Rect::Rects::Rect1), m_Player2(Rect::Rects::Rect2)
 {
 }
 
@@ -14,10 +16,13 @@ void Layer::OnAttach()
 	m_Camera.SetPosition(glm::vec3(0.0, 0.0, 0.0));
 	m_Player1.GetTransform().Position.x = -m_Camera.GetAspectRatio() + 0.5f;
 	m_Player2.GetTransform().Position.x = m_Camera.GetAspectRatio() - 0.5f;
+
+	FL::AssetManager::LoadAssetFromFile("pong", "Assets/Sounds/pong.wav", FL::AssetType::Sound);
 }
 
 void Layer::OnDetach()
 {
+
 }
 
 void Layer::OnUpdate(FL::TimeStep ts)
@@ -28,6 +33,24 @@ void Layer::OnUpdate(FL::TimeStep ts)
 	m_Player2.OnUpdate(ts);
 
 	m_Ball.OnUpdate(ts);
+	auto p1Collision = AABBvsAABB(m_Player1.GetTransform(), m_Ball.GetTransform());
+	auto p2Collision = AABBvsAABB(m_Player2.GetTransform(), m_Ball.GetTransform());
+	if (p1Collision.x)
+	{
+		m_Ball.GetVelocity().x *= -1;
+	}
+	if (p1Collision.y)
+	{
+		m_Ball.GetVelocity().y *= -1;
+	}
+	if (p2Collision.x)
+	{
+		m_Ball.GetVelocity().x *= -1;
+	}
+	if (p2Collision.y)
+	{
+		m_Ball.GetVelocity().y *= -1;
+	}
 }
 
 void Layer::OnRender()

@@ -15,6 +15,9 @@
     <ClInclude Include="src\Ball.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\Collision.h">
+      <Filter>src</Filter>
+    </ClInclude>
     <ClInclude Include="src\Player.h">
       <Filter>src</Filter>
     </ClInclude>

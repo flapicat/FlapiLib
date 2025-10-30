@@ -12,27 +12,27 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Rect.h">
+    <ClInclude Include="src\Collision.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Layer.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Transform.h">
+    <ClInclude Include="src\Rect.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Collision.h">
+    <ClInclude Include="src\Transform.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Rect.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\CollisionTest.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Layer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rect.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

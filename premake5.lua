@@ -12,6 +12,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 LibDir = {}
 LibDir["Assimp"] = "%{wks.location}/FlapiLib/vendor/assimp/lib"
+LibDir["irrKlang"] = "%{wks.location}/FlapiLib/vendor/irrKlang/lib"
 
 IncludeDir = {}
 IncludeDir["GLFW"] = "FlapiLib/vendor/GLFW/include"
@@ -20,6 +21,7 @@ IncludeDir["ImGui"] = "FlapiLib/vendor/imgui"
 IncludeDir["glm"] = "FlapiLib/vendor/glm"
 IncludeDir["stb"] = "FlapiLib/vendor/stb"
 IncludeDir["Assimp"] = "FlapiLib/vendor/assimp/include"
+IncludeDir["irrKlang"] = "FlapiLib/vendor/irrKlang/include"
 
 group "Dependencies"
 	include "FlapiLib/vendor/GLFW"
@@ -58,14 +60,21 @@ project "FlapiLib"
 		"%{IncludeDir.ImGui}/backends",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb}",
-		"%{IncludeDir.Assimp}"
+		"%{IncludeDir.Assimp}",
+		"%{IncludeDir.irrKlang}"
 	}
-	
+
+	libdirs {
+        "%{LibDir.Assimp}",
+        "%{LibDir.irrKlang}/Winx64"
+    }
+
 	links 
 	{ 
 		"GLFW",
 		"glad",
 		"ImGui",
+		"irrKlang",
 		"opengl32.lib"
 	}
 
@@ -175,7 +184,8 @@ project "Pong"
 		"%{IncludeDir.ImGui}/backends",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb}",
-		"%{IncludeDir.Assimp}"
+		"%{IncludeDir.Assimp}",
+		"%{IncludeDir.irrKlang}"
 	}
 
 	links{
@@ -183,12 +193,14 @@ project "Pong"
 	} 
 
 
-	postbuildcommands {
-		'{COPYDIR} "%{prj.location}/Assets" "%{cfg.targetdir}/Assets"'
-	}
-
 	filter "system:windows"
 		systemversion "latest"
+		
+	postbuildcommands {
+		'if exist "%{prj.location}/Assets" xcopy /Q /E /Y /I "%{prj.location}/Assets" "%{cfg.targetdir}/Assets" > nul',
+
+		'if exist "%{wks.location}/FlapiLib/vendor/irrKlang/bin/irrKlang.dll" copy /Y "%{wks.location}/FlapiLib/vendor/irrKlang/bin/irrKlang.dll" "%{cfg.targetdir}" > nul'
+	}
 
 	filter "configurations:Debug"
 		defines "DEBUG"

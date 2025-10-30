@@ -5,15 +5,6 @@
 
 #include "Transform.h"
 
-enum WindowCollisionSide
-{
-	None,
-	LeftSide,
-	RightSide,
-	TopSide,
-	BottomSide
-};
-
 class Ball
 {
 public:
@@ -25,7 +16,9 @@ public:
 	Transform& GetTransform() { return m_Transform; }
 	void SetTransform(const Transform& transform) { m_Transform = transform; }
 
-	WindowCollisionSide IsBallCollidingWindow();
+	void ProcessWindowCollision();
+
+	glm::vec3& GetVelocity() { return m_velocity; };
 private:
 	Transform m_Transform;
 	glm::vec3 m_velocity = {1.0f,1.0f, 0.0f};

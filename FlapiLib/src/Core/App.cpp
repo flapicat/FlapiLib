@@ -5,7 +5,7 @@
 
 #include "Render/Renderer.h"
 #include "Render/Renderer2D.h"
-#include "Core/AssetManager.h"
+#include "SoundPlayer.h"
 
 namespace FL
 {
@@ -21,12 +21,14 @@ namespace FL
 		m_ImGuiLayer = new ImGuiLayer();
 		PushLayer(m_ImGuiLayer);
 
+		SoundPlayer::Init();
 		Renderer::Init();
 		Renderer2D::Init();
 	}
 
 	App::~App()
 	{
+		SoundPlayer::ShutDown();
 	}
 
 	void App::Run()
