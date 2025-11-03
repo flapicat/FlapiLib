@@ -13,6 +13,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 LibDir = {}
 LibDir["Assimp"] = "%{wks.location}/FlapiLib/vendor/assimp/lib"
 LibDir["irrKlang"] = "%{wks.location}/FlapiLib/vendor/irrKlang/lib"
+LibDir["FreeType"] = "%{wks.location}/FlapiLib/vendor/freetype/objs/x64"
 
 IncludeDir = {}
 IncludeDir["GLFW"] = "FlapiLib/vendor/GLFW/include"
@@ -22,6 +23,7 @@ IncludeDir["glm"] = "FlapiLib/vendor/glm"
 IncludeDir["stb"] = "FlapiLib/vendor/stb"
 IncludeDir["Assimp"] = "FlapiLib/vendor/assimp/include"
 IncludeDir["irrKlang"] = "FlapiLib/vendor/irrKlang/include"
+IncludeDir["FreeType"] = "FlapiLib/vendor/freetype/include"
 
 group "Dependencies"
 	include "FlapiLib/vendor/GLFW"
@@ -61,12 +63,15 @@ project "FlapiLib"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb}",
 		"%{IncludeDir.Assimp}",
-		"%{IncludeDir.irrKlang}"
+		"%{IncludeDir.irrKlang}",
+		"%{IncludeDir.FreeType}"
 	}
 
 	libdirs {
         "%{LibDir.Assimp}",
-        "%{LibDir.irrKlang}/Winx64"
+        "%{LibDir.irrKlang}/Winx64",
+		"%{LibDir.FreeType}/Debug",
+		"%{LibDir.FreeType}/Release"
     }
 
 	links 
@@ -75,6 +80,7 @@ project "FlapiLib"
 		"glad",
 		"ImGui",
 		"irrKlang",
+		"freetype",
 		"opengl32.lib"
 	}
 
@@ -91,6 +97,7 @@ project "FlapiLib"
 		runtime "Debug"
 		symbols "on"
 		links { 
+			"freetype",
 			"C:/dev/FlapiLib/FlapiLib/vendor/assimp/lib/Debug/assimp-vc143-mtd.lib"
 		}
 
@@ -100,6 +107,7 @@ project "FlapiLib"
 		runtime "Release"
 		optimize "on"
 		links { 
+			"freetype",
 			"C:/dev/FlapiLib/FlapiLib/vendor/assimp/lib/Release/assimp-vc143-mt.lib"
 		}
 

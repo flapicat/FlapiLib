@@ -4,12 +4,19 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Core/App.h"
+
 namespace FL
 {
 	Camera::Camera(float aspectRatio, CameraType type)
 		:m_AspectRatio(aspectRatio), m_type(type)
 	{
 		SetUpCamera();
+	}
+
+	glm::mat4 Camera::GetTextProjectionMatrix() const {
+		auto& win = App::Get().GetWindow();
+		return glm::ortho(0.0f, (float)win.GetWidth(), (float)win.GetHeight(), 0.0f, -1.0f, 1.0f);
 	}
 	
 	void Camera::RecalculateProjectionViewMatrix()

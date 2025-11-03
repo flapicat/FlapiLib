@@ -105,6 +105,7 @@ if exist "$(SolutionDir)/FlapiLib/vendor/irrKlang/bin/irrKlang.dll" copy /Y "$(S
   <ItemGroup>
     <ClInclude Include="src\Ball.h" />
     <ClInclude Include="src\Collision.h" />
+    <ClInclude Include="src\InitMap.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\PongLayer.h" />
     <ClInclude Include="src\Transform.h" />
@@ -122,6 +123,9 @@ if exist "$(SolutionDir)/FlapiLib/vendor/irrKlang/bin/irrKlang.dll" copy /Y "$(S
     <None Include="Assets\Shaders\shader.vert" />
     <None Include="Assets\Shaders\shader2D.frag" />
     <None Include="Assets\Shaders\shader2D.vert" />
+    <None Include="Assets\Shaders\text.frag" />
+    <None Include="Assets\Shaders\text.vert" />
+    <None Include="Assets\Sounds\pong.wav" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FlapiLib\FlapiLib.vcxproj">

@@ -51,7 +51,7 @@ void Ball::ProcessWindowCollision()
 
 	if (collision)
 	{
-		FL::SoundPlayer::PlaySound(FL::AssetManager::GetAssets().GetSound("pong"));
+		FL::SoundPlayer::PlaySound2D(FL::AssetManager::GetAssets().GetSound("pong"));
 	}
 
 	collision = false;

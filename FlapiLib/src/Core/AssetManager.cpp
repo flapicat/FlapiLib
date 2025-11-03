@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "AssetManager.h"
 
+#include "SoundPlayer.h"
+
 namespace FL
 {
 	Assets AssetManager::s_Assets;
@@ -18,16 +20,17 @@ namespace FL
 			}
 			case AssetType::Sound:
 			{
-				s_Assets.SoundsPath[name] = filepath;
+				auto source = SoundPlayer::LoadSound(filepath);
+				s_Assets.Sounds[name] = source;
 				LOG_TRACE("Asset loaded: {0} - {1}", name, filepath);
 				break;
 			}
 		}
 	}
 
-	Ref<Texture2D>& Assets::GetTexture(const std::string& name)
+	Ref<Texture2D>& Assets::GetTexture(std::string_view name)
 	{
-		auto it = Textures.find(name);
+		auto it = Textures.find(name.data());
 		if (it != Textures.end())
 		{
 			return it->second;
@@ -38,15 +41,15 @@ namespace FL
 		return nullTexture;
 	}
 
-	std::string_view Assets::GetSound(std::string_view sound)
+	irrklang::ISoundSource* Assets::GetSound(std::string_view sound)
 	{
-		auto it = SoundsPath.find(std::string(sound));
-		if (it != SoundsPath.end())
+		auto it = Sounds.find(std::string(sound));
+		if (it != Sounds.end())
 		{
 			return it->second;
 		}
 
 		LOG_WARN("Trying to get Sound that don't exist: {0}", sound);
-		return "Invalid SoundPath";
+		return nullptr;
 	}
 }

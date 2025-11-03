@@ -10,14 +10,27 @@ namespace FL
 		m_engine = irrklang::createIrrKlangDevice();
 		if (!m_engine) LOG_ERROR("Error while seting up irrclang");
 	}
-
+     
 	void SoundPlayer::ShutDown()
 	{
-		m_engine->drop();
+		if (m_engine)
+			m_engine->drop();
 	}
 
-	void SoundPlayer::PlaySound(std::string_view path)
-	{
-		m_engine->play2D(path.data());
-	}
+
+    irrklang::ISoundSource* SoundPlayer::LoadSound(std::string_view filePath)
+    {
+        return m_engine->addSoundSourceFromFile(filePath.data());
+    }
+
+    void SoundPlayer::PlaySound2D(irrklang::ISoundSource* source, float volume, bool loop)
+    {
+        if (!source) return;
+        irrklang::ISound* sound = m_engine->play2D(source, loop, false, true);
+        if (sound)
+        {
+            sound->setVolume(volume);
+            sound->drop();
+        }
+    }
 }

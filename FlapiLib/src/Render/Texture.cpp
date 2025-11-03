@@ -9,7 +9,8 @@ namespace FL
 	Texture2D::Texture2D(const std::string& filePath)
 	{
 		stbi_set_flip_vertically_on_load(true);
-		unsigned char* data = stbi_load(filePath.c_str(), &m_Width, &m_Height, &m_Format, 0);
+		int iFormat;
+		unsigned char* data = stbi_load(filePath.c_str(), &m_Width, &m_Height, &iFormat, 0);
 		if (!data)
 		{
 			LOG_WARN("Failed to load texture from filepath: {0}", filePath);
@@ -29,7 +30,7 @@ namespace FL
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		GLenum format = (m_Format == 4) ? GL_RGBA : GL_RGB;
+		GLenum format = (iFormat == 4) ? GL_RGBA : GL_RGB;
 		if (data)
 		{
 			glTexImage2D(GL_TEXTURE_2D, 0, format, m_Width, m_Height, 0, format, GL_UNSIGNED_BYTE, data);

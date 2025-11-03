@@ -55,6 +55,10 @@ namespace FL
 
 	void Renderer2D::Init()
 	{
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glDisable(GL_DEPTH_TEST);
+
 		s_Data.TextureShader = Shader::Create("Assets/Shaders/shader2D.vert", "Assets/Shaders/shader2D.frag");
 
 		s_Data.QuadVertexBufferBase = new QuadVertex[s_Data.MaxVertices];

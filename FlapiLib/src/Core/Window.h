@@ -43,6 +43,9 @@ namespace FL
 		bool IsVSync() const { return m_WindowProps.VSync; };
 
 		GLFWwindow* GetNativeWindow() const { return m_Window; }
+
+		void SetWindowPosition(float x, float y);
+		void CenterWindow();
 	private:
 		GLFWwindow* m_Window;
 

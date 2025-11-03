@@ -7,6 +7,9 @@
     <Filter Include="Assets\Shaders">
       <UniqueIdentifier>{1101E1D1-FDCE-D4D7-E662-45FED2CFB03C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\Sounds">
+      <UniqueIdentifier>{6332DEE7-CFF2-591E-982D-A39B04AD9EFA}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src">
       <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
@@ -16,6 +19,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Collision.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\InitMap.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Player.h">
@@ -61,5 +67,10 @@
     <None Include="Assets\Shaders\shader2D.vert">
       <Filter>Assets\Shaders</Filter>
     </None>
+    <None Include="Assets\Sounds\pong.wav">
+      <Filter>Assets\Sounds</Filter>
+    </None>
+    <None Include="Assets\Shaders\text.vert" />
+    <None Include="Assets\Shaders\text.frag" />
   </ItemGroup>
 </Project>

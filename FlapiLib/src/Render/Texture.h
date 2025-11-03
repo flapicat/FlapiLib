@@ -2,6 +2,8 @@
 #include <string>
 #include "Core/Core.h"
 
+#include <glad/glad.h>
+
 namespace FL
 {
 	class Texture2D
@@ -9,6 +11,7 @@ namespace FL
 	public:
 		static Ref<Texture2D> Create(const std::string& filePath);
 		static Ref<Texture2D> Create(int width, int height, unsigned char* data);
+
 		Texture2D(const std::string& filePath);
 		Texture2D(int width, int height, unsigned char* data);
 		~Texture2D();

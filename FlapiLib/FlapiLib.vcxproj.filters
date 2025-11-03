@@ -51,6 +51,9 @@
     <ClInclude Include="src\Core\Log.h">
       <Filter>src\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Core\SoundPlayer.h">
+      <Filter>src\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Core\TimeStep.h">
       <Filter>src\Core</Filter>
     </ClInclude>
@@ -129,6 +132,9 @@
       <Filter>src\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Log.cpp">
+      <Filter>src\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\SoundPlayer.cpp">
       <Filter>src\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\TimeStep.cpp">

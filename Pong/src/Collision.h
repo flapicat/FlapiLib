@@ -20,7 +20,7 @@ inline glm::vec2 AABBvsAABB(Transform& playerTransform, Transform& ballTransform
                 ballTransform.Position.x += overlapX;
             else
                 ballTransform.Position.x -= overlapX;
-            FL::SoundPlayer::PlaySound(FL::AssetManager::GetAssets().GetSound("pong"));
+            FL::SoundPlayer::PlaySound2D(FL::AssetManager::GetAssets().GetSound("pong"));
             return glm::vec2(true, false);
         }
         else

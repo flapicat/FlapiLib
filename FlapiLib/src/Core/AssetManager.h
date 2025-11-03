@@ -3,6 +3,8 @@
 #include "Render/Texture.h"
 #include "Render/Shader.h"
 
+#include "irrKlang.h"
+
 namespace FL
 {
 	enum class AssetType
@@ -15,11 +17,11 @@ namespace FL
 	{
 	public:
 		friend class AssetManager;
-		Ref<Texture2D>& GetTexture(const std::string& name);
-		std::string_view GetSound(std::string_view sound);
+		Ref<Texture2D>& GetTexture(std::string_view name);
+		irrklang::ISoundSource* GetSound(std::string_view sound);
 	private:
 		std::unordered_map<std::string, Ref<Texture2D>> Textures;
-		std::unordered_map<std::string, std::string> SoundsPath;
+		std::unordered_map<std::string, irrklang::ISoundSource*> Sounds;
 	};
 
 	class AssetManager

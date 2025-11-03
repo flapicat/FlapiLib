@@ -73,6 +73,8 @@ namespace FL
 			glViewport(0, 0, width, height);
 			Window* win = (Window*)glfwGetWindowUserPointer(window);
 			WindowResizeEvent event(width, height);
+			win->m_WindowProps.Width = width;
+			win->m_WindowProps.Height = height;
 			win->m_WindowProps.EvCallback(event);
 			});
 	}
@@ -87,5 +89,18 @@ namespace FL
 	{
 		m_WindowProps.VSync = enabled;
 		glfwSwapInterval(enabled);
+	}
+
+	void Window::SetWindowPosition(float x, float y)
+	{
+		glfwSetWindowPos(m_Window, x, y);
+	}
+
+	void Window::CenterWindow()
+	{
+		const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+		int xpos = (mode->width - m_WindowProps.Width) / 2;
+		int ypos = (mode->height - m_WindowProps.Height) / 2;
+		glfwSetWindowPos(m_Window, xpos, ypos);
 	}
 }

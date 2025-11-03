@@ -58,7 +58,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>GLFW_INCLUDE_NONE;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\glad\include;vendor\imgui;vendor\imgui\backends;vendor\glm;vendor\stb;vendor\assimp\include;vendor\irrKlang\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\glad\include;vendor\imgui;vendor\imgui\backends;vendor\glm;vendor\stb;vendor\assimp\include;vendor\irrKlang\include;vendor\freetype\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -71,8 +71,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>irrKlang.lib;opengl32.lib;vendor\assimp\lib\Debug\assimp-vc143-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\assimp\lib;vendor\irrKlang\lib\Winx64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>irrKlang.lib;opengl32.lib;freetype.lib;vendor\assimp\lib\Debug\assimp-vc143-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>vendor\assimp\lib;vendor\irrKlang\lib\Winx64;vendor\freetype\objs\x64\Debug;vendor\freetype\objs\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -81,7 +81,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>GLFW_INCLUDE_NONE;RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\glad\include;vendor\imgui;vendor\imgui\backends;vendor\glm;vendor\stb;vendor\assimp\include;vendor\irrKlang\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\glad\include;vendor\imgui;vendor\imgui\backends;vendor\glm;vendor\stb;vendor\assimp\include;vendor\irrKlang\include;vendor\freetype\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -98,12 +98,12 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>irrKlang.lib;opengl32.lib;vendor\assimp\lib\Release\assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\assimp\lib;vendor\irrKlang\lib\Winx64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>irrKlang.lib;opengl32.lib;freetype.lib;vendor\assimp\lib\Release\assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>vendor\assimp\lib;vendor\irrKlang\lib\Winx64;vendor\freetype\objs\x64\Debug;vendor\freetype\objs\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Core\SoundPlayer.h" />
+    <ClInclude Include="src\Core\Font.h" />
     <ClInclude Include="src\Core\App.h" />
     <ClInclude Include="src\Core\AssetManager.h" />
     <ClInclude Include="src\Core\Core.h" />
@@ -112,6 +112,7 @@
     <ClInclude Include="src\Core\Layer.h" />
     <ClInclude Include="src\Core\LayerStack.h" />
     <ClInclude Include="src\Core\Log.h" />
+    <ClInclude Include="src\Core\SoundPlayer.h" />
     <ClInclude Include="src\Core\TimeStep.h" />
     <ClInclude Include="src\Core\Window.h" />
     <ClInclude Include="src\Event\AppEvent.h" />
@@ -131,16 +132,18 @@
     <ClInclude Include="src\Render\Texture.h" />
     <ClInclude Include="src\Render\VertexArray.h" />
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Core\Text.h" />
     <ClInclude Include="vendor\stb\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Core\SoundPlayer.cpp" />
+    <ClCompile Include="src\Core\Font.cpp" />
     <ClCompile Include="src\Core\App.cpp" />
     <ClCompile Include="src\Core\AssetManager.cpp" />
     <ClCompile Include="src\Core\Input.cpp" />
     <ClCompile Include="src\Core\Layer.cpp" />
     <ClCompile Include="src\Core\LayerStack.cpp" />
     <ClCompile Include="src\Core\Log.cpp" />
+    <ClCompile Include="src\Core\SoundPlayer.cpp" />
     <ClCompile Include="src\Core\TimeStep.cpp" />
     <ClCompile Include="src\Core\Window.cpp" />
     <ClCompile Include="src\ImGui\ImGuiBuild.cpp" />
@@ -158,6 +161,7 @@
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Core\Text.cpp" />
     <ClCompile Include="vendor\stb\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -2,10 +2,12 @@
 #include "Core/AssetManager.h"
 #include "Core/App.h"
 #include "Core/Core.h"
+#include "Core/Font.h"
 #include "Core/Input.h"
 #include "Core/Layer.h"
 #include "Core/Log.h"
 #include "Core/SoundPlayer.h"
+#include "Core/Text.h"
 #include "Core/TimeStep.h"
 
 #include "Event/AppEvent.h"
