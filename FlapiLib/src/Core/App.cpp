@@ -6,6 +6,7 @@
 #include "Render/Renderer.h"
 #include "Render/Renderer2D.h"
 #include "SoundPlayer.h"
+#include "AssetManager.h"
 
 namespace FL
 {
@@ -21,6 +22,7 @@ namespace FL
 		m_ImGuiLayer = new ImGuiLayer();
 		PushLayer(m_ImGuiLayer);
 
+		AssetManager::Init();
 		SoundPlayer::Init();
 		Renderer::Init();
 		Renderer2D::Init();
@@ -28,6 +30,7 @@ namespace FL
 
 	App::~App()
 	{
+		AssetManager::ShutDown();
 		SoundPlayer::ShutDown();
 	}
 

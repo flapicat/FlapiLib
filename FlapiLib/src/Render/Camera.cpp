@@ -14,7 +14,7 @@ namespace FL
 		SetUpCamera();
 	}
 
-	glm::mat4 Camera::GetTextProjectionMatrix() const {
+	glm::mat4 Camera::GetUIProjectionMatrix() const {
 		auto& win = App::Get().GetWindow();
 		return glm::ortho(0.0f, (float)win.GetWidth(), (float)win.GetHeight(), 0.0f, -1.0f, 1.0f);
 	}

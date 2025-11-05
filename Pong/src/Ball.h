@@ -17,9 +17,12 @@ public:
 	void SetTransform(const Transform& transform) { m_Transform = transform; }
 
 	void ProcessWindowCollision();
+	std::pair<uint32_t, uint32_t>& GetPoints() { return m_Points; }
 
 	glm::vec3& GetVelocity() { return m_velocity; };
+	void setBallVelocity(const glm::vec3& velocity) { m_velocity = velocity; }
 private:
+	std::pair<uint32_t, uint32_t> m_Points;
 	Transform m_Transform;
 	glm::vec3 m_velocity = {1.0f,1.0f, 0.0f};
 	float m_BallSpeed = 1.0f;

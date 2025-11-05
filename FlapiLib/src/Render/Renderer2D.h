@@ -3,6 +3,7 @@
 #include "Texture.h"
 
 #include "Render/VertexArray.h"
+#include "Core/Font.h"
 
 namespace FL
 {
@@ -31,21 +32,29 @@ namespace FL
 		static void EndBatch();
 		static void Flush();
 
-		static void DrawQuadInternal(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color, Ref<Texture2D> texture, float tilingFactor = 1);
-		static void DrawQuadInternalTransform(const glm::mat4& transform, const glm::vec4& color, Ref<Texture2D> texture, float tilingFactor = 1);
-		static void DrawRotatedQuadInternal(const glm::vec3& position, float rotation, const glm::vec2& size, const glm::vec4& color, Ref<Texture2D> texture, float tilingFactor = 1);
-
+		static void DrawQuadInternal(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color, Ref<Texture2D> texture);
+		static void DrawQuadInternalTransform(const glm::mat4& transform, const glm::vec4& color, Ref<Texture2D> texture);
+		static void DrawRotatedQuadInternal(const glm::vec3& position, float rotation, const glm::vec2& size, const glm::vec4& color, Ref<Texture2D> texture);
+		
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
-		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, Ref<Texture2D> texture, float tilingFactor = 1);
-		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color, Ref<Texture2D> texture, float tilingFactor = 1);
-
+		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, Ref<Texture2D> texture);
+		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color, Ref<Texture2D> texture);
 		static void DrawQuad(const glm::mat4& transform, const glm::vec4& color);
+
 		static void DrawRotatedQuad(const glm::mat4& transform, const glm::vec4& color);
-
 		static void DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec2& size, const glm::vec4& color);
-		static void DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec2& size, Ref<Texture2D> texture, float tilingFactor = 1);
-		static void DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec2& size, const glm::vec4& color, Ref<Texture2D> texture, float tilingFactor = 1);
+		static void DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec2& size, Ref<Texture2D> texture);
+		static void DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec2& size, const glm::vec4& color, Ref<Texture2D> texture);
 
+		static void DrawTextWIndow(Ref<Font> font, const std::string& text, const glm::vec3& position, float scale, const glm::vec3& color, bool center = false);
+
+		static void DrawPointInternal(const glm::vec3& Position, const glm::vec4& color, float pointSize);
+		static void DrawPoint(const glm::vec3& Position, const glm::vec4& color, float pointSize = 1.0f);
+		static void DrawPoint(const glm::vec2& Position, const glm::vec4& color, float pointSize = 1.0f);
+
+		static void DrawLineInternal(const glm::vec3& start, const glm::vec3& end, const glm::vec4& color, float thickness);
+		static void DrawLine(const glm::vec3& start, const glm::vec3& end, const glm::vec4& color, float thickness = 1.0f);
+		static void DrawLine(const glm::vec2& start, const glm::vec2& end, const glm::vec4& color, float thickness = 1.0f);
 	};
 
 }

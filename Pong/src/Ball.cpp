@@ -3,6 +3,8 @@
 
 Ball::Ball()
 {
+	m_Points.first = 0;
+	m_Points.second = 0;
 	m_Transform.Position = {0.0f,0.0f,0.0f};
 	m_Transform.Size = { 0.1f,0.1f,0.0f };
 }
@@ -17,6 +19,16 @@ void Ball::OnUpdate(FL::TimeStep ts)
 	m_Transform.Position.y += m_velocity.y * m_BallSpeed * ts;
 
 	ProcessWindowCollision();
+
+	if (m_Points.first >= 15)
+	{
+		m_velocity = glm::vec3(0.0);
+	}
+
+	else if (m_Points.second >= 15)
+	{
+		m_velocity = glm::vec3(0.0);
+	}
 }
 
 void Ball::ProcessWindowCollision()
@@ -38,15 +50,13 @@ void Ball::ProcessWindowCollision()
 	}
 	if (m_Transform.Position.x > aspectRatio - m_Transform.Size.x/2)
 	{
-		m_Transform.Position.x = aspectRatio - m_Transform.Size.x / 2;
-		m_velocity.x *= -1;
-		collision = true;
+		m_Transform.Position = glm::vec3(0.0f);
+		m_Points.first += 1;
 	}
 	if (m_Transform.Position.x < -aspectRatio + m_Transform.Size.x/2)
 	{
-		m_Transform.Position.x = -aspectRatio + m_Transform.Size.x / 2;
-		m_velocity.x *= -1;
-		collision = true;
+		m_Transform.Position = glm::vec3(0.0f);
+		m_Points.second += 1;
 	}
 
 	if (collision)

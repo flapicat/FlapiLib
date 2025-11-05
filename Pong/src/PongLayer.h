@@ -21,6 +21,7 @@ public:
 	virtual void OnEvent(FL::Event& e) override;
 	virtual void OnImGuiRender() override;
 
+	void DisplayEndScreen(std::string_view playerWon);
 private:
 	float m_fps = 0.0f;
 	FL::CameraController m_Camera;

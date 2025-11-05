@@ -6,11 +6,35 @@
 namespace FL
 {
 	Assets AssetManager::s_Assets;
+	FT_Library AssetManager::ft_lib;
 
-	void AssetManager::LoadAssetFromFile(const std::string& name, const std::string& filepath, AssetType type)
+	void AssetManager::Init()
+	{
+		if (FT_Init_FreeType(&ft_lib)) {
+			LOG_ERROR("ERROR::FREETYPE: Could not init FreeType");
+		}
+	}
+	
+	void AssetManager::ShutDown()
+	{
+		if (ft_lib)
+		{
+			FT_Done_FreeType(ft_lib);
+		}
+	}
+
+	void AssetManager::LoadAssetFromFile(AssetType type, const std::string& filepath ,const std::string& name)
 	{
 		switch (type)
 		{
+			case AssetType::Font:
+			{
+				auto font = Font::Create(ft_lib, filepath);
+				s_Assets.Fonts[name] = font;
+				LOG_TRACE("Asset loaded: {0} - {1}", name, filepath);
+				break;
+			}
+
 			case AssetType::Texture:
 			{
 				auto tex = Texture2D::Create(filepath);
@@ -18,6 +42,7 @@ namespace FL
 				if (tex->Loaded == true) LOG_TRACE("Asset loaded: {0} - {1}", name, filepath);
 				break;
 			}
+
 			case AssetType::Sound:
 			{
 				auto source = SoundPlayer::LoadSound(filepath);
@@ -26,6 +51,19 @@ namespace FL
 				break;
 			}
 		}
+	}
+
+	Ref<Font>& Assets::GetFont(std::string_view name)
+	{
+		auto it = Fonts.find(name.data());
+		if (it != Fonts.end())
+		{
+			return it->second;
+		}
+
+		LOG_WARN("Trying to get Font that don't exist: {0}", name);
+		static Ref<Font> nullFont = nullptr;
+		return nullFont;
 	}
 
 	Ref<Texture2D>& Assets::GetTexture(std::string_view name)
