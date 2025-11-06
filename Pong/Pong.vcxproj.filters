@@ -73,4 +73,8 @@
     <None Include="Assets\Shaders\text.vert" />
     <None Include="Assets\Shaders\text.frag" />
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="Assets\Sounds\point.wav" />
+    <Media Include="Assets\Sounds\win.wav" />
+  </ItemGroup>
 </Project>

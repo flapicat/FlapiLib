@@ -68,7 +68,7 @@ namespace FL
     {
     }
 
-    glm::vec2 Font::GetTextCenterOffset(const std::string& text, float scale)
+    glm::vec2 Font::GetTextCenterOffset(const std::string& text, const glm::vec3& scale)
     {
         float width = 0.0f;
         float maxHeight = 0.0f;
@@ -79,8 +79,8 @@ namespace FL
             if (it == m_Characters.end()) continue;
 
             const Character& ch = it->second;
-            width += (ch.Advance >> 6) * scale; // Advance is in 1/64 pixels
-            float height = ch.Size.y * scale;
+            width += (ch.Advance >> 6) * scale.x;
+            float height = ch.Size.y * scale.y;
             if (height > maxHeight)
                 maxHeight = height;
         }

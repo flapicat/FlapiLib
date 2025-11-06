@@ -46,7 +46,7 @@ namespace FL
 		static void DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec2& size, Ref<Texture2D> texture);
 		static void DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec2& size, const glm::vec4& color, Ref<Texture2D> texture);
 
-		static void DrawTextWIndow(Ref<Font> font, const std::string& text, const glm::vec3& position, float scale, const glm::vec3& color, bool center = false);
+		static void DrawTextWindow(Ref<Font> font, const std::string& textData, const glm::vec3& position, const glm::vec3& scale, const glm::vec3& color, bool center = false);
 
 		static void DrawPointInternal(const glm::vec3& Position, const glm::vec4& color, float pointSize);
 		static void DrawPoint(const glm::vec3& Position, const glm::vec4& color, float pointSize = 1.0f);

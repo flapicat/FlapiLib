@@ -132,6 +132,10 @@ if exist "$(SolutionDir)/FlapiLib/vendor/irrKlang/bin/irrKlang.dll" copy /Y "$(S
       <Project>{6823AF79-54F0-0985-7D09-F82C69353F13}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="Assets\Sounds\point.wav" />
+    <Media Include="Assets\Sounds\win.wav" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

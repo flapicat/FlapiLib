@@ -23,7 +23,10 @@ void Layer::OnAttach()
 	m_Player2.GetTransform().Position.x = m_Camera.GetAspectRatio() - 0.25f;
 
 	FL::AssetManager::LoadAssetFromFile(FL::AssetType::Font,	"Assets/Fonts/Orange-Kid.otf",	"Orange_kid");
+
 	FL::AssetManager::LoadAssetFromFile(FL::AssetType::Sound,	"Assets/Sounds/pong.wav",		"pong"		);
+	FL::AssetManager::LoadAssetFromFile(FL::AssetType::Sound,	"Assets/Sounds/point.wav",		"point"		);
+	FL::AssetManager::LoadAssetFromFile(FL::AssetType::Sound,	"Assets/Sounds/win.wav",		"win"		);
 }
 
 void Layer::OnDetach()
@@ -77,19 +80,24 @@ void Layer::OnRender()
 	static auto font = FL::AssetManager::GetAssets().GetFont("Orange_kid");
 	auto points = m_Ball.GetPoints();
 
-	FL::Renderer2D::DrawTextWIndow(font, std::to_string(points.first), { window.GetWidth() / 5, 0,0 }, 2.0f, glm::vec3(0.5, 0.5, 0.5));
-	FL::Renderer2D::DrawTextWIndow(font, std::to_string(points.second), { window.GetWidth() - window.GetWidth() / 5, 0,0 }, 2.0f, glm::vec3(0.5, 0.5, 0.5));
+	FL::Renderer2D::DrawTextWindow(font, std::to_string(points.first), { window.GetWidth() / 5, 0,0 }, glm::vec3(2.0f), glm::vec3(0.5, 0.5, 0.5));
+	FL::Renderer2D::DrawTextWindow(font, std::to_string(points.second), { window.GetWidth() - window.GetWidth() / 5, 0,0 }, glm::vec3(2.0f), glm::vec3(0.5, 0.5, 0.5));
 
-	if (points.first >= 15)
+	static auto winSound = FL::AssetManager::GetAssets().GetSound("win");
+	static bool winSoundPlayed = false;
+	if (points.first == 15)
 	{
 		DisplayEndScreen("P1 WIN");
 		m_Ball.setBallVelocity(glm::vec3(0.0f));
-
+		if(!winSoundPlayed) FL::SoundPlayer::PlaySound2D(winSound);
+		winSoundPlayed = true;
 	}
-	else if (points.second >= 15)
+	else if (points.second == 15)
 	{
 		DisplayEndScreen("P2 WIN");
 		m_Ball.setBallVelocity(glm::vec3(0.0f));
+		if (!winSoundPlayed) FL::SoundPlayer::PlaySound2D(winSound);
+		winSoundPlayed = true;
 	}
 	FL::Renderer2D::EndScene();
 }
@@ -133,7 +141,7 @@ void Layer::DisplayEndScreen(std::string_view playerWon)
 {
 	static auto& window = FL::App::Get().GetWindow();
 	static auto font = FL::AssetManager::GetAssets().GetFont("Orange_kid");
-	FL::Renderer2D::DrawTextWIndow(font, playerWon.data(), { window.GetWidth() / 2, window.GetHeight() / 2 - 100,0}, 2.0f, glm::vec3(0.7, 0.7, 0.7), true);
-	FL::Renderer2D::DrawTextWIndow(font, "Press Space To Continue", { window.GetWidth() / 2,  window.GetHeight() / 2 + 50 ,0}, 1.0f, glm::vec3(0.7, 0.7, 0.7), true);
+	FL::Renderer2D::DrawTextWindow(font, playerWon.data(), { window.GetWidth() / 2, window.GetHeight() / 2 - 100,0}, glm::vec3(2.0f), glm::vec3(0.7, 0.7, 0.7), true);
+	FL::Renderer2D::DrawTextWindow(font, "Press Space To Continue", { window.GetWidth() / 2,  window.GetHeight() / 2 + 50 ,0}, glm::vec3(1.0f), glm::vec3(0.7, 0.7, 0.7), true);
 }
 

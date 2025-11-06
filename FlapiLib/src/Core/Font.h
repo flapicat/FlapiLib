@@ -29,7 +29,7 @@ namespace FL
         float GetLineHeight() const { return m_LineHeight; }
         float GetTopOffset() const { return m_TopOffset; }
 
-        glm::vec2 GetTextCenterOffset(const std::string& text, float scale);
+        glm::vec2 GetTextCenterOffset(const std::string& text, const glm::vec3& scale);
     private:
         std::map<char, Character> m_Characters;
         uint32_t m_PixelSize = 128;

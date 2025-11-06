@@ -52,11 +52,13 @@ void Ball::ProcessWindowCollision()
 	{
 		m_Transform.Position = glm::vec3(0.0f);
 		m_Points.first += 1;
+		FL::SoundPlayer::PlaySound2D(FL::AssetManager::GetAssets().GetSound("point"));
 	}
 	if (m_Transform.Position.x < -aspectRatio + m_Transform.Size.x/2)
 	{
 		m_Transform.Position = glm::vec3(0.0f);
 		m_Points.second += 1;
+		FL::SoundPlayer::PlaySound2D(FL::AssetManager::GetAssets().GetSound("point"));
 	}
 
 	if (collision)

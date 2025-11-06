@@ -285,13 +285,13 @@ namespace FL
 		DrawRotatedQuadInternal(position, rotation, size, color, texture);
 	}
 
-	void Renderer2D::DrawTextWIndow(Ref<Font> font, const std::string& textData, const glm::vec3& position, float scale, const glm::vec3& color, bool center)
+	void Renderer2D::DrawTextWindow(Ref<Font> font, const std::string& textData, const glm::vec3& position, const glm::vec3& scale, const glm::vec3& color, bool center)
 	{
 		if (center)
 		{
 			auto& window = App::Get().GetWindow();
-			auto offset = font->GetTextCenterOffset(textData, scale);
-			Text text(font, textData, { position.x - offset.x , position.y - offset.y}, scale, color);
+			glm::vec3 offset = { font->GetTextCenterOffset(textData, scale), 0.0f };
+			Text text(font, textData, position - offset , scale, color);
 			text.Render(s_Data.UITextShader);
 		}
 		else

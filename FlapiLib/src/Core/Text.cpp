@@ -4,8 +4,11 @@
 
 namespace FL
 {
-    Text::Text(std::shared_ptr<Font> font, const std::string& content,
-        const glm::vec2& position, float scale, const glm::vec3& color)
+    Text::Text(std::shared_ptr<Font> font,
+        const std::string& content,
+        const glm::vec2& position,
+        const glm::vec3& scale,
+        const glm::vec3& color)
         : m_Font(font), m_Text(content), m_Position(position), m_Scale(scale), m_Color(color)
     {
         if (!VA)
@@ -32,9 +35,9 @@ namespace FL
 
         float x = m_Position.x;
         float y = m_Position.y;
-        float scale = m_Scale;
+        glm::vec3 scale = m_Scale;
 
-        float baselineY = y + (m_Font->GetAscent() - m_Font->GetTopOffset()) * scale;
+        float baselineY = y + (m_Font->GetAscent() - m_Font->GetTopOffset()) * scale.y;
 
         for (char c : m_Text)
         {
@@ -44,11 +47,11 @@ namespace FL
 
             const Character& ch = it->second;
 
-            float xpos = x + ch.Bearing.x * scale;
-            float ypos = baselineY - ch.Bearing.y * scale;
+            float xpos = x + ch.Bearing.x * scale.x;
+            float ypos = baselineY - ch.Bearing.y * scale.y;
 
-            float w = ch.Size.x * scale;
-            float h = ch.Size.y * scale;
+            float w = ch.Size.x * scale.x;
+            float h = ch.Size.y * scale.y;
 
             float vertices[6][4] = {
                 { xpos,     ypos + h,   0.0f, 0.0f },
@@ -64,7 +67,7 @@ namespace FL
             VB->SetBufferData(vertices, sizeof(vertices));
             glDrawArrays(GL_TRIANGLES, 0, 6);
 
-            x += (ch.Advance >> 6) * scale;
+            x += (ch.Advance >> 6) * scale.x;
         }
 
         VA->Unbind();
