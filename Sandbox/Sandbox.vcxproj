@@ -59,7 +59,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\FlapiLib\vendor\spdlog\include;..\FlapiLib\src;..\FlapiLib\vendor;..\FlapiLib\vendor\GLFW\include;..\FlapiLib\vendor\glad\include;..\FlapiLib\vendor\imgui;..\FlapiLib\vendor\imgui\backends;..\FlapiLib\vendor\glm;..\FlapiLib\vendor\stb;..\FlapiLib\vendor\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\FlapiLib\vendor\spdlog\include;..\FlapiLib\src;..\FlapiLib\vendor;..\FlapiLib\vendor\GLFW\include;..\FlapiLib\vendor\glad\include;..\FlapiLib\vendor\imgui;..\FlapiLib\vendor\imgui\backends;..\FlapiLib\vendor\glm;..\FlapiLib\vendor\stb;..\FlapiLib\vendor\assimp\include;..\FlapiLib\vendor\irrKlang\include;..\FlapiLib\vendor\freetype\include;..\FlapiLib\vendor\entt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -80,7 +80,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\FlapiLib\vendor\spdlog\include;..\FlapiLib\src;..\FlapiLib\vendor;..\FlapiLib\vendor\GLFW\include;..\FlapiLib\vendor\glad\include;..\FlapiLib\vendor\imgui;..\FlapiLib\vendor\imgui\backends;..\FlapiLib\vendor\glm;..\FlapiLib\vendor\stb;..\FlapiLib\vendor\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\FlapiLib\vendor\spdlog\include;..\FlapiLib\src;..\FlapiLib\vendor;..\FlapiLib\vendor\GLFW\include;..\FlapiLib\vendor\glad\include;..\FlapiLib\vendor\imgui;..\FlapiLib\vendor\imgui\backends;..\FlapiLib\vendor\glm;..\FlapiLib\vendor\stb;..\FlapiLib\vendor\assimp\include;..\FlapiLib\vendor\irrKlang\include;..\FlapiLib\vendor\freetype\include;..\FlapiLib\vendor\entt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -104,12 +104,20 @@
     <ClCompile Include="src\Sandbox.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Fonts\BodoniFLF-Roman.ttf" />
+    <None Include="Assets\Fonts\Montserrat-Regular.ttf" />
+    <None Include="Assets\Fonts\Orange-Kid.otf" />
     <None Include="Assets\Shaders\model_loading.frag" />
     <None Include="Assets\Shaders\model_loading.vert" />
     <None Include="Assets\Shaders\shader.frag" />
     <None Include="Assets\Shaders\shader.vert" />
     <None Include="Assets\Shaders\shader2D.frag" />
     <None Include="Assets\Shaders\shader2D.vert" />
+    <None Include="Assets\Shaders\text.frag" />
+    <None Include="Assets\Shaders\text.vert" />
+    <None Include="Assets\Sounds\point.wav" />
+    <None Include="Assets\Sounds\pong.wav" />
+    <None Include="Assets\Sounds\win.wav" />
     <None Include="Assets\objects\backpack\backpack.mtl" />
     <None Include="Assets\objects\backpack\backpack.obj" />
     <None Include="Assets\objects\backpack\source_attribution.txt" />

@@ -1,14 +1,14 @@
 #include "Core/EntryPoint.h"
 #include "Layer.h"
 
-class Pong : public FL::App
+class Sandbox : public FL::App
 {
 public:
-	Pong()
+	Sandbox()
 	{
 		PushLayer(new Layer());
 	}
-	~Pong()
+	~Sandbox()
 	{
 	}
 private:
@@ -16,5 +16,5 @@ private:
 
 FL::App* FL::CreateApp()
 {
-	return new Pong();
+	return new Sandbox();
 }

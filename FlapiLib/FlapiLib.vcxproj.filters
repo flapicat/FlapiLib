@@ -39,6 +39,9 @@
     <ClInclude Include="src\Core\EntryPoint.h">
       <Filter>src\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Core\Font.h">
+      <Filter>src\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Core\Input.h">
       <Filter>src\Core</Filter>
     </ClInclude>
@@ -52,6 +55,9 @@
       <Filter>src\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Core\SoundPlayer.h">
+      <Filter>src\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\Text.h">
       <Filter>src\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Core\TimeStep.h">
@@ -122,6 +128,9 @@
     <ClCompile Include="src\Core\AssetManager.cpp">
       <Filter>src\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Font.cpp">
+      <Filter>src\Core</Filter>
+    </ClCompile>
     <ClCompile Include="src\Core\Input.cpp">
       <Filter>src\Core</Filter>
     </ClCompile>
@@ -135,6 +144,9 @@
       <Filter>src\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\SoundPlayer.cpp">
+      <Filter>src\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Text.cpp">
       <Filter>src\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\TimeStep.cpp">

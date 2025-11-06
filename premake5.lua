@@ -24,6 +24,7 @@ IncludeDir["stb"] = "FlapiLib/vendor/stb"
 IncludeDir["Assimp"] = "FlapiLib/vendor/assimp/include"
 IncludeDir["irrKlang"] = "FlapiLib/vendor/irrKlang/include"
 IncludeDir["FreeType"] = "FlapiLib/vendor/freetype/include"
+IncludeDir["entt"] = "FlapiLib/vendor/entt/include"
 
 group "Dependencies"
 	include "FlapiLib/vendor/GLFW"
@@ -64,7 +65,8 @@ project "FlapiLib"
 		"%{IncludeDir.stb}",
 		"%{IncludeDir.Assimp}",
 		"%{IncludeDir.irrKlang}",
-		"%{IncludeDir.FreeType}"
+		"%{IncludeDir.FreeType}",
+		"%{IncludeDir.entt}"
 	}
 
 	libdirs {
@@ -139,7 +141,10 @@ project "Sandbox"
 		"%{IncludeDir.ImGui}/backends",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb}",
-		"%{IncludeDir.Assimp}"
+		"%{IncludeDir.Assimp}",
+		"%{IncludeDir.irrKlang}",
+		"%{IncludeDir.FreeType}",
+		"%{IncludeDir.entt}"
 	}
 
 	links{
@@ -193,7 +198,8 @@ project "Pong"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb}",
 		"%{IncludeDir.Assimp}",
-		"%{IncludeDir.irrKlang}"
+		"%{IncludeDir.irrKlang}",
+		"%{IncludeDir.entt}"
 	}
 
 	links{
@@ -248,7 +254,10 @@ project "AABBCollisionTest"
 		"%{IncludeDir.ImGui}/backends",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb}",
-		"%{IncludeDir.Assimp}"
+		"%{IncludeDir.Assimp}",
+		"%{IncludeDir.irrKlang}",
+		"%{IncludeDir.FreeType}",
+		"%{IncludeDir.entt}"
 	}
 
 	links{

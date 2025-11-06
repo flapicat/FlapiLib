@@ -4,6 +4,9 @@
     <Filter Include="Assets">
       <UniqueIdentifier>{3824E0A7-24C6-0A7E-0D81-1ED2F9C191CE}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\Fonts">
+      <UniqueIdentifier>{7158FC89-5DBB-8B2E-0641-C4E4F28257B1}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Assets\Shaders">
       <UniqueIdentifier>{1101E1D1-FDCE-D4D7-E662-45FED2CFB03C}</UniqueIdentifier>
     </Filter>
@@ -49,6 +52,15 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Fonts\BodoniFLF-Roman.ttf">
+      <Filter>Assets\Fonts</Filter>
+    </None>
+    <None Include="Assets\Fonts\Montserrat-Regular.ttf">
+      <Filter>Assets\Fonts</Filter>
+    </None>
+    <None Include="Assets\Fonts\Orange-Kid.otf">
+      <Filter>Assets\Fonts</Filter>
+    </None>
     <None Include="Assets\Shaders\model_loading.frag">
       <Filter>Assets\Shaders</Filter>
     </None>
@@ -67,14 +79,20 @@
     <None Include="Assets\Shaders\shader2D.vert">
       <Filter>Assets\Shaders</Filter>
     </None>
+    <None Include="Assets\Shaders\text.frag">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="Assets\Shaders\text.vert">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="Assets\Sounds\point.wav">
+      <Filter>Assets\Sounds</Filter>
+    </None>
     <None Include="Assets\Sounds\pong.wav">
       <Filter>Assets\Sounds</Filter>
     </None>
-    <None Include="Assets\Shaders\text.vert" />
-    <None Include="Assets\Shaders\text.frag" />
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="Assets\Sounds\point.wav" />
-    <Media Include="Assets\Sounds\win.wav" />
+    <None Include="Assets\Sounds\win.wav">
+      <Filter>Assets\Sounds</Filter>
+    </None>
   </ItemGroup>
 </Project>

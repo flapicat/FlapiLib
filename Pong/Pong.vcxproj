@@ -59,7 +59,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\FlapiLib\vendor\spdlog\include;..\FlapiLib\src;..\FlapiLib\vendor;..\FlapiLib\vendor\GLFW\include;..\FlapiLib\vendor\glad\include;..\FlapiLib\vendor\imgui;..\FlapiLib\vendor\imgui\backends;..\FlapiLib\vendor\glm;..\FlapiLib\vendor\stb;..\FlapiLib\vendor\assimp\include;..\FlapiLib\vendor\irrKlang\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\FlapiLib\vendor\spdlog\include;..\FlapiLib\src;..\FlapiLib\vendor;..\FlapiLib\vendor\GLFW\include;..\FlapiLib\vendor\glad\include;..\FlapiLib\vendor\imgui;..\FlapiLib\vendor\imgui\backends;..\FlapiLib\vendor\glm;..\FlapiLib\vendor\stb;..\FlapiLib\vendor\assimp\include;..\FlapiLib\vendor\irrKlang\include;..\FlapiLib\vendor\entt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -81,7 +81,7 @@ if exist "$(SolutionDir)/FlapiLib/vendor/irrKlang/bin/irrKlang.dll" copy /Y "$(S
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\FlapiLib\vendor\spdlog\include;..\FlapiLib\src;..\FlapiLib\vendor;..\FlapiLib\vendor\GLFW\include;..\FlapiLib\vendor\glad\include;..\FlapiLib\vendor\imgui;..\FlapiLib\vendor\imgui\backends;..\FlapiLib\vendor\glm;..\FlapiLib\vendor\stb;..\FlapiLib\vendor\assimp\include;..\FlapiLib\vendor\irrKlang\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\FlapiLib\vendor\spdlog\include;..\FlapiLib\src;..\FlapiLib\vendor;..\FlapiLib\vendor\GLFW\include;..\FlapiLib\vendor\glad\include;..\FlapiLib\vendor\imgui;..\FlapiLib\vendor\imgui\backends;..\FlapiLib\vendor\glm;..\FlapiLib\vendor\stb;..\FlapiLib\vendor\assimp\include;..\FlapiLib\vendor\irrKlang\include;..\FlapiLib\vendor\entt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -117,6 +117,9 @@ if exist "$(SolutionDir)/FlapiLib/vendor/irrKlang/bin/irrKlang.dll" copy /Y "$(S
     <ClCompile Include="src\PongLayer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Fonts\BodoniFLF-Roman.ttf" />
+    <None Include="Assets\Fonts\Montserrat-Regular.ttf" />
+    <None Include="Assets\Fonts\Orange-Kid.otf" />
     <None Include="Assets\Shaders\model_loading.frag" />
     <None Include="Assets\Shaders\model_loading.vert" />
     <None Include="Assets\Shaders\shader.frag" />
@@ -125,16 +128,14 @@ if exist "$(SolutionDir)/FlapiLib/vendor/irrKlang/bin/irrKlang.dll" copy /Y "$(S
     <None Include="Assets\Shaders\shader2D.vert" />
     <None Include="Assets\Shaders\text.frag" />
     <None Include="Assets\Shaders\text.vert" />
+    <None Include="Assets\Sounds\point.wav" />
     <None Include="Assets\Sounds\pong.wav" />
+    <None Include="Assets\Sounds\win.wav" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FlapiLib\FlapiLib.vcxproj">
       <Project>{6823AF79-54F0-0985-7D09-F82C69353F13}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="Assets\Sounds\point.wav" />
-    <Media Include="Assets\Sounds\win.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

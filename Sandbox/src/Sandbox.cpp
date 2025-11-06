@@ -8,6 +8,8 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <entt/entt.hpp>
+
 #define TEST3D 0
 
 #if TEST3D
@@ -191,7 +193,7 @@ class Layer : public FL::Layer
 {
 public:
 	Layer()
-		:Layer("Example"), m_Camera(FL::CameraType::Orthographic, (float)1600 / (float)900, FL::CameraMovement::Floating)
+		:FL::Layer("Example"), m_Camera(FL::CameraType::Orthographic, (float)1600 / (float)900, FL::CameraMovement::Floating)
 	{
 	}
 
@@ -204,12 +206,17 @@ public:
 		m_Camera.SetPosition(glm::vec3(0.0, 0.0, 0.0));
 		if (m_Camera.GetType() == FL::CameraType::Perspective) { cursorEnable = false; }
 
-		FL::AssetManager::LoadAssetFromFile("checkerboard", "Assets/Textures/checkerboard.png", FL::AssetType::Texture);
-		m_ContainerTexture = FL::AssetManager::GetAssets().GetTexture("container");
-	}
+		FL::AssetManager::LoadAssetFromFile(FL::AssetType::Texture, "Assets/Textures/checkerboard.png", "checkerboard");
+		FL::AssetManager::LoadAssetFromFile(FL::AssetType::Texture, "Assets/Textures/container.png", "container");
+		FL::AssetManager::LoadAssetFromFile(FL::AssetType::Texture, "Assets/Textures/tilemap.png", "tilemap");
+		FL::AssetManager::LoadAssetFromFile(FL::AssetType::Texture, "Assets/Textures/awesomeface.png", "awesomeface");
 
+		m_Scene.OnInit(m_Camera);
+	}
+	
 	virtual void OnDetach() override
 	{
+		m_Scene.OnDestroy();
 	}
 
 	virtual void OnUpdate(FL::TimeStep ts) override
@@ -231,6 +238,8 @@ public:
 				m_Camera.ResetMouseState();
 			}
 		}
+
+		m_Scene.OnUpdate(ts);
 	}
 
 	virtual void OnRender() override
@@ -238,19 +247,12 @@ public:
 		FL::Renderer::ClearColor(glm::vec4(0.1, 0.1, 0.1, 0.1));
 		FL::Renderer::ClearBuffer();
 
-		FL::Renderer2D::BeginScene(m_Camera);
-
-		static auto texture = FL::AssetManager::GetAssets().GetTexture("checkerboard");
-		
-		FL::Renderer2D::DrawQuad({ 0.0,0.0,0.0 }, { 1.0f,1.0f }, { 1.0f,0.0f,1.0f,1.0f });
-		FL::Renderer2D::DrawQuad({ 1.0,1.0,1.0 }, { 1.0f,1.0f }, m_ContainerTexture);
-		FL::Renderer2D::DrawQuad({ -1.0,0.0,0.0 }, { 1.0f,1.0f }, { 1.0f,1.0f,0.0f,1.0f }, texture);
-
-		FL::Renderer2D::EndScene();
+		m_Scene.OnRender();
 	}
 
 	virtual void OnEvent(FL::Event& e)
 	{
+		m_Scene.OnEvent(e);
 		FL::EventHandler handler(e);
 		if (cursorEnable)handler.Handle<FL::MouseMovedEvent>([this](const FL::MouseMovedEvent& ev) {m_Camera.OnMouseMoved(ev); });
 		handler.Handle<FL::MouseScrollEvent>([this](const FL::MouseScrollEvent& ev) {m_Camera.OnMouseScrolled(ev); });
@@ -276,17 +278,17 @@ private:
 	float m_fps = 0.0f; 
 	bool cursorEnable = true;
 	FL::CameraController m_Camera;
-	Ref<FL::Texture2D> m_ContainerTexture;
+	FL::Scene m_Scene;
 };
 
-class Pong : public FL::App
+class Sandbox : public FL::App
 {
 public:
-	Pong()
+	Sandbox()
 	{
 		PushLayer(new Layer());
 	}
-	~Pong()
+	~Sandbox()
 	{
 	}
 private:
@@ -294,7 +296,7 @@ private:
 
 FL::App* FL::CreateApp()
 {
-	return new Pong();
+	return new Sandbox();
 }
 
 #endif
