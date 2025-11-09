@@ -59,9 +59,7 @@ namespace FL
 	void Renderer2D::Init()
 	{
 		glEnable(GL_PROGRAM_POINT_SIZE);
-		glDisable(GL_DEPTH_TEST);
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_DEPTH_TEST);
 
 		s_Data.TextureShader = Shader::Create("Assets/Shaders/shader2D.vert", "Assets/Shaders/shader2D.frag");
 		s_Data.UITextShader = Shader::Create("Assets/Shaders/text.vert", "Assets/Shaders/text.frag");
@@ -115,13 +113,13 @@ namespace FL
 		s_Data.TextureShader->setIntArray("u_Textures", samplers, s_Data.MaxTextureSlots);
 	}
 
-	void Renderer2D::BeginScene(const Camera& camera)
+	void Renderer2D::BeginScene(const glm::mat4& projection)
 	{
 		s_Data.UITextShader->Use();
-		s_Data.UITextShader->setMat4("projection", camera.GetUIProjectionMatrix());
+		s_Data.UITextShader->setMat4("projection", projection);
 
 		s_Data.TextureShader->Use();
-		s_Data.TextureShader->setMat4("u_ViewProjectionMatrix", camera.GetViewProjectionMatrix());
+		s_Data.TextureShader->setMat4("u_ViewProjectionMatrix", projection);
 
 		BeginBatch();
 	}

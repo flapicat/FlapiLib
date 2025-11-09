@@ -3,6 +3,11 @@
 
 namespace FL
 {
+    Ref<Model> Model::Create(const std::string& path, bool gamma)
+    {
+        return CreateRef<Model>(path,gamma);
+    }
+
     Model::Model(std::string const& path, bool gamma)
         : m_gammaCorrection(gamma)
     {

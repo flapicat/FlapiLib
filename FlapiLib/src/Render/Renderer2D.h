@@ -1,5 +1,4 @@
 #pragma once
-#include "Camera.h"
 #include "Texture.h"
 
 #include "Render/VertexArray.h"
@@ -24,7 +23,7 @@ namespace FL
 
 	public:
 		static void Init();
-		static void BeginScene(const Camera& camera);
+		static void BeginScene(const glm::mat4& projection);
 		static void EndScene();
 		static void DrawIndexed(Ref<VertexArray> VA, uint32_t count);
 

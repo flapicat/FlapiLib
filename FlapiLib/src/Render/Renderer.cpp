@@ -47,7 +47,10 @@ namespace FL
 
 	void Renderer::Init()
 	{
+		glDisable(GL_BLEND);
+		glDepthMask(GL_TRUE);
 		glEnable(GL_DEPTH_TEST);
+		glDisable(GL_CULL_FACE);
 
 		s_Data.VertexArray = VertexArray::Create();
 		Ref<VertexBuffer> VB = VertexBuffer::Create(nullptr, s_Data.MaxVertices * sizeof(float) * 10);
@@ -63,7 +66,7 @@ namespace FL
 		Ref<IndexBuffer> IB = IndexBuffer::Create(nullptr, s_Data.MaxIndices);
 		s_Data.VertexArray->SetIB(IB);
 
-		s_Data.Shader = Shader::Create("Assets/Shaders/shader.vert", "Assets/Shaders/shader.frag");
+		s_Data.Shader		= Shader::Create("Assets/Shaders/shader.vert", "Assets/Shaders/shader.frag");
 		s_Data.ModelShader = Shader::Create("Assets/Shaders/model_loading.vert", "Assets/Shaders/model_loading.frag");
 		int samplers[s_Data.MaxTextureSlots];
 		for (int i = 0; i < s_Data.MaxTextureSlots; i++) samplers[i] = i;
@@ -78,15 +81,13 @@ namespace FL
 		s_Data.TextureSlots[0] = Texture2D::Create(1, 1, WhiteTextureData);
 	}
 
-	void Renderer::BeginScene(const Camera& camera)
+	void Renderer::BeginScene(const glm::mat4& projection)
 	{
-		s_Stats.ResetStats();
-
 		s_Data.Shader->Use();
-		s_Data.Shader->setMat4("u_viewProjectionMatrix", camera.GetViewProjectionMatrix());
+		s_Data.Shader->setMat4("u_viewProjectionMatrix", projection);
 
 		s_Data.ModelShader->Use();
-		s_Data.ModelShader->setMat4("u_viewProjectionMatrix", camera.GetViewProjectionMatrix());
+		s_Data.ModelShader->setMat4("u_viewProjectionMatrix", projection);
 
 		StartBatch();
 	}

@@ -3,9 +3,11 @@
 
 #include "Core/AssetManager.h"
 #include "Render/Renderer2D.h"
+#include "Render/Renderer.h"
 
 #include "Entity.h"
 #include "Components.h"
+#include "CameraSystem.h"
 
 namespace FL
 {
@@ -32,18 +34,15 @@ namespace FL
 		return entity;
 	}
 
-	void Scene::OnInit(Camera& usedCam)
+	void Scene::OnInit()
 	{
-		s_data.CurUsedCamera = &usedCam;
-
-
 		// --- Entity 1: Red box ---
 		{
 			FL::Entity e = this->CreateEntity("RedBox");
 			e.AddComponent<FL::TransformComponent>(
-				glm::vec3(-1.0f, 0.0f, 0.0f),   // position
-				glm::vec3(0.0f, 0.0f, 25.0f),   // rotation (z=25 degrees)
-				glm::vec3(1.0f, 1.0f, 1.0f));   // scale (normal size)
+				glm::vec3(-1.0f, 0.0f, 0.0f),  
+				glm::vec3(0.0f, 0.0f, 25.0f),  
+				glm::vec3(1.0f, 1.0f, 1.0f));  
 			e.AddComponent<FL::SpriteComponent2D>(
 				glm::vec4(1.0f, 0.0f, 0.0f, 1.0f),
 				FL::AssetManager::GetAssets().GetTexture("container"));
@@ -53,9 +52,9 @@ namespace FL
 		{
 			FL::Entity e = this->CreateEntity("GreenBox");
 			e.AddComponent<FL::TransformComponent>(
-				glm::vec3(1.0f, 0.5f, 0.0f),    // position
-				glm::vec3(0.0f, 0.0f, 45.0f),   // rotation (z=45 degrees)
-				glm::vec3(0.75f, 0.75f, 1.0f)); // smaller
+				glm::vec3(1.0f, 0.5f, 0.0f),   
+				glm::vec3(0.0f, 0.0f, 45.0f),  
+				glm::vec3(0.75f, 0.75f, 1.0f));
 			e.AddComponent<FL::SpriteComponent2D>(
 				glm::vec4(0.0f, 1.0f, 0.0f, 1.0f),
 				FL::AssetManager::GetAssets().GetTexture("container"));
@@ -65,9 +64,9 @@ namespace FL
 		{
 			FL::Entity e = this->CreateEntity("BlueBox");
 			e.AddComponent<FL::TransformComponent>(
-				glm::vec3(0.0f, 1.0f, 0.0f),    // position
-				glm::vec3(0.0f, 0.0f, -15.0f),  // rotation (negative)
-				glm::vec3(1.5f, 1.5f, 1.0f));   // larger
+				glm::vec3(0.0f, 1.0f, 0.0f),  
+				glm::vec3(0.0f, 0.0f, -15.0f),
+				glm::vec3(1.5f, 1.5f, 1.0f)); 
 			e.AddComponent<FL::SpriteComponent2D>(
 				glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
 				FL::AssetManager::GetAssets().GetTexture("container"));
@@ -77,13 +76,28 @@ namespace FL
 		{
 			FL::Entity e = this->CreateEntity("WhiteBox");
 			e.AddComponent<FL::TransformComponent>(
-				glm::vec3(0.0f, -1.0f, 0.0f),   // position
-				glm::vec3(0.0f, 0.0f, 5.0f),    // slight rotation
-				glm::vec3(0.5f, 0.5f, 1.0f));   // small scale
+				glm::vec3(0.0f, -1.0f, 0.0f),
+				glm::vec3(0.0f, 0.0f, 5.0f), 
+				glm::vec3(0.5f, 0.5f, 1.0f));
 			e.AddComponent<FL::SpriteComponent2D>(
 				glm::vec4(1.0f),
 				FL::AssetManager::GetAssets().GetTexture("container"));
 		}
+		// --- Entity 5: Test Model ---
+		{
+			FL::Entity e = this->CreateEntity("Model");
+			e.AddComponent<FL::TransformComponent>(
+				glm::vec3(0.0f,0.0f,0.0f),
+				glm::vec3(0.0f,45.0f,0.0f),
+				glm::vec3(1.0f,1.0f,1.0f));
+			e.AddComponent<FL::Model3DComponent>(FL::AssetManager::GetAssets().GetModel("backpack"));
+		}
+
+		Entity cameraEntity = this->CreateEntity("MainCamera");
+		cameraEntity.AddComponent<TransformComponent>(glm::vec3(0.0f, 0.0f, 3.0f));
+		cameraEntity.AddComponent<CameraComponent>();
+		cameraEntity.GetComponent<CameraComponent>().primary = true;
+		cameraEntity.GetComponent<CameraComponent>().type = CameraTypes::Perspective;
 	}
 
 	void Scene::OnDestroy()
@@ -93,18 +107,19 @@ namespace FL
 
 	void Scene::OnUpdate(TimeStep ts)
 	{
-		m_Registry.view<TransformComponent>().each([ts](auto& transform) {
-
-			});
-
+		CameraSystem::OnUpdate(m_Registry, ts);
 	}
 
 	void Scene::OnRender()
 	{
-		if (!s_data.CurUsedCamera)
-			return;
+		CameraComponent* mainCam = nullptr;
+		m_Registry.view<CameraComponent>().each([&](auto& cam) {
+			if (cam.primary) mainCam = &cam;
+			});
 
-		FL::Renderer2D::BeginScene(*s_data.CurUsedCamera);
+		if (!mainCam) return;
+
+		FL::Renderer2D::BeginScene(mainCam->viewProjectionMatrix);
 		m_Registry.view<TransformComponent,SpriteComponent2D>().each([](auto& transform,auto& sprite2D)
 			{
 				if (transform.Rotation != glm::vec3(0.0f))
@@ -117,10 +132,19 @@ namespace FL
 				}
 			});
 		FL::Renderer2D::EndScene();
+
+
+		FL::Renderer::BeginScene(mainCam->viewProjectionMatrix);
+		m_Registry.view<TransformComponent, Model3DComponent>().each([](auto& transform, auto& model3D)
+			{
+				FL::Renderer::SubmitModel(model3D.model_, transform.GetTransform());
+			});
+
+		FL::Renderer::EndScene();
 	}
 
 	void Scene::OnEvent(Event& e)
 	{
-
+		CameraSystem::OnEvent(m_Registry,e);
 	}
 }

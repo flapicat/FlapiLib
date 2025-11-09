@@ -2,7 +2,6 @@
 #include <glm/glm.hpp>
 
 #include "VertexArray.h"
-#include "Camera.h"
 #include "Texture.h"
 #include "Model/Model.h"
 
@@ -35,7 +34,7 @@ namespace FL
 
 		static void SubmitModel(Ref<Model> model, const glm::mat4 transform);
 
-		static void BeginScene(const Camera& camera);
+		static void BeginScene(const glm::mat4& projection);
 		static void EndScene();
 
 		static const RenderStats& GetStats();

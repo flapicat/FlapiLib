@@ -3,6 +3,7 @@
 #include "Render/Texture.h"
 #include "Render/Shader.h"
 #include "Font.h"
+#include "Model/Model.h"
 
 #include "irrKlang.h"
 
@@ -12,6 +13,7 @@ namespace FL
 	{
 		Font,
 		Texture,
+		Model,
 		Sound
 	};
 
@@ -20,10 +22,12 @@ namespace FL
 	public:
 		friend class AssetManager;
 		Ref<Font>& GetFont(std::string_view name);
+		Ref<FL::Model>& GetModel(std::string_view name);
 		Ref<Texture2D>& GetTexture(std::string_view name);
 		irrklang::ISoundSource* GetSound(std::string_view sound);
 	private:
 		std::unordered_map<std::string, Ref<Font>> Fonts;
+		std::unordered_map<std::string, Ref<FL::Model>> Models;
 		std::unordered_map<std::string, Ref<Texture2D>> Textures;
 		std::unordered_map<std::string, irrklang::ISoundSource*> Sounds;
 	};

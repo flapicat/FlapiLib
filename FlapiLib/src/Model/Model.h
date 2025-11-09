@@ -32,6 +32,8 @@ namespace FL
         std::string m_directory;
         bool m_gammaCorrection;
 
+        static Ref<Model> Create(const std::string& path, bool gamma = false);
+
         // constructor, expects a filepath to a 3D model.
         Model(const std::string& path, bool gamma = false);
 

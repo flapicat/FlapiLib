@@ -2,8 +2,12 @@
 #include <string>
 
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "Render/Texture.h"
+#include "Core/App.h"
+#include "Model/Model.h"
 
 namespace FL
 {
@@ -21,6 +25,16 @@ namespace FL
 			:Position(position), Rotation(rotation), Scale(scale)
 		{
 		}
+
+		glm::mat4 GetTransform() const
+		{
+			glm::mat4 transform = glm::translate(glm::mat4(1.0f), Position) *
+				glm::rotate(glm::mat4(1.0f), glm::radians(Rotation.x), glm::vec3(1, 0, 0)) *
+				glm::rotate(glm::mat4(1.0f), glm::radians(Rotation.y), glm::vec3(0, 1, 0)) *
+				glm::rotate(glm::mat4(1.0f), glm::radians(Rotation.z), glm::vec3(0, 0, 1)) *
+				glm::scale(glm::mat4(1.0f), Scale);
+			return transform;
+		}
 	};
 
 	struct SpriteComponent2D
@@ -32,6 +46,72 @@ namespace FL
 			:Texture(tex), Color(color)
 		{
 
+		}
+	};
+
+	enum class CameraTypes
+	{
+		Orthographic, Perspective
+	};
+
+	struct CameraComponent {
+
+		CameraTypes type = CameraTypes::Orthographic;
+
+		float fov = 60.0f;
+		float aspectRatio = 16.0f / 9.0f;
+		float nearPlane = -1.0f;
+		float farPlane = 1.0f;
+		
+		float LastX = 0;
+		float LastY = 0;
+
+		glm::mat4 viewMatrix{ 1.0f };
+		glm::mat4 projectionMatrix{ 1.0f };
+		glm::mat4 viewProjectionMatrix{ 1.0f };
+
+		glm::vec3 front = { 0.0f, 0.0f, -1.0f };
+		glm::vec3 up = { 0.0f, 1.0f, 0.0f };
+		glm::vec3 right = { 1.0f, 0.0f, 0.0f };
+
+		float yaw = -90.0f;
+		float pitch = 0.0f;
+
+		float moveSpeed = 5.0f;
+		float Zoom = 1.0f;
+		float zoomSpeed = 1.0f;
+
+		bool primary = false; 
+		bool ScrollEnabled = false;
+		bool FirstMouse = true;
+
+		CameraComponent(CameraTypes CamType = CameraTypes::Orthographic)
+		{
+			static auto& window = App::Get().GetWindow();
+			aspectRatio = (float)window.GetWidth() / (float)window.GetHeight();
+
+			if (CamType == CameraTypes::Orthographic)
+			{
+				nearPlane = -1.0f;
+				farPlane = 1.0f;
+				projectionMatrix = glm::ortho(-aspectRatio, aspectRatio, -1.0f, 1.0f, nearPlane, farPlane);
+			}
+			if (CamType == CameraTypes::Perspective)
+			{
+				nearPlane = 0.1f;
+				farPlane = 1000.0f;
+				projectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, nearPlane, farPlane);
+			}
+		}
+	};
+
+	struct Model3DComponent
+	{
+		Ref<Model> model_;
+
+		Model3DComponent(Ref<Model> model = nullptr)
+			:model_(model)
+		{
 		}
 	};
 }

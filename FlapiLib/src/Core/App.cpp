@@ -24,8 +24,8 @@ namespace FL
 
 		AssetManager::Init();
 		SoundPlayer::Init();
-		Renderer::Init();
 		Renderer2D::Init();
+		Renderer::Init();
 	}
 
 	App::~App()

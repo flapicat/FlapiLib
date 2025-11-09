@@ -35,6 +35,14 @@ namespace FL
 				break;
 			}
 
+			case AssetType::Model:
+			{
+				auto model = Model::Create(filepath);
+				s_Assets.Models[name] = model;
+				LOG_TRACE("Asset loaded: {0} - {1}", name, filepath);
+				break;
+			}
+
 			case AssetType::Texture:
 			{
 				auto tex = Texture2D::Create(filepath);
@@ -64,6 +72,19 @@ namespace FL
 		LOG_WARN("Trying to get Font that don't exist: {0}", name);
 		static Ref<Font> nullFont = nullptr;
 		return nullFont;
+	}
+
+	Ref<FL::Model>& Assets::GetModel(std::string_view name)
+	{
+		auto it = Models.find(name.data());
+		if (it != Models.end())
+		{
+			return it->second;
+		}
+
+		LOG_WARN("Trying to get texture that don't exist: {0}", name);
+		static Ref<Model> nullModel = nullptr;
+		return nullModel;
 	}
 
 	Ref<Texture2D>& Assets::GetTexture(std::string_view name)
