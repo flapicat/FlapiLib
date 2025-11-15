@@ -13,35 +13,6 @@ namespace FL {
             auto& transform = view.get<TransformComponent>(entity);
             auto& cam = view.get<CameraComponent>(entity);
 
-            float velocity = cam.moveSpeed * ts;
-			if (cam.type == CameraTypes::Orthographic)
-			{
-				if (Input::IsKeyPressed(GLFW_KEY_W))
-					transform.Position += cam.up * velocity;
-				if (Input::IsKeyPressed(GLFW_KEY_S))
-					transform.Position -= cam.up * velocity;
-				if (Input::IsKeyPressed(GLFW_KEY_A))
-					transform.Position -= cam.right * velocity;
-				if (Input::IsKeyPressed(GLFW_KEY_D))
-					transform.Position += cam.right * velocity;
-			}
-
-			if (cam.type == CameraTypes::Perspective)
-			{
-				if (Input::IsKeyPressed(GLFW_KEY_W))
-					transform.Position += cam.front * velocity;
-				if (Input::IsKeyPressed(GLFW_KEY_S))
-					transform.Position -= cam.front * velocity;
-				if (Input::IsKeyPressed(GLFW_KEY_E))
-					transform.Position += cam.up * velocity;
-				if (Input::IsKeyPressed(GLFW_KEY_Q))
-					transform.Position -= cam.up * velocity;
-				if (Input::IsKeyPressed(GLFW_KEY_A))
-					transform.Position -= cam.right * velocity;
-				if (Input::IsKeyPressed(GLFW_KEY_D))
-					transform.Position += cam.right * velocity;
-			}
-
             glm::vec3 front;
             front.x = cos(glm::radians(cam.yaw)) * cos(glm::radians(cam.pitch));
             front.y = sin(glm::radians(cam.pitch));

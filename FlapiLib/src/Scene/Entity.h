@@ -6,6 +6,7 @@ namespace FL
 	class Entity
 	{
 	public:
+		Entity() = default;
 		Entity(entt::entity e, Scene* scene);
 		~Entity();
 
@@ -40,6 +41,11 @@ namespace FL
 		Component* TryGetComponent()
 		{
 			return m_Scene->m_Registry.try_get<Component>(m_e);
+		}
+
+		bool operator==(Entity& entity)
+		{
+			return m_e == entity.m_e;
 		}
 
 	private:

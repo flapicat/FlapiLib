@@ -2,28 +2,28 @@
 
 #include "Collision.h"
 
-Layer::Layer()
+EditorLayer::EditorLayer()
 	:FL::Layer("Example"), m_Camera(FL::CameraType::Orthographic, (float)1600 / (float)900, FL::CameraMovement::Static)
 {
 }
 
 
-Layer::~Layer()
+EditorLayer::~EditorLayer()
 {
 }
 
-void Layer::OnAttach()
+void EditorLayer::OnAttach()
 {
 	m_Camera.SetPosition(glm::vec3(0.0, 0.0, 0.0));
 	m_Player1.m_Movable = true;
 	m_Player1.GetTransform().Position.x = -m_Camera.GetAspectRatio() + 0.5f;
 }
 
-void Layer::OnDetach()
+void EditorLayer::OnDetach()
 {
 }
 
-void Layer::OnUpdate(FL::TimeStep ts)
+void EditorLayer::OnUpdate(FL::TimeStep ts)
 {
 	m_fps = 1.0f / ts.GetSeconds();
 	m_Camera.OnUpdate(ts);
@@ -34,7 +34,7 @@ void Layer::OnUpdate(FL::TimeStep ts)
 	AABBvsAABB(m_Player1.GetTransform(), m_Player2.GetTransform());
 }
 
-void Layer::OnRender()
+void EditorLayer::OnRender()
 {
 	FL::Renderer::ClearColor(glm::vec4(0.1, 0.1, 0.1, 0.1));
 	FL::Renderer::ClearBuffer();
@@ -47,7 +47,7 @@ void Layer::OnRender()
 	FL::Renderer2D::EndScene();
 }
 
-void Layer::OnEvent(FL::Event& e)
+void EditorLayer::OnEvent(FL::Event& e)
 {
 	FL::EventHandler handler(e);
 	handler.Handle<FL::MouseMovedEvent>([this](const FL::MouseMovedEvent& ev) {m_Camera.OnMouseMoved(ev); });
@@ -61,7 +61,7 @@ void Layer::OnEvent(FL::Event& e)
 		});
 }
 
-void Layer::OnImGuiRender()
+void EditorLayer::OnImGuiRender()
 {
 #if DEBUG
 	auto& stats = FL::Renderer2D::s_Statistic;

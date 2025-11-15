@@ -5,16 +5,16 @@
 
 #include <flapiLib.h>
 
-Layer::Layer()
+EditorLayer::EditorLayer()
 	:FL::Layer("Example"), m_Camera(FL::CameraType::Orthographic, (float)1600 / (float)900, FL::CameraMovement::Static), m_Player1(Rect::Rects::Rect1), m_Player2(Rect::Rects::Rect2)
 {
 }
 
-Layer::~Layer()
+EditorLayer::~EditorLayer()
 {
 }
 
-void Layer::OnAttach()
+void EditorLayer::OnAttach()
 {
 	FL::App::Get().GetWindow().CenterWindow();
 
@@ -29,12 +29,12 @@ void Layer::OnAttach()
 	FL::AssetManager::LoadAssetFromFile(FL::AssetType::Sound,	"Assets/Sounds/win.wav",		"win"		);
 }
 
-void Layer::OnDetach()
+void EditorLayer::OnDetach()
 {
 
 }
 
-void Layer::OnUpdate(FL::TimeStep ts)
+void EditorLayer::OnUpdate(FL::TimeStep ts)
 {
 	m_fps = 1.0f / ts.GetSeconds();
 	m_Camera.OnUpdate(ts);
@@ -62,7 +62,7 @@ void Layer::OnUpdate(FL::TimeStep ts)
 	}
 }
 
-void Layer::OnRender()
+void EditorLayer::OnRender()
 {
 	auto& window = FL::App::Get().GetWindow();
 
@@ -102,7 +102,7 @@ void Layer::OnRender()
 	FL::Renderer2D::EndScene();
 }
 
-void Layer::OnEvent(FL::Event& e)
+void EditorLayer::OnEvent(FL::Event& e)
 {
 	FL::EventHandler handler(e);
 	handler.Handle<FL::MouseMovedEvent>([this](const FL::MouseMovedEvent& ev) {m_Camera.OnMouseMoved(ev); });
@@ -115,7 +115,7 @@ void Layer::OnEvent(FL::Event& e)
 		});
 }
 
-void Layer::OnImGuiRender()
+void EditorLayer::OnImGuiRender()
 {
 #if DEBUG
 	auto& stats = FL::Renderer2D::s_Statistic;
@@ -137,7 +137,7 @@ void Layer::OnImGuiRender()
 #endif
 }
 
-void Layer::DisplayEndScreen(std::string_view playerWon)
+void EditorLayer::DisplayEndScreen(std::string_view playerWon)
 {
 	static auto& window = FL::App::Get().GetWindow();
 	static auto font = FL::AssetManager::GetAssets().GetFont("Orange_kid");

@@ -28,12 +28,11 @@ namespace FL
 
 		glm::mat4 GetTransform() const
 		{
-			glm::mat4 transform = glm::translate(glm::mat4(1.0f), Position) *
+			return glm::translate(glm::mat4(1.0f), Position) *
 				glm::rotate(glm::mat4(1.0f), glm::radians(Rotation.x), glm::vec3(1, 0, 0)) *
 				glm::rotate(glm::mat4(1.0f), glm::radians(Rotation.y), glm::vec3(0, 1, 0)) *
 				glm::rotate(glm::mat4(1.0f), glm::radians(Rotation.z), glm::vec3(0, 0, 1)) *
-				glm::scale(glm::mat4(1.0f), Scale);
-			return transform;
+				glm::scale(glm::mat4(1.0f), Scale);;
 		}
 	};
 
@@ -56,7 +55,7 @@ namespace FL
 
 	struct CameraComponent {
 
-		CameraTypes type = CameraTypes::Orthographic;
+		CameraTypes type = CameraTypes::Perspective;
 
 		float fov = 60.0f;
 		float aspectRatio = 16.0f / 9.0f;
@@ -102,6 +101,21 @@ namespace FL
 				farPlane = 1000.0f;
 				projectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, nearPlane, farPlane);
 			}
+		}
+	};
+
+	struct NativeScriptingComponent
+	{
+		std::function<void()> InstantiateScript;
+		std::function<void()> DestroyScript;
+
+		class ScriptableEntity* Instance = nullptr;
+
+		template<typename T>
+		void Bind()
+		{
+			InstantiateScript = [this]() {Instance = new T(); };
+			DestroyScript = [this]() {delete (T*)Instance; Instance = nullptr; };
 		}
 	};
 

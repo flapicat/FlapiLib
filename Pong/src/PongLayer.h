@@ -8,11 +8,11 @@
 #include "Player.h"
 #include "Ball.h"
 
-class Layer : public FL::Layer
+class EditorLayer : public FL::Layer
 {
 public:
-	Layer();
-	~Layer();
+	EditorLayer();
+	~EditorLayer();
 
 	virtual void OnAttach() override;
 	virtual void OnDetach() override;

@@ -22,6 +22,10 @@ namespace FL
 		void OnUpdate(TimeStep ts);
 		void OnRender();
 		void OnEvent(Event& e);
+
+		void ForEachEntity(std::function<void(Entity)> callback);
+		
+		void UpdatePrimaryCameraAspect(float aspectRatio);
 	protected:
 		static Scene* m_Scene;
 		entt::registry m_Registry;

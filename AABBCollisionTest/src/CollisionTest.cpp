@@ -1,14 +1,14 @@
 #include "Core/EntryPoint.h"
 #include "Layer.h"
 
-class Sandbox : public FL::App
+class FlapiEditor : public FL::App
 {
 public:
-	Sandbox()
+	FlapiEditor()
 	{
-		PushLayer(new Layer());
+		PushLayer(new EditorLayer());
 	}
-	~Sandbox()
+	~FlapiEditor()
 	{
 	}
 private:
@@ -16,5 +16,5 @@ private:
 
 FL::App* FL::CreateApp()
 {
-	return new Sandbox();
+	return new FlapiEditor();
 }

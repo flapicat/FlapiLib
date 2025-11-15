@@ -103,10 +103,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Scene\CameraSystem.h" />
-    <ClInclude Include="src\Event\Events.h" />
-    <ClInclude Include="src\Scene\Entity.h" />
-    <ClInclude Include="src\Scene\Scene.h" />
     <ClInclude Include="src\Core\App.h" />
     <ClInclude Include="src\Core\AssetManager.h" />
     <ClInclude Include="src\Core\Core.h" />
@@ -122,6 +118,7 @@
     <ClInclude Include="src\Core\Window.h" />
     <ClInclude Include="src\Event\AppEvent.h" />
     <ClInclude Include="src\Event\Event.h" />
+    <ClInclude Include="src\Event\Events.h" />
     <ClInclude Include="src\Event\KeyboardEennt.h" />
     <ClInclude Include="src\Event\MouseEvent.h" />
     <ClInclude Include="src\FlapiLib.h" />
@@ -129,19 +126,21 @@
     <ClInclude Include="src\Model\Mesh.h" />
     <ClInclude Include="src\Model\Model.h" />
     <ClInclude Include="src\Render\Buffer.h" />
+    <ClInclude Include="src\Render\FrameBuffer.h" />
     <ClInclude Include="src\Render\Renderer.h" />
     <ClInclude Include="src\Render\Renderer2D.h" />
     <ClInclude Include="src\Render\Shader.h" />
     <ClInclude Include="src\Render\Texture.h" />
     <ClInclude Include="src\Render\VertexArray.h" />
-    <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Scene\CameraSystem.h" />
     <ClInclude Include="src\Scene\Components.h" />
+    <ClInclude Include="src\Scene\Entity.h" />
+    <ClInclude Include="src\Scene\Scene.h" />
+    <ClInclude Include="src\Scene\ScriptableEntity.h" />
+    <ClInclude Include="src\pch.h" />
     <ClInclude Include="vendor\stb\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Scene\CameraSystem.cpp" />
-    <ClCompile Include="src\Scene\Entity.cpp" />
-    <ClCompile Include="src\Scene\Scene.cpp" />
     <ClCompile Include="src\Core\App.cpp" />
     <ClCompile Include="src\Core\AssetManager.cpp" />
     <ClCompile Include="src\Core\Font.cpp" />
@@ -158,11 +157,15 @@
     <ClCompile Include="src\Model\Mesh.cpp" />
     <ClCompile Include="src\Model\Model.cpp" />
     <ClCompile Include="src\Render\Buffer.cpp" />
+    <ClCompile Include="src\Render\FrameBuffer.cpp" />
     <ClCompile Include="src\Render\Renderer.cpp" />
     <ClCompile Include="src\Render\Renderer2D.cpp" />
     <ClCompile Include="src\Render\Shader.cpp" />
     <ClCompile Include="src\Render\Texture.cpp" />
     <ClCompile Include="src\Render\VertexArray.cpp" />
+    <ClCompile Include="src\Scene\CameraSystem.cpp" />
+    <ClCompile Include="src\Scene\Entity.cpp" />
+    <ClCompile Include="src\Scene\Scene.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

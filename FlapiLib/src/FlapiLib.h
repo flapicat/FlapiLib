@@ -16,6 +16,7 @@
 #include "Event/MouseEvent.h"
 
 #include "Render/Buffer.h"
+#include "Render/FrameBuffer.h"
 #include "Render/Renderer.h"
 #include "Render/Renderer2D.h"
 #include "Render/Shader.h"
@@ -25,5 +26,6 @@
 #include "Scene/Components.h"
 #include "Scene/Entity.h"
 #include "Scene/Scene.h"
+#include "Scene/ScriptableEntity.h"
 
 #include "Model/Model.h"

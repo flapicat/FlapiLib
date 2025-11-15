@@ -2,12 +2,13 @@
 #include "Scene.h"
 
 #include "Core/AssetManager.h"
-#include "Render/Renderer2D.h"
 #include "Render/Renderer.h"
+#include "Render/Renderer2D.h"
 
-#include "Entity.h"
-#include "Components.h"
 #include "CameraSystem.h"
+#include "Components.h"
+#include "Entity.h"
+#include "ScriptableEntity.h"
 
 namespace FL
 {
@@ -36,18 +37,7 @@ namespace FL
 
 	void Scene::OnInit()
 	{
-		// --- Entity 1: Red box ---
-		{
-			FL::Entity e = this->CreateEntity("RedBox");
-			e.AddComponent<FL::TransformComponent>(
-				glm::vec3(-1.0f, 0.0f, 0.0f),  
-				glm::vec3(0.0f, 0.0f, 25.0f),  
-				glm::vec3(1.0f, 1.0f, 1.0f));  
-			e.AddComponent<FL::SpriteComponent2D>(
-				glm::vec4(1.0f, 0.0f, 0.0f, 1.0f),
-				FL::AssetManager::GetAssets().GetTexture("container"));
-		}
-
+		
 		// --- Entity 2: Green box ---
 		{
 			FL::Entity e = this->CreateEntity("GreenBox");
@@ -83,31 +73,42 @@ namespace FL
 				glm::vec4(1.0f),
 				FL::AssetManager::GetAssets().GetTexture("container"));
 		}
-		// --- Entity 5: Test Model ---
-		{
-			FL::Entity e = this->CreateEntity("Model");
-			e.AddComponent<FL::TransformComponent>(
-				glm::vec3(0.0f,0.0f,0.0f),
-				glm::vec3(0.0f,45.0f,0.0f),
-				glm::vec3(1.0f,1.0f,1.0f));
-			e.AddComponent<FL::Model3DComponent>(FL::AssetManager::GetAssets().GetModel("backpack"));
-		}
-
-		Entity cameraEntity = this->CreateEntity("MainCamera");
-		cameraEntity.AddComponent<TransformComponent>(glm::vec3(0.0f, 0.0f, 3.0f));
-		cameraEntity.AddComponent<CameraComponent>();
-		cameraEntity.GetComponent<CameraComponent>().primary = true;
-		cameraEntity.GetComponent<CameraComponent>().type = CameraTypes::Perspective;
+		//// --- Entity 5: Model ---
+		//{
+		//	FL::Entity e = this->CreateEntity("Model");
+		//	e.AddComponent<FL::TransformComponent>();
+		//	e.AddComponent<FL::Model3DComponent>(
+		//		FL::AssetManager::GetAssets().GetModel("backpack"));
+		//}
 	}
 
 	void Scene::OnDestroy()
 	{
-
+		m_Registry.view<NativeScriptingComponent>().each([](auto entity, auto& nsc)
+			{
+				if (nsc.Instance)
+				{
+					nsc.Instance->OnDestroy();
+					nsc.DestroyScript();
+				}
+			});
 	}
 
 	void Scene::OnUpdate(TimeStep ts)
 	{
 		CameraSystem::OnUpdate(m_Registry, ts);
+
+		m_Registry.view<NativeScriptingComponent>().each([=](auto entity, auto& nsc)
+			{
+				if (!nsc.Instance)
+				{
+					nsc.InstantiateScript();
+					nsc.Instance->m_Entity = Entity{ entity, this };
+					nsc.Instance->OnCreate();
+				}
+
+				nsc.Instance->OnUpdate(ts);
+			});
 	}
 
 	void Scene::OnRender()
@@ -133,18 +134,42 @@ namespace FL
 			});
 		FL::Renderer2D::EndScene();
 
-
-		FL::Renderer::BeginScene(mainCam->viewProjectionMatrix);
-		m_Registry.view<TransformComponent, Model3DComponent>().each([](auto& transform, auto& model3D)
-			{
-				FL::Renderer::SubmitModel(model3D.model_, transform.GetTransform());
-			});
-
-		FL::Renderer::EndScene();
+		//FL::Renderer::BeginScene(mainCam->viewProjectionMatrix);
+		//m_Registry.view<TransformComponent, Model3DComponent>().each([](auto& transform, auto& Model3D)
+		//	{
+		//		FL::Renderer::SubmitModel(Model3D.model_, transform.GetTransform());
+		//	});
+		//FL::Renderer::EndScene();
 	}
 
 	void Scene::OnEvent(Event& e)
 	{
 		CameraSystem::OnEvent(m_Registry,e);
+	}
+
+	void Scene::ForEachEntity(std::function<void(Entity)> callback)
+	{
+		auto view = m_Registry.view<TagComponent>();
+		for (auto entity : view)
+		{
+			callback(Entity{ entity, this });
+		}
+	}
+
+	void Scene::UpdatePrimaryCameraAspect(float aspectRatio)
+	{
+		auto view = m_Registry.view<CameraComponent, TransformComponent>();
+		for (auto entity : view)
+		{
+			auto& cam = view.get<CameraComponent>(entity);
+			auto& transform = view.get<TransformComponent>(entity);
+
+			if (cam.primary)
+			{
+				cam.aspectRatio = aspectRatio;
+				CameraSystem::RecalculateProjectionViewMatrixOfCam(transform, cam);
+				break;
+			}
+		}
 	}
 }

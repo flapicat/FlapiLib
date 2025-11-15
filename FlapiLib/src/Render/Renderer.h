@@ -32,7 +32,7 @@ namespace FL
 		static void SubmitMesh(const std::vector<float>& vertices, const std::vector<uint32_t>& indices, const Ref<Texture2D>& texture, const glm::vec3& position, const glm::vec3& size);
 		static void SubmitMesh(const std::vector<float>& vertices,const std::vector<uint32_t>& indices,	const Ref<Texture2D>& texture, const glm::mat4& transform = glm::mat4(1.0f));
 
-		static void SubmitModel(Ref<Model> model, const glm::mat4 transform);
+		static void SubmitModel(Ref<Model> model, const glm::mat4& transform);
 
 		static void BeginScene(const glm::mat4& projection);
 		static void EndScene();

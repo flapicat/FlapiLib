@@ -47,10 +47,7 @@ namespace FL
 
 	void Renderer::Init()
 	{
-		glDisable(GL_BLEND);
-		glDepthMask(GL_TRUE);
 		glEnable(GL_DEPTH_TEST);
-		glDisable(GL_CULL_FACE);
 
 		s_Data.VertexArray = VertexArray::Create();
 		Ref<VertexBuffer> VB = VertexBuffer::Create(nullptr, s_Data.MaxVertices * sizeof(float) * 10);
@@ -162,8 +159,9 @@ namespace FL
 		s_Stats.IndexCount += indices.size();
 	}
 
-	void Renderer::SubmitModel(Ref<Model> model, const glm::mat4 transform)
+	void Renderer::SubmitModel(Ref<Model> model, const glm::mat4& transform)
 	{
+		s_Data.ModelShader->Use();
 		s_Data.ModelShader->setMat4("transform", transform);
 		model->Draw(s_Data.ModelShader);
 	}
