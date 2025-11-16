@@ -25,6 +25,8 @@ namespace FL
 		Ref<FL::Model>& GetModel(std::string_view name);
 		Ref<Texture2D>& GetTexture(std::string_view name);
 		irrklang::ISoundSource* GetSound(std::string_view sound);
+
+		std::unordered_map<std::string, Ref<Texture2D>>& GetTextures() { return Textures; }
 	private:
 		std::unordered_map<std::string, Ref<Font>> Fonts;
 		std::unordered_map<std::string, Ref<FL::Model>> Models;

@@ -77,6 +77,33 @@ namespace FL
 			win->m_WindowProps.Height = height;
 			win->m_WindowProps.EvCallback(event);
 			});
+
+		glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
+			{
+				Window* win = (Window*)glfwGetWindowUserPointer(window);
+
+				switch (action)
+				{
+				case GLFW_PRESS:
+				{
+					KeyPressedEvent event(key, 0);
+					win->m_WindowProps.EvCallback(event);
+					break;
+				}
+				case GLFW_RELEASE:
+				{
+					KeyReleasedEvent event(key);
+					win->m_WindowProps.EvCallback(event);
+					break;
+				}
+				case GLFW_REPEAT:
+				{
+					KeyPressedEvent event(key, true);
+					win->m_WindowProps.EvCallback(event);
+					break;
+				}
+				}
+			});
 	}
 
 	void Window::OnUpdate()

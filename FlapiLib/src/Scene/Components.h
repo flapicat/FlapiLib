@@ -39,12 +39,12 @@ namespace FL
 	struct SpriteComponent2D
 	{
 		Ref<Texture2D> Texture;
+		std::string TextureName;
 		glm::vec4 Color;
 
-		SpriteComponent2D(const glm::vec4& color = glm::vec4(1.0f), Ref<Texture2D> tex = nullptr)
-			:Texture(tex), Color(color)
+		SpriteComponent2D(const glm::vec4& color = glm::vec4(1.0f), Ref<Texture2D> tex = nullptr, const std::string& textureName = "None")
+			:Texture(tex), Color(color), TextureName(textureName)
 		{
-
 		}
 	};
 
@@ -101,6 +101,24 @@ namespace FL
 				farPlane = 1000.0f;
 				projectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, nearPlane, farPlane);
 			}
+		}
+
+		void CameraComponent::OnTypeChange()
+		{
+			if (type == CameraTypes::Orthographic)
+			{
+				nearPlane = -1.0f;
+				farPlane = 1.0f;
+				projectionMatrix = glm::ortho(-aspectRatio, aspectRatio, -1.0f, 1.0f, nearPlane, farPlane);
+			}
+			if (type == CameraTypes::Perspective)
+			{
+				nearPlane = 0.1f;
+				farPlane = 1000.0f;
+				projectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, nearPlane, farPlane);
+			}
+			yaw = -90.0f;
+			pitch = 0.0f;
 		}
 	};
 

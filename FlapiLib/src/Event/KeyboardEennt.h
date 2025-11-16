@@ -3,17 +3,42 @@
 
 namespace FL
 {
-	class KeyPressedEvent : public Event
+	class KeyEvent : public Event
 	{
 	public:
-		KeyPressedEvent(int keycode)
-			:m_KeyCode(keycode)
-		{
-			SetCategory(EventCategory::KeyBoard);
+		int GetKeyCode() const { return m_KeyCode; }
+	protected:
+		KeyEvent(const int keycode)
+			: m_KeyCode(keycode) {
 		}
 
-		int GetKeyCode() const { return m_KeyCode; };
-	private:
 		int m_KeyCode;
 	};
+
+	class KeyPressedEvent : public KeyEvent
+	{
+	public:
+		KeyPressedEvent(const int keycode, bool isRepeat = false)
+			: KeyEvent(keycode), m_IsRepeat(isRepeat) {
+			SetCategory(EventCategory::KeyBoard);
+			SetType(EventType::KeyPressed);
+		}
+
+		bool IsRepeat() const { return m_IsRepeat; }
+
+	private:
+		bool m_IsRepeat;
+	};
+
+	class KeyReleasedEvent : public KeyEvent
+	{
+	public:
+		KeyReleasedEvent(const int keycode)
+			: KeyEvent(keycode) {
+			SetCategory(EventCategory::KeyBoard);
+			SetType(EventType::KeyReleased);
+		}
+
+	};
+
 }

@@ -21,6 +21,12 @@ namespace FL
 		uint32_t GetTextureBindSlot() const { return m_BindSlot; }
 
 		uint32_t GetRendererID() { return m_Texture; }
+
+
+		bool operator==(Texture2D& texture)
+		{
+			return m_Texture == texture.m_Texture;
+		}
 	public:
 		bool Loaded = false;
 	private:

@@ -13,6 +13,7 @@ namespace FL
 		auto window = App::Get().GetWindow().GetNativeWindow();
 		return glfwGetKey(window, keycode) == GLFW_PRESS;
 	}
+
 	bool Input::OnKeyPressed(uint32_t keycode)
 	{
         bool currentlyPressed = IsKeyPressed(keycode);

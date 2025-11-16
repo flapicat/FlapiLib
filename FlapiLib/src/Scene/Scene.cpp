@@ -47,7 +47,7 @@ namespace FL
 				glm::vec3(0.75f, 0.75f, 1.0f));
 			e.AddComponent<FL::SpriteComponent2D>(
 				glm::vec4(0.0f, 1.0f, 0.0f, 1.0f),
-				FL::AssetManager::GetAssets().GetTexture("container"));
+				FL::AssetManager::GetAssets().GetTexture("container"), "container");
 		}
 
 		// --- Entity 3: Blue box ---
@@ -59,7 +59,7 @@ namespace FL
 				glm::vec3(1.5f, 1.5f, 1.0f)); 
 			e.AddComponent<FL::SpriteComponent2D>(
 				glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
-				FL::AssetManager::GetAssets().GetTexture("container"));
+				FL::AssetManager::GetAssets().GetTexture("container"), "container");
 		}
 
 		// --- Entity 4: White box ---
@@ -71,7 +71,7 @@ namespace FL
 				glm::vec3(0.5f, 0.5f, 1.0f));
 			e.AddComponent<FL::SpriteComponent2D>(
 				glm::vec4(1.0f),
-				FL::AssetManager::GetAssets().GetTexture("container"));
+				FL::AssetManager::GetAssets().GetTexture("container"), "container");
 		}
 		//// --- Entity 5: Model ---
 		//{

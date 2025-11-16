@@ -12,7 +12,7 @@ namespace FL
 	enum EventType
 	{
 		WindowClose, WindowResize,
-		KeyPressed,
+		KeyPressed, KeyReleased,
 		MouseScroll,
 	};
 
@@ -23,6 +23,7 @@ namespace FL
 
 		bool IsInCategory(EventCategory category) { return m_Category == category; };
 		void SetCategory(EventCategory category) { m_Category = category; };
+		void SetType(EventType type) { m_Type = type; };
 
 		bool Handled = false;
 		EventType m_Type;
