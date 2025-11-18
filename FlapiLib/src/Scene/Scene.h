@@ -1,4 +1,5 @@
 #pragma once
+#include "Core/Core.h"
 #include "Event/Events.h"
 
 #include <entt/entt.hpp>
@@ -16,6 +17,7 @@ namespace FL
 		~Scene();
 
 		Entity CreateEntity(const std::string& name = "");
+		void DeleteEntity(Entity& entity);
 
 		void OnInit();
 		void OnDestroy();

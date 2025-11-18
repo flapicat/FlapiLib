@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Scene.h"
 
+#include <string>
+
 #include "Core/AssetManager.h"
 #include "Render/Renderer.h"
 #include "Render/Renderer2D.h"
@@ -27,12 +29,29 @@ namespace FL
 
 	Entity Scene::CreateEntity(const std::string& name)
 	{
-		std::string eName = name;
-		if (eName.empty()) eName = "newEntity";
 		auto eID = m_Registry.create();
 		Entity entity(eID, this);
+
+		std::string eName = name;
+		if (eName.empty()) eName = "newEntity";
+		static uint32_t SameTagIterator = 0;
+		m_Registry.view<TagComponent>().each([this, &eName](auto tag) {
+			if (eName == tag.Tag)
+			{
+				SameTagIterator++;
+				eName += "(" + std::to_string(SameTagIterator) + ")";
+			}
+			});
+
 		entity.AddComponent<TagComponent>(eName);
+		entity.AddComponent<TransformComponent>(glm::vec3(0.0f, 0.0f, 0.0f));
 		return entity;
+	}
+
+	void Scene::DeleteEntity(Entity& entity)
+	{
+		if(entity)
+			m_Registry.destroy(entity.m_entity);
 	}
 
 	void Scene::OnInit()
@@ -41,34 +60,22 @@ namespace FL
 		// --- Entity 2: Green box ---
 		{
 			FL::Entity e = this->CreateEntity("GreenBox");
-			e.AddComponent<FL::TransformComponent>(
-				glm::vec3(1.0f, 0.5f, 0.0f),   
-				glm::vec3(0.0f, 0.0f, 45.0f),  
-				glm::vec3(0.75f, 0.75f, 1.0f));
 			e.AddComponent<FL::SpriteComponent2D>(
 				glm::vec4(0.0f, 1.0f, 0.0f, 1.0f),
 				FL::AssetManager::GetAssets().GetTexture("container"), "container");
 		}
-
+		
 		// --- Entity 3: Blue box ---
 		{
 			FL::Entity e = this->CreateEntity("BlueBox");
-			e.AddComponent<FL::TransformComponent>(
-				glm::vec3(0.0f, 1.0f, 0.0f),  
-				glm::vec3(0.0f, 0.0f, -15.0f),
-				glm::vec3(1.5f, 1.5f, 1.0f)); 
 			e.AddComponent<FL::SpriteComponent2D>(
 				glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
 				FL::AssetManager::GetAssets().GetTexture("container"), "container");
 		}
-
+		
 		// --- Entity 4: White box ---
 		{
 			FL::Entity e = this->CreateEntity("WhiteBox");
-			e.AddComponent<FL::TransformComponent>(
-				glm::vec3(0.0f, -1.0f, 0.0f),
-				glm::vec3(0.0f, 0.0f, 5.0f), 
-				glm::vec3(0.5f, 0.5f, 1.0f));
 			e.AddComponent<FL::SpriteComponent2D>(
 				glm::vec4(1.0f),
 				FL::AssetManager::GetAssets().GetTexture("container"), "container");

@@ -31,6 +31,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\EditorLayer.cpp" />
+    <ClCompile Include="src\UI\PropertiesPanelUI.cpp" />
+    <ClCompile Include="src\UI\ImGuiMainUI.cpp" />
+    <ClCompile Include="src\UI\HierarhyPanelUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Fonts\BodoniFLF-Roman.ttf">
@@ -116,5 +119,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\EditorLayer.h" />
+    <ClInclude Include="src\UI\ImGuiMainUI.h" />
+    <ClInclude Include="src\UI\HierarhyPanelUI.h" />
+    <ClInclude Include="src\UI\PropertiesPanelUI.h" />
   </ItemGroup>
 </Project>

@@ -4,7 +4,7 @@
 namespace FL
 {
 	Entity::Entity(entt::entity e, Scene* scene)
-		:m_e(e), m_Scene(scene)
+		:m_entity(e), m_Scene(scene)
 	{
 	}
 

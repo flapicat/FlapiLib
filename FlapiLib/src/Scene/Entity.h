@@ -13,7 +13,7 @@ namespace FL
 		template<typename Component, typename ...Args>
 		void AddComponent(Args &&... args)
 		{
-			m_Scene->m_Registry.emplace<Component>(m_e,std::forward<Args>(args)...);
+			m_Scene->m_Registry.emplace<Component>(m_entity,std::forward<Args>(args)...);
 		}
 
 		template<typename Component>
@@ -21,36 +21,41 @@ namespace FL
 		{
 			if (this->HasComponent<Component>())
 			{
-				m_Scene->m_Registry.remove<Component>(m_e);
+				m_Scene->m_Registry.remove<Component>(m_entity);
 			}
 		}
 
 		template<typename Component>
 		bool HasComponent()
 		{
-			return m_Scene->m_Registry.any_of<Component>(m_e);
+			return m_Scene->m_Registry.any_of<Component>(m_entity);
 		}
 
 		template<typename Component>
 		Component& GetComponent()
 		{
-			return m_Scene->m_Registry.get<Component>(m_e);
+			return m_Scene->m_Registry.get<Component>(m_entity);
 		}
 
 		template<typename Component>
 		Component* TryGetComponent()
 		{
-			return m_Scene->m_Registry.try_get<Component>(m_e);
+			return m_Scene->m_Registry.try_get<Component>(m_entity);
 		}
 
 		bool operator==(Entity& entity)
 		{
-			return m_e == entity.m_e;
+			return m_entity == entity.m_entity;
 		}
-
+		operator bool() const 
+		{
+			return m_entity != entt::null; 
+		}
 	private:
-		entt::entity m_e = { entt::null };
+		entt::entity m_entity = { entt::null };
 		Scene* m_Scene = nullptr;
+
+		friend class Scene;
 	};
 };
 
