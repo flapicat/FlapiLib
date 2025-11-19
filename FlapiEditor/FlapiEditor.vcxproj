@@ -101,6 +101,12 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\EditorLayer.h" />
+    <ClInclude Include="src\UI\HierarhyPanelUI.h" />
+    <ClInclude Include="src\UI\ImGuiMainUI.h" />
+    <ClInclude Include="src\UI\PropertiesPanelUI.h" />
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="src\EditorLayer.cpp" />
     <ClCompile Include="src\FlapiEditor.cpp" />
     <ClCompile Include="src\UI\HierarhyPanelUI.cpp" />
@@ -141,12 +147,6 @@
     <ProjectReference Include="..\FlapiLib\FlapiLib.vcxproj">
       <Project>{6823AF79-54F0-0985-7D09-F82C69353F13}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\EditorLayer.h" />
-    <ClInclude Include="src\UI\HierarhyPanelUI.h" />
-    <ClInclude Include="src\UI\ImGuiMainUI.h" />
-    <ClInclude Include="src\UI\PropertiesPanelUI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

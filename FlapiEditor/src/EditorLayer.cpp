@@ -39,8 +39,8 @@ namespace FL
 
 			void OnUpdate(TimeStep ts) override
 			{
-				auto& cam = GetComponent< CameraComponent>();
-				auto& transform = GetComponent< TransformComponent>();
+				auto& cam = GetComponent<CameraComponent>();
+				auto& transform = GetComponent<TransformComponent>();
 				float velocity = cam.moveSpeed * ts;
 				if (cam.type == CameraTypes::Orthographic)
 				{
@@ -74,13 +74,13 @@ namespace FL
 
 		m_Scene.OnInit();
 		{
-			Entity cameraEntity = m_Scene.CreateEntity("MainCamera");
-			cameraEntity.AddComponent< CameraComponent>();
-			cameraEntity.GetComponent< CameraComponent>().primary = true;
-			cameraEntity.GetComponent< CameraComponent>().type = CameraTypes::Orthographic;
-			cameraEntity.GetComponent< CameraComponent>().Zoom = 2.0f;
-			cameraEntity.AddComponent< NativeScriptingComponent>();
-			cameraEntity.GetComponent< NativeScriptingComponent>().Bind<CameraControllerScript>();
+			//Entity cameraEntity = m_Scene.CreateEntity("MainCamera");
+			//cameraEntity.AddComponent< CameraComponent>();
+			//cameraEntity.GetComponent< CameraComponent>().primary = true;
+			//cameraEntity.GetComponent< CameraComponent>().type = CameraTypes::Orthographic;
+			//cameraEntity.GetComponent< CameraComponent>().Zoom = 2.0f;
+			//cameraEntity.AddComponent< NativeScriptingComponent>();
+			//cameraEntity.GetComponent< NativeScriptingComponent>().Bind<CameraControllerScript>();
 		}
 
 		m_FBO = FrameBuffer::Create(window.GetWidth(), window.GetHeight());

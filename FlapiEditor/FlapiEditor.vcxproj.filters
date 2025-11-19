@@ -25,15 +25,40 @@
     <Filter Include="src">
       <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\UI">
+      <UniqueIdentifier>{3A4B661C-26ED-90F2-0FA8-A446FBE81743}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\EditorLayer.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\HierarhyPanelUI.h">
+      <Filter>src\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\ImGuiMainUI.h">
+      <Filter>src\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\PropertiesPanelUI.h">
+      <Filter>src\UI</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\EditorLayer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="src\FlapiEditor.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\EditorLayer.cpp" />
-    <ClCompile Include="src\UI\PropertiesPanelUI.cpp" />
-    <ClCompile Include="src\UI\ImGuiMainUI.cpp" />
-    <ClCompile Include="src\UI\HierarhyPanelUI.cpp" />
+    <ClCompile Include="src\UI\HierarhyPanelUI.cpp">
+      <Filter>src\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\ImGuiMainUI.cpp">
+      <Filter>src\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\PropertiesPanelUI.cpp">
+      <Filter>src\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Fonts\BodoniFLF-Roman.ttf">
@@ -116,11 +141,5 @@
     <Image Include="Assets\objects\backpack\specular.jpg">
       <Filter>Assets\objects\backpack</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\EditorLayer.h" />
-    <ClInclude Include="src\UI\ImGuiMainUI.h" />
-    <ClInclude Include="src\UI\HierarhyPanelUI.h" />
-    <ClInclude Include="src\UI\PropertiesPanelUI.h" />
   </ItemGroup>
 </Project>

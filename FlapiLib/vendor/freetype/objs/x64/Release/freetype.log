@@ -32,27 +32,25 @@
   raster.c
   sfnt.c
   smooth.c
-  sdf.c
-C:\dev\FlapiLib\FlapiLib\vendor\freetype\src\sfnt\sfdriver.c(1036,36): warning C4244: 'function': conversion from '__int64' to 'const unsigned int', possible loss of data
-  (compiling source file '../../../src/sfnt/sfnt.c')
+C:\dev\FlapiLib\FlapiLib\vendor\freetype\src\sfnt\sfdriver.c(1036,36): warning C4244: "funkcja": konwersja z "__int64" do "const unsigned int", możliwa utrata danych
+  (kompilowanie pliku źródłowego „../../../src/sfnt/sfnt.c”)
   
+  sdf.c
   svg.c
   truetype.c
   type1.c
+C:\dev\FlapiLib\FlapiLib\vendor\freetype\src\type1\t1load.c(1780,64): warning C4244: "=": konwersja z "__int64" do "FT_Int", możliwa utrata danych
+  (kompilowanie pliku źródłowego „../../../src/type1/type1.c”)
+  
+C:\dev\FlapiLib\FlapiLib\vendor\freetype\src\type1\t1load.c(1953,36): warning C4244: "=": konwersja z "__int64" do "FT_Int", możliwa utrata danych
+  (kompilowanie pliku źródłowego „../../../src/type1/type1.c”)
+  
   type42.c
   winfnt.c
-C:\dev\FlapiLib\FlapiLib\vendor\freetype\src\type1\t1load.c(1780,64): warning C4244: '=': conversion from '__int64' to 'FT_Int', possible loss of data
-  (compiling source file '../../../src/type1/type1.c')
-  
-C:\dev\FlapiLib\FlapiLib\vendor\freetype\src\type1\t1load.c(1953,36): warning C4244: '=': conversion from '__int64' to 'FT_Int', possible loss of data
-  (compiling source file '../../../src/type1/type1.c')
-  
-C:\dev\FlapiLib\FlapiLib\vendor\freetype\src\type42\t42parse.c(878,62): warning C4244: '=': conversion from '__int64' to 'FT_Int', possible loss of data
-  (compiling source file '../../../src/type42/type42.c')
+C:\dev\FlapiLib\FlapiLib\vendor\freetype\src\type42\t42parse.c(878,62): warning C4244: "=": konwersja z "__int64" do "FT_Int", możliwa utrata danych
+  (kompilowanie pliku źródłowego „../../../src/type42/type42.c”)
   
   ftdebug.c
   ftsystem.c
-     Creating library ..\..\..\objs\x64\Release\freetype.lib and object ..\..\..\objs\x64\Release\freetype.exp
+     Trwa tworzenie biblioteki ..\..\..\objs\x64\Release\freetype.lib i obiektu ..\..\..\objs\x64\Release\freetype.exp
   freetype.vcxproj -> C:\dev\FlapiLib\FlapiLib\vendor\freetype\objs\x64\Release\freetype.dll
-  'pwsh.exe' is not recognized as an internal or external command,
-  operable program or batch file.

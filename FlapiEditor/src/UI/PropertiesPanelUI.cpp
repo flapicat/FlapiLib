@@ -23,17 +23,17 @@ namespace FL
 
 		if (s_UIData.s_HasSelectedEntity)
 		{
-			DrawTagComponent();
-			DrawTransformComponent();
+			DrawComponent<TagComponent>("Tag", DrawTagComponent, false);
+			DrawComponent<TransformComponent>("Transform", DrawTransformComponent, false);
 
 			if (s_UIData.s_SelectedEntity.HasComponent<SpriteComponent2D>())
 			{
-				DrawSprite2DComponent();
+				DrawComponent<SpriteComponent2D>("Sprite2D", DrawSprite2DComponent);
 			}
 
 			if (s_UIData.s_SelectedEntity.HasComponent<CameraComponent>())
 			{
-				DrawCameraComponent();
+				DrawComponent<CameraComponent>("Camera", DrawCameraComponent);
 			}
 
 			ImGui::Separator();
@@ -58,16 +58,17 @@ namespace FL
 				{
 					if (ImGui::MenuItem("Tag"))
 					{
-						//ITS NOT EVEN POSSIBLE NOW BUT WHATEVER
+						//ITS NOT EVEN POSSIBLE
 					}
 				}
 				if (!s_UIData.s_SelectedEntity.HasComponent<TransformComponent>())
 				{
 					if (ImGui::MenuItem("Transform"))
 					{
-						//ITS NOT EVEN POSSIBLE NOW BUT WHATEVER
+						//ITS NOT EVEN POSSIBLE
 					}
 				}
+
 				if (!s_UIData.s_SelectedEntity.HasComponent<SpriteComponent2D>())
 				{
 					if (ImGui::MenuItem("Sprite 2D Renderer"))
@@ -163,258 +164,274 @@ namespace FL
 		ImGui::PopID();
 	}
 
-	void DrawTagComponent()
+	template<typename T>
+	void DrawComponent(const std::string& name, std::function<void()>func, bool removeEnable)
 	{
-		bool open = ImGui::CollapsingHeader("Tag", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap);
+		bool removeComponent = false;
+		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap;
 
-		ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
-		float buttonWidth = 25.0f;
-		ImGui::SameLine(contentRegionAvailable.x - buttonWidth / 2);
-		if (ImGui::Button("+", ImVec2(buttonWidth, buttonWidth)))
-		{
-			ImGui::OpenPopup("ComponentSettings");
-		}
+		ImGui::PushID(name.c_str());
 
-		if (ImGui::BeginPopup("ComponentSettings"))
+		bool open = ImGui::CollapsingHeader(name.c_str(), flags);
+
+		float lineStartX = ImGui::GetItemRectMin().x;
+		float lineEndX = ImGui::GetItemRectMax().x;
+
+		float buttonSize = 25.0f;
+
+		float buttonX = lineEndX - buttonSize;
+		float buttonY = ImGui::GetItemRectMin().y;
+
+		ImGui::SetCursorScreenPos(ImVec2(buttonX, buttonY));
+
+		std::string popupName = "ComponentSettings" + name;
+
+		if (ImGui::Button("+", ImVec2(buttonSize, buttonSize)))
+			ImGui::OpenPopup(popupName.c_str());
+
+		if (ImGui::BeginPopup(popupName.c_str()))
 		{
-			if (ImGui::MenuItem("Remove component"))
+			if (ImGui::MenuItem("Remove component",0,false, removeEnable))
 			{
-				ImGui::CloseCurrentPopup();
+				removeComponent = true;
 			}
 			ImGui::EndPopup();
 		}
 
-		if(open)
+		if (open)
+			func();
+
+		ImGui::PopID();
+
+		if (s_UIData.s_SelectedEntity && removeComponent)
 		{
-			auto& tag = s_UIData.s_SelectedEntity.GetComponent<TagComponent>();
-			char buff[256] = {};
-			strncpy(buff, tag.Tag.c_str(), sizeof(buff) - 1);
-
-			ImGui::Columns(2, nullptr, false);
-
-			ImGui::Text("Name");
-			ImGui::NextColumn();
-
-			ImGui::SetNextItemWidth(-FLT_MIN);
-			if (ImGui::InputText("##TagEdit", buff, sizeof(buff)))
-				tag.Tag = buff;
-
-			ImGui::Columns(1);
+			if (s_UIData.s_SelectedEntity.HasComponent<T>())
+				s_UIData.s_SelectedEntity.RemoveComponent<T>();
 		}
+	}
+
+	void DrawTagComponent()
+	{
+		auto& tag = s_UIData.s_SelectedEntity.GetComponent<TagComponent>();
+		char buff[256] = {};
+		strncpy(buff, tag.Tag.c_str(), sizeof(buff) - 1);
+
+		ImGui::Columns(2, nullptr, false);
+
+		ImGui::Text("Name");
+		ImGui::NextColumn();
+
+		ImGui::SetNextItemWidth(-FLT_MIN);
+		if (ImGui::InputText("##TagEdit", buff, sizeof(buff)))
+			tag.Tag = buff;
+
+		ImGui::Columns(1);
 	}
 
 	void DrawTransformComponent()
 	{
-		if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
-		{
-			auto& transform = s_UIData.s_SelectedEntity.GetComponent<TransformComponent>();
+		auto& transform = s_UIData.s_SelectedEntity.GetComponent<TransformComponent>();
 
-			DrawVec3Control("Position", transform.Position, 0.0f);
-			DrawVec3Control("Rotation", transform.Rotation, 0.0f, 0.1f);
-			DrawVec3Control("Scale", transform.Scale, 1.0f);
-		}
+		DrawVec3Control("Position", transform.Position, 0.0f);
+		DrawVec3Control("Rotation", transform.Rotation, 0.0f, 0.1f);
+		DrawVec3Control("Scale", transform.Scale, 1.0f);
 	}
 
 	void DrawSprite2DComponent()
 	{
-		if (ImGui::CollapsingHeader("Sprite2D", ImGuiTreeNodeFlags_DefaultOpen))
+		auto& sprite2D = s_UIData.s_SelectedEntity.GetComponent<SpriteComponent2D>();
+
+		ImGui::Spacing();
+
+		// --- Color ---
+		ImGui::Columns(2, nullptr, false);
+		ImGui::SetColumnWidth(0, 120.0f);
+		ImGui::Text("Color");
+		ImGui::NextColumn();
+		ImGui::PushItemWidth(-1);
+		ImGui::ColorEdit3("##SpriteColor", glm::value_ptr(sprite2D.Color), ImGuiColorEditFlags_NoInputs);
+		ImGui::PopItemWidth();
+		ImGui::Columns(1);
+		ImGui::Separator();
+
+		// --- Texture Picker ---
+		ImGui::Text("Texture");
+		ImGui::BeginChild("TexturePicker", ImVec2(0, 150), true);
+
+		auto textures = AssetManager::GetAssets().GetTextures();
+
+		float padding = 4.0f;
+		float thumbnailSize = 64.0f;
+		int colIndex = 0;
+		int columns = ImGui::GetContentRegionAvail().x / (thumbnailSize + padding) - 1;
+		if (columns <= 1) columns = 1;
+
+		if (ImGui::BeginTable("TextureTable", columns, ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_SizingStretchSame))
 		{
-			auto& sprite2D = s_UIData.s_SelectedEntity.GetComponent<SpriteComponent2D>();
+			ImGui::TableNextRow();
 
-			ImGui::Spacing();
+			// "No Texture" option
+			ImGui::TableNextColumn();
+			bool isSelected = (sprite2D.Texture == nullptr);
+			if (isSelected) ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.8f, 0.8f, 0.1f, 1.0f));
 
-			// --- Color ---
-			ImGui::Columns(2, nullptr, false);
-			ImGui::SetColumnWidth(0, 120.0f);
-			ImGui::Text("Color");
-			ImGui::NextColumn();
-			ImGui::PushItemWidth(-1);
-			ImGui::ColorEdit3("##SpriteColor", glm::value_ptr(sprite2D.Color), ImGuiColorEditFlags_NoInputs);
-			ImGui::PopItemWidth();
-			ImGui::Columns(1);
-			ImGui::Separator();
+			ImTextureID nullTexID = 0;
+			if (ImGui::ImageButton(nullTexID, ImVec2(thumbnailSize, thumbnailSize)))
+				sprite2D.Texture = nullptr;
 
-			// --- Texture Picker ---
-			ImGui::Text("Texture");
-			ImGui::BeginChild("TexturePicker", ImVec2(0, 150), true);
+			if (isSelected) ImGui::PopStyleColor();
 
-			auto textures = AssetManager::GetAssets().GetTextures();
-
-			float padding = 4.0f;
-			float thumbnailSize = 64.0f;
-			int colIndex = 0;
-			int columns = ImGui::GetContentRegionAvail().x / (thumbnailSize + padding) - 1;
-			if (columns <= 1) columns = 1;
-
-			if (ImGui::BeginTable("TextureTable", columns, ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_SizingStretchSame))
+			colIndex = 1;
+			for (auto& tex : textures)
 			{
-				ImGui::TableNextRow();
+				if (colIndex >= columns)
+				{
+					ImGui::TableNextRow();
+					colIndex = 0;
+				}
 
-				// "No Texture" option
 				ImGui::TableNextColumn();
-				bool isSelected = (sprite2D.Texture == nullptr);
+
+				ImTextureID texID = (ImTextureID)(uintptr_t)tex.second->GetRendererID();
+				bool isSelected = (sprite2D.Texture && (*sprite2D.Texture.get() == *tex.second.get()));
+
 				if (isSelected) ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.8f, 0.8f, 0.1f, 1.0f));
 
-				ImTextureID nullTexID = 0;
-				if (ImGui::ImageButton(nullTexID, ImVec2(thumbnailSize, thumbnailSize)))
-					sprite2D.Texture = nullptr;
+				if (ImGui::ImageButton(texID, ImVec2(thumbnailSize, thumbnailSize), ImVec2(0, 1), ImVec2(1, 0)))
+					sprite2D.Texture = tex.second;
 
 				if (isSelected) ImGui::PopStyleColor();
 
-				colIndex = 1;
-				for (auto& tex : textures)
-				{
-					if (colIndex >= columns)
-					{
-						ImGui::TableNextRow();
-						colIndex = 0;
-					}
-
-					ImGui::TableNextColumn();
-
-					ImTextureID texID = (ImTextureID)(uintptr_t)tex.second->GetRendererID();
-					bool isSelected = (sprite2D.Texture && (*sprite2D.Texture.get() == *tex.second.get()));
-
-					if (isSelected) ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.8f, 0.8f, 0.1f, 1.0f));
-
-					if (ImGui::ImageButton(texID, ImVec2(thumbnailSize, thumbnailSize), ImVec2(0, 1), ImVec2(1, 0)))
-						sprite2D.Texture = tex.second;
-
-					if (isSelected) ImGui::PopStyleColor();
-
-					colIndex++;
-				}
-
-				ImGui::EndTable();
+				colIndex++;
 			}
 
-			ImGui::EndChild();
+			ImGui::EndTable();
 		}
+
+		ImGui::EndChild();
+		
 	}
 
 	void DrawCameraComponent()
 	{
-		if (ImGui::CollapsingHeader("CameraComponent", ImGuiTreeNodeFlags_DefaultOpen))
+		auto& transform = s_UIData.s_SelectedEntity.GetComponent<TransformComponent>();
+		auto& cam = s_UIData.s_SelectedEntity.GetComponent<CameraComponent>();
+
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(6, 4));
+		ImGui::Columns(2, nullptr, false);
+		ImGui::SetColumnWidth(0, 120.0f);
+
+		ImGui::Text("Type");
+		ImGui::NextColumn();
+
+		int selectedIndex = (cam.type == CameraTypes::Orthographic) ? 0 : 1;
+		const char* items[] = { "Orthographic", "Perspective" };
+		if (ImGui::Combo("##CameraType", &selectedIndex, items, IM_ARRAYSIZE(items)))
 		{
-			auto& transform = s_UIData.s_SelectedEntity.GetComponent<TransformComponent>();
-			auto& cam = s_UIData.s_SelectedEntity.GetComponent<CameraComponent>();
-
-			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(6, 4));
-			ImGui::Columns(2, nullptr, false);
-			ImGui::SetColumnWidth(0, 120.0f);
-
-			ImGui::Text("Type");
-			ImGui::NextColumn();
-
-			int selectedIndex = (cam.type == CameraTypes::Orthographic) ? 0 : 1;
-			const char* items[] = { "Orthographic", "Perspective" };
-			if (ImGui::Combo("##CameraType", &selectedIndex, items, IM_ARRAYSIZE(items)))
-			{
-				cam.type = (selectedIndex == 0) ? CameraTypes::Orthographic : CameraTypes::Perspective;
-				if (cam.type == CameraTypes::Orthographic)
-					transform.Position.z = 0.0f;
-				cam.OnTypeChange();
-			}
-			ImGui::NextColumn();
-
-			ImGui::Separator();
-
+			cam.type = (selectedIndex == 0) ? CameraTypes::Orthographic : CameraTypes::Perspective;
 			if (cam.type == CameraTypes::Orthographic)
-			{
-				ImGui::Text("Zoom");
-				ImGui::NextColumn();
-				ImGui::DragFloat("##Zoom", &cam.Zoom, 0.1f, 0.1f, 10.0f);
-				ImGui::NextColumn();
-			}
-
-			if (cam.type == CameraTypes::Perspective)
-			{
-				ImGui::Text("FOV");
-				ImGui::NextColumn();
-				ImGui::DragFloat("##FOV", &cam.fov, 1, 30, 110);
-				ImGui::NextColumn();
-			}
-
-			ImGui::Text("Near Plane");
-			ImGui::NextColumn();
-			ImGui::DragFloat("##Near", &cam.nearPlane, 0.01f, -1.0f, cam.farPlane - 0.01f);
-			ImGui::NextColumn();
-
-			ImGui::Text("Far Plane");
-			ImGui::NextColumn();
-			ImGui::DragFloat("##Far", &cam.farPlane, 0.01f, cam.nearPlane + 0.01f, 10000.0f);
-			ImGui::NextColumn();
-
-			ImGui::Text("Primary");
-			ImGui::NextColumn();
-			ImGui::Checkbox("##Primary", &cam.primary);
-			ImGui::NextColumn();
-
-			ImGui::Separator();
-
-			ImGui::Columns(1);
-			if (ImGui::CollapsingHeader("Debug Info"))
-			{
-				float fullWidth = ImGui::GetContentRegionAvail().x;
-				float indent = ImGui::GetStyle().IndentSpacing;
-				fullWidth += indent;
-
-				ImGui::Text("Aspect Ratio: %.3f", cam.aspectRatio);
-				ImGui::Text("Euler Angles: Yaw %.1f, Pitch %.1f", cam.yaw, cam.pitch);
-
-				ImGui::Text("Direction Vectors:");
-				ImGui::BeginDisabled();
-				ImGui::PushItemWidth(fullWidth);
-
-				ImGui::Text("Front"); ImGui::SameLine();
-				ImGui::PushItemWidth(-1);
-				ImGui::InputFloat3("##Front", glm::value_ptr(cam.front));
-				ImGui::PopItemWidth();
-
-				ImGui::Text("Up"); ImGui::SameLine();
-				ImGui::PushItemWidth(-1);
-				ImGui::InputFloat3("##Up", glm::value_ptr(cam.up));
-				ImGui::PopItemWidth();
-
-				ImGui::Text("Right"); ImGui::SameLine();
-				ImGui::PushItemWidth(-1);
-				ImGui::InputFloat3("##Right", glm::value_ptr(cam.right));
-				ImGui::PopItemWidth();
-
-				ImGui::PopItemWidth();
-				ImGui::EndDisabled();
-
-				ImGui::Text("Matrices:");
-				ImGui::BeginDisabled();
-				ImGui::PushItemWidth(fullWidth);
-				for (int i = 0; i < 4; ++i)
-				{
-					ImGui::Text("Proj Row %d", i); ImGui::SameLine();
-					ImGui::PushItemWidth(-1);
-					ImGui::InputFloat4(("Proj##" + std::to_string(i)).c_str(), &cam.projectionMatrix[i][0]);
-					ImGui::PopItemWidth();
-				}
-				ImGui::Separator();
-				for (int i = 0; i < 4; ++i)
-				{
-					ImGui::Text("View Row %d", i); ImGui::SameLine();
-					ImGui::PushItemWidth(-1);
-					ImGui::InputFloat4(("View##" + std::to_string(i)).c_str(), &cam.viewMatrix[i][0]);
-					ImGui::PopItemWidth();
-				}
-				ImGui::Separator();
-				for (int i = 0; i < 4; ++i)
-				{
-					ImGui::Text("VP Row %d", i); ImGui::SameLine();
-					ImGui::PushItemWidth(-1);
-					ImGui::InputFloat4(("VP##" + std::to_string(i)).c_str(), &cam.viewProjectionMatrix[i][0]);
-					ImGui::PopItemWidth();
-				}
-				ImGui::PopItemWidth();
-				ImGui::EndDisabled();
-			}
-			ImGui::Columns(1);
-			ImGui::PopStyleVar();
+				transform.Position.z = 0.0f;
+			cam.OnTypeChange();
 		}
+		ImGui::NextColumn();
+
+		ImGui::Separator();
+
+		if (cam.type == CameraTypes::Orthographic)
+		{
+			ImGui::Text("Zoom");
+			ImGui::NextColumn();
+			ImGui::DragFloat("##Zoom", &cam.Zoom, 0.1f, 0.1f, 10.0f);
+			ImGui::NextColumn();
+		}
+
+		if (cam.type == CameraTypes::Perspective)
+		{
+			ImGui::Text("FOV");
+			ImGui::NextColumn();
+			ImGui::DragFloat("##FOV", &cam.fov, 1, 30, 110);
+			ImGui::NextColumn();
+		}
+
+		ImGui::Text("Near Plane");
+		ImGui::NextColumn();
+		ImGui::DragFloat("##Near", &cam.nearPlane, 0.01f, -1.0f, cam.farPlane - 0.01f);
+		ImGui::NextColumn();
+
+		ImGui::Text("Far Plane");
+		ImGui::NextColumn();
+		ImGui::DragFloat("##Far", &cam.farPlane, 0.01f, cam.nearPlane + 0.01f, 10000.0f);
+		ImGui::NextColumn();
+
+		ImGui::Text("Primary");
+		ImGui::NextColumn();
+		ImGui::Checkbox("##Primary", &cam.primary);
+		ImGui::NextColumn();
+
+		ImGui::Separator();
+
+		ImGui::Columns(1);
+		if (ImGui::CollapsingHeader("Debug Info"))
+		{
+			float fullWidth = ImGui::GetContentRegionAvail().x;
+			float indent = ImGui::GetStyle().IndentSpacing;
+			fullWidth += indent;
+
+			ImGui::Text("Aspect Ratio: %.3f", cam.aspectRatio);
+			ImGui::Text("Euler Angles: Yaw %.1f, Pitch %.1f", cam.yaw, cam.pitch);
+
+			ImGui::Text("Direction Vectors:");
+			ImGui::BeginDisabled();
+			ImGui::PushItemWidth(fullWidth);
+
+			ImGui::Text("Front"); ImGui::SameLine();
+			ImGui::PushItemWidth(-1);
+			ImGui::InputFloat3("##Front", glm::value_ptr(cam.front));
+			ImGui::PopItemWidth();
+
+			ImGui::Text("Up"); ImGui::SameLine();
+			ImGui::PushItemWidth(-1);
+			ImGui::InputFloat3("##Up", glm::value_ptr(cam.up));
+			ImGui::PopItemWidth();
+
+			ImGui::Text("Right"); ImGui::SameLine();
+			ImGui::PushItemWidth(-1);
+			ImGui::InputFloat3("##Right", glm::value_ptr(cam.right));
+			ImGui::PopItemWidth();
+
+			ImGui::PopItemWidth();
+			ImGui::EndDisabled();
+
+			ImGui::Text("Matrices:");
+			ImGui::BeginDisabled();
+			ImGui::PushItemWidth(fullWidth);
+			for (int i = 0; i < 4; ++i)
+			{
+				ImGui::Text("Proj Row %d", i); ImGui::SameLine();
+				ImGui::PushItemWidth(-1);
+				ImGui::InputFloat4(("Proj##" + std::to_string(i)).c_str(), &cam.projectionMatrix[i][0]);
+				ImGui::PopItemWidth();
+			}
+			ImGui::Separator();
+			for (int i = 0; i < 4; ++i)
+			{
+				ImGui::Text("View Row %d", i); ImGui::SameLine();
+				ImGui::PushItemWidth(-1);
+				ImGui::InputFloat4(("View##" + std::to_string(i)).c_str(), &cam.viewMatrix[i][0]);
+				ImGui::PopItemWidth();
+			}
+			ImGui::Separator();
+			for (int i = 0; i < 4; ++i)
+			{
+				ImGui::Text("VP Row %d", i); ImGui::SameLine();
+				ImGui::PushItemWidth(-1);
+				ImGui::InputFloat4(("VP##" + std::to_string(i)).c_str(), &cam.viewProjectionMatrix[i][0]);
+				ImGui::PopItemWidth();
+			}
+			ImGui::PopItemWidth();
+			ImGui::EndDisabled();
+		}
+		ImGui::Columns(1);
+		ImGui::PopStyleVar();
 	}
 }
