@@ -25,11 +25,13 @@ IncludeDir["Assimp"] = "FlapiLib/vendor/assimp/include"
 IncludeDir["irrKlang"] = "FlapiLib/vendor/irrKlang/include"
 IncludeDir["FreeType"] = "FlapiLib/vendor/freetype/include"
 IncludeDir["entt"] = "FlapiLib/vendor/entt/include"
+IncludeDir["yaml"] = "FlapiLib/vendor/yaml-cpp/include"
 
 group "Dependencies"
 	include "FlapiLib/vendor/GLFW"
 	include "FlapiLib/vendor/glad"
 	include "FlapiLib/vendor/imgui"
+	include "FlapiLib/vendor/yaml-cpp"
 group ""
 
 project "FlapiLib"
@@ -66,7 +68,8 @@ project "FlapiLib"
 		"%{IncludeDir.Assimp}",
 		"%{IncludeDir.irrKlang}",
 		"%{IncludeDir.FreeType}",
-		"%{IncludeDir.entt}"
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.yaml}"
 	}
 
 	libdirs {
@@ -83,6 +86,7 @@ project "FlapiLib"
 		"ImGui",
 		"irrKlang",
 		"freetype",
+		"yaml-cpp",
 		"opengl32.lib"
 	}
 
@@ -91,7 +95,8 @@ project "FlapiLib"
 
 		defines
 		{
-			"GLFW_INCLUDE_NONE"
+			"GLFW_INCLUDE_NONE",
+			"YAML_CPP_STATIC_DEFINE"
 		}
 
 	filter "configurations:Debug"
@@ -112,7 +117,67 @@ project "FlapiLib"
 			"freetype",
 			"C:/dev/FlapiLib/FlapiLib/vendor/assimp/lib/Release/assimp-vc143-mt.lib"
 		}
+			
+project "FlapiEditor"
+	location "FlapiEditor"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
+    buildoptions { "/utf-8" }
 
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+	
+	files{
+		"%{prj.name}/Assets/**",
+		"%{prj.name}/src/**.h",
+		"%{prj.name}/src/**.cpp"
+	}
+
+	includedirs{
+		"FlapiLib/vendor/spdlog/include",
+		"FlapiLib/src",
+		"FlapiLib/vendor",
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.glad}",
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.ImGui}/backends",
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.stb}",
+		"%{IncludeDir.Assimp}",
+		"%{IncludeDir.irrKlang}",
+		"%{IncludeDir.FreeType}",
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.yaml}"
+	}
+
+	links{
+		"FlapiLib",
+		"yaml-cpp"
+	} 
+
+	defines {
+		"YAML_CPP_STATIC_DEFINE"
+	}
+
+	postbuildcommands {
+		'{COPYDIR} "%{prj.location}/Assets" "%{cfg.targetdir}/Assets"'
+	}
+
+	filter "system:windows"
+		systemversion "latest"
+
+	filter "configurations:Debug"
+		defines "DEBUG"
+		runtime "Debug"
+		symbols "on"
+
+	filter "configurations:Release"
+		defines "RELEASE"
+		runtime "Release"
+		optimize "on"
+		
 		
 project "Sandbox"
 	location "Sandbox"
@@ -144,13 +209,17 @@ project "Sandbox"
 		"%{IncludeDir.Assimp}",
 		"%{IncludeDir.irrKlang}",
 		"%{IncludeDir.FreeType}",
-		"%{IncludeDir.entt}"
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.yaml}"
 	}
 
 	links{
 		"FlapiLib",
 	} 
-
+	
+	defines {
+		"YAML_CPP_STATIC_DEFINE"
+	}
 
 	postbuildcommands {
 		'{COPYDIR} "%{prj.location}/Assets" "%{cfg.targetdir}/Assets"'
@@ -169,171 +238,4 @@ project "Sandbox"
 		runtime "Release"
 		optimize "on"
 
-				
-project "FlapiEditor"
-	location "FlapiEditor"
-	kind "ConsoleApp"
-	language "C++"
-	cppdialect "C++17"
-	staticruntime "on"
-    buildoptions { "/utf-8" }
-
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 	
-	files{
-		"%{prj.name}/Assets/**",
-		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
-	}
-
-	includedirs{
-		"FlapiLib/vendor/spdlog/include",
-		"FlapiLib/src",
-		"FlapiLib/vendor",
-		"%{IncludeDir.GLFW}",
-		"%{IncludeDir.glad}",
-		"%{IncludeDir.ImGui}",
-		"%{IncludeDir.ImGui}/backends",
-		"%{IncludeDir.glm}",
-		"%{IncludeDir.stb}",
-		"%{IncludeDir.Assimp}",
-		"%{IncludeDir.irrKlang}",
-		"%{IncludeDir.FreeType}",
-		"%{IncludeDir.entt}"
-	}
-
-	links{
-		"FlapiLib",
-	} 
-
-
-	postbuildcommands {
-		'{COPYDIR} "%{prj.location}/Assets" "%{cfg.targetdir}/Assets"'
-	}
-
-	filter "system:windows"
-		systemversion "latest"
-
-	filter "configurations:Debug"
-		defines "DEBUG"
-		runtime "Debug"
-		symbols "on"
-
-	filter "configurations:Release"
-		defines "RELEASE"
-		runtime "Release"
-		optimize "on"
-
-		
-project "Pong"
-	location "Pong"
-	kind "ConsoleApp"
-	language "C++"
-	cppdialect "C++17"
-	staticruntime "on"
-    buildoptions { "/utf-8" }
-
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-	
-	files{
-		"%{prj.name}/Assets/**",
-		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
-	}
-
-	includedirs{
-		"FlapiLib/vendor/spdlog/include",
-		"FlapiLib/src",
-		"FlapiLib/vendor",
-		"%{IncludeDir.GLFW}",
-		"%{IncludeDir.glad}",
-		"%{IncludeDir.ImGui}",
-		"%{IncludeDir.ImGui}/backends",
-		"%{IncludeDir.glm}",
-		"%{IncludeDir.stb}",
-		"%{IncludeDir.Assimp}",
-		"%{IncludeDir.irrKlang}",
-		"%{IncludeDir.entt}"
-	}
-
-	links{
-		"FlapiLib",
-	} 
-
-
-	filter "system:windows"
-		systemversion "latest"
-		
-	postbuildcommands {
-		'if exist "%{prj.location}/Assets" xcopy /Q /E /Y /I "%{prj.location}/Assets" "%{cfg.targetdir}/Assets" > nul',
-
-		'if exist "%{wks.location}/FlapiLib/vendor/irrKlang/bin/irrKlang.dll" copy /Y "%{wks.location}/FlapiLib/vendor/irrKlang/bin/irrKlang.dll" "%{cfg.targetdir}" > nul'
-	}
-
-	filter "configurations:Debug"
-		defines "DEBUG"
-		runtime "Debug"
-		symbols "on"
-
-	filter "configurations:Release"
-		defines "RELEASE"
-		runtime "Release"
-		optimize "on"
-
-		
-project "AABBCollisionTest"
-	location "AABBCollisionTest"
-	kind "ConsoleApp"
-	language "C++"
-	cppdialect "C++17"
-	staticruntime "on"
-    buildoptions { "/utf-8" }
-
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-	
-	files{
-		"%{prj.name}/Assets/**",
-		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
-	}
-
-	includedirs{
-		"FlapiLib/vendor/spdlog/include",
-		"FlapiLib/src",
-		"FlapiLib/vendor",
-		"%{IncludeDir.GLFW}",
-		"%{IncludeDir.glad}",
-		"%{IncludeDir.ImGui}",
-		"%{IncludeDir.ImGui}/backends",
-		"%{IncludeDir.glm}",
-		"%{IncludeDir.stb}",
-		"%{IncludeDir.Assimp}",
-		"%{IncludeDir.irrKlang}",
-		"%{IncludeDir.FreeType}",
-		"%{IncludeDir.entt}"
-	}
-
-	links{
-		"FlapiLib",
-	} 
-
-
-	postbuildcommands {
-		'{COPYDIR} "%{prj.location}/Assets" "%{cfg.targetdir}/Assets"'
-	}
-
-	filter "system:windows"
-		systemversion "latest"
-
-	filter "configurations:Debug"
-		defines "DEBUG"
-		runtime "Debug"
-		symbols "on"
-
-	filter "configurations:Release"
-		defines "RELEASE"
-		runtime "Release"
-		optimize "on"

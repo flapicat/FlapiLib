@@ -10,6 +10,8 @@
 
 namespace FL
 {
+    static Entity s_EditingEntity;
+    static char s_EditBuffer[256] = {};
 	void DrawHierarhyPanel(Scene& scene)
 	{
 		ImGui::SetNextWindowSize(ImVec2(260, 400), ImGuiCond_FirstUseEver);
@@ -27,7 +29,7 @@ namespace FL
 		}
 
 
-		ImGui::TextDisabled("Current Scene:");
+		ImGui::TextDisabled("Current Scene: %s", scene.GetName().c_str());
 		ImGui::Separator();
 
 		ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.12f, 0.12f, 0.13f, 1.0f));
@@ -42,16 +44,45 @@ namespace FL
             auto& tag = entity.GetComponent<TagComponent>();
             bool isSelected = (s_UIData.s_HasSelectedEntity && s_UIData.s_SelectedEntity == entity);
 
-            if (ImGui::Selectable(tag.Tag.c_str(), isSelected, ImGuiSelectableFlags_SpanAllColumns))
+            // Start editing
+            bool isEditing = (s_EditingEntity == entity);
+
+            if (isEditing)
             {
-                s_UIData.s_SelectedEntity = entity;
-                s_UIData.s_HasSelectedEntity = true;
+                ImGui::PushItemWidth(-1);
+                if (ImGui::InputText("##EditTag", s_EditBuffer, sizeof(s_EditBuffer),
+                    ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+                {
+                    tag.Tag = std::string(s_EditBuffer);
+                    s_EditingEntity = Entity{};
+                }
+
+                if (ImGui::IsKeyPressed(ImGuiKey_Escape))
+                {
+                    s_EditingEntity = Entity{};
+                }
+
+                ImGui::PopItemWidth();
+            }
+            else
+            {
+                if (ImGui::Selectable(tag.Tag.c_str(), isSelected, ImGuiSelectableFlags_SpanAllColumns))
+                {
+                    s_UIData.s_SelectedEntity = entity;
+                    s_UIData.s_HasSelectedEntity = true;
+                }
+
+                if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+                {
+                    s_EditingEntity = entity;
+                    strncpy(s_EditBuffer, tag.Tag.c_str(), sizeof(s_EditBuffer) - 1);
+                }
             }
 
             if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Right))
             {
-                s_UIData.s_PopupSelectedEntity = entity; 
-                ImGui::OpenPopup(PopupName);             
+                s_UIData.s_PopupSelectedEntity = entity;
+                ImGui::OpenPopup("EntityContextMenu");
             }
             });
 

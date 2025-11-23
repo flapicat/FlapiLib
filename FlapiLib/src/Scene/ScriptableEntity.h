@@ -9,6 +9,12 @@ namespace FL
         virtual ~ScriptableEntity() = default;
 
         template<typename T>
+        bool HasComponent()
+        {
+            return m_Entity.HasComponent<T>();
+        }
+
+        template<typename T>
         T& GetComponent()
         {
             return m_Entity.GetComponent<T>();

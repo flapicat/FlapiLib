@@ -1,0 +1,69 @@
+version: 1.0
+scene:
+  entities:
+    - id: 2
+      name: WhiteBox
+      transform:
+        position:
+          - 0
+          - 0
+          - 0
+        rotation:
+          - 0
+          - 0
+          - 0
+        scale:
+          - 1
+          - 1
+          - 1
+      sprite2D:
+        TextureName: container
+        Color:
+          - 1
+          - 1
+          - 1
+          - 1
+    - id: 1
+      name: BlueBox
+      transform:
+        position:
+          - 0
+          - 0
+          - 0
+        rotation:
+          - 0
+          - 0
+          - 0
+        scale:
+          - 1
+          - 1
+          - 1
+      sprite2D:
+        TextureName: container
+        Color:
+          - 0
+          - 0
+          - 1
+          - 1
+    - id: 0
+      name: GreenBox
+      transform:
+        position:
+          - 0
+          - 0
+          - 0
+        rotation:
+          - 0
+          - 0
+          - 0
+        scale:
+          - 1
+          - 1
+          - 1
+      sprite2D:
+        TextureName: container
+        Color:
+          - 0
+          - 1
+          - 0
+          - 1

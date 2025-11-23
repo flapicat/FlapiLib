@@ -20,14 +20,24 @@ namespace FL
 
 	void Window::CreateWin(const WindowInitData& data)
 	{
-		m_WindowProps.Width = data.Width;
-		m_WindowProps.Height = data.Height;
-		m_WindowProps.Title = data.Title;
-
 		if (!glfwInit())
 		{
 			LOG_ERROR("Failed to init GLFW!");
 		}
+
+		GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+		if (!monitor) {
+			LOG_ERROR("Monitor not found");
+			return;
+		}
+		const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+
+		int monitorWidth = mode->width;
+		int monitorHeight = mode->height;
+
+		m_WindowProps.Width = monitorWidth - monitorWidth * 0.1;
+		m_WindowProps.Height = monitorHeight - monitorHeight * 0.1;
+		m_WindowProps.Title = data.Title;
 
 		m_Window = glfwCreateWindow(m_WindowProps.Width,m_WindowProps.Height, m_WindowProps.Title.c_str(), nullptr, nullptr);
 		if (!m_Window)

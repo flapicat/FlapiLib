@@ -1,0 +1,112 @@
+version: 1.0
+scene:
+  entities:
+    - id: 0
+      name: GreenBox
+      transform:
+        position:
+          - -0.0199999996
+          - 0
+          - 0
+        rotation:
+          - 0
+          - 0
+          - 0
+        scale:
+          - 1
+          - 1
+          - 1
+      sprite2D:
+        TextureName: container
+        Color:
+          - 0
+          - 1
+          - 0
+          - 1
+    - id: 1
+      name: BlueBox
+      transform:
+        position:
+          - 0.479999989
+          - 0.50999999
+          - 0.709999979
+        rotation:
+          - 0
+          - 0
+          - 0
+        scale:
+          - 1
+          - 1
+          - 1
+      sprite2D:
+        TextureName: checkerboard
+        Color:
+          - 0
+          - 0
+          - 1
+          - 1
+    - id: 2
+      name: WhiteBox
+      transform:
+        position:
+          - -0.5
+          - -0.389999986
+          - -0.0399999991
+        rotation:
+          - 0
+          - 0
+          - 0
+        scale:
+          - 1
+          - 1
+          - 1
+      sprite2D:
+        TextureName: awesomeface
+        Color:
+          - 0.171844065
+          - 0.725563884
+          - 0.25094685
+          - 1
+    - id: 3
+      name: MainCamera
+      transform:
+        position:
+          - 0
+          - 0
+          - 0
+        rotation:
+          - 0
+          - 0
+          - 0
+        scale:
+          - 1
+          - 1
+          - 1
+      camera:
+        type: 0
+        fov: 60
+        aspectRatio: 1.73190045
+        nearPlane: -1
+        farPlane: 1
+        LastX: 0
+        LastY: 0
+        front:
+          - -4.37113883e-08
+          - 0
+          - -1
+        up:
+          - 0
+          - 1
+          - 0
+        right:
+          - 1
+          - 0
+          - -4.37113883e-08
+        yaw: -90
+        pitch: 0
+        moveSpeed: 5
+        Zoom: 1
+        zoomSpeed: 1
+        primary: true
+        ScrollEnabled: false
+        FirstMouse: true

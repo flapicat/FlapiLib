@@ -1,4 +1,8 @@
 #pragma once
+#include <filesystem> 
+#include <windows.h>
+#include <commdlg.h>
+
 #include "ImGuiMainUI.h"
 
 #include <ImGui/imgui.h>
@@ -11,6 +15,35 @@ namespace FL
 	Entity UIDrawningData::s_SelectedEntity{};
 	bool   UIDrawningData::s_HasSelectedEntity = false;
 	bool   UIDrawningData::s_IsViewPortFocus = false;
+
+
+	static std::string OpenFileDialog()
+	{
+		OPENFILENAMEA ofn;
+		char szFile[MAX_PATH] = { 0 };
+
+		ZeroMemory(&ofn, sizeof(ofn));
+		ofn.lStructSize = sizeof(ofn);
+		ofn.hwndOwner = NULL;
+		ofn.lpstrFile = szFile;
+		ofn.nMaxFile = sizeof(szFile);
+
+		ofn.nFilterIndex = 1;
+
+		char cwd[MAX_PATH];
+		GetCurrentDirectoryA(MAX_PATH, cwd);
+		std::string initialDir = std::string(cwd) + "\\Assets\\Scenes";
+		ofn.lpstrInitialDir = initialDir.c_str();
+
+
+		if (GetOpenFileNameA(&ofn))
+		{
+			std::filesystem::path fullPath(szFile);
+			return fullPath.filename().string();
+		}
+
+		return std::string();
+	}
 
 	void SetUpImGuiStyle()
 	{
@@ -63,7 +96,7 @@ namespace FL
 		io.FontGlobalScale = 1.0f;
 	}
 
-	void DrawMenuBar()
+	void DrawMenuBar(Scene& scene)
 	{
 		if (ImGui::BeginMenuBar())
 		{
@@ -72,8 +105,50 @@ namespace FL
 				if (ImGui::MenuItem("Exit")) { App::Get().Close(); }
 				ImGui::EndMenu();
 			}
+			if (ImGui::BeginMenu("Scene"))
+			{
+				if (ImGui::MenuItem("New Scene", "Ctrl+N")) { AddScene(scene); }
+				if (ImGui::MenuItem("Save Scene", "Ctrl+S")) { SaveScene(scene); }
+				if (ImGui::MenuItem("SaveAs Scene", "Ctrl+Shift+S")) { SaveAsScene(scene); }
+				if (ImGui::MenuItem("Load Scene", "Ctrl+L")) { LoadScene(scene); }
+
+				ImGui::EndMenu();
+			}
 
 			ImGui::EndMenuBar();
+		}
+	}
+
+	void LoadScene(Scene& scene)
+	{
+		std::string path = OpenFileDialog();
+		if (!path.empty())
+		{
+			s_UIData.s_HasSelectedEntity = false;
+			scene.LoadScene(path);
+		}
+	}
+
+	void SaveScene(Scene& scene)
+	{
+		scene.SaveScene(scene.s_SceneFileName);
+	}
+
+	void SaveAsScene(Scene& scene)
+	{
+		std::string path = OpenFileDialog();
+		if (!path.empty())
+		{
+			scene.SaveScene(path);
+		}
+	}
+
+	void AddScene(Scene& scene)
+	{
+		std::string path = OpenFileDialog();
+		if (!path.empty())
+		{
+			scene.LoadScene(path);
 		}
 	}
 
@@ -83,7 +158,7 @@ namespace FL
 		ImGui::SetNextWindowSize(ImVec2(240, 140), ImGuiCond_FirstUseEver);
 		ImGui::Begin("Stats");
 
-		ImGui::Text("FPS: %.1f", FPS);
+		ImGui::Text("FPS: %u", (int)FPS);
 		ImGui::Separator();
 		ImGui::Text("Draw Calls: %u", stats.DrawCalls);
 		ImGui::Text("Quads: %u", stats.NumOfQuads);

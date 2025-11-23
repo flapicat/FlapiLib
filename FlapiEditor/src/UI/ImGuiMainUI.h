@@ -7,9 +7,14 @@
 namespace FL
 {
 	void SetUpImGuiStyle();
-	void DrawMenuBar();
+	void DrawMenuBar(Scene& scene);
 	void DrawStats(float FPS);
 	void DrawViewport(const Ref<FrameBuffer> framebuffer, Scene& scene);
+
+	void LoadScene(Scene& scene);
+	void SaveScene(Scene& scene);
+	void SaveAsScene(Scene& scene);
+	void AddScene(Scene& scene);
 
 	struct UIDrawningData
 	{

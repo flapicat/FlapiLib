@@ -11,6 +11,7 @@ namespace FL
 	void DrawTransformComponent();
 	void DrawSprite2DComponent();
 	void DrawCameraComponent();
+	void DrawNativeScriptingComponent();
 
 	template<typename T>
 	void DrawComponent(const std::string& name, std::function<void()>func, bool removeEnable = true);

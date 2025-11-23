@@ -28,62 +28,10 @@ namespace FL
 		AssetManager::LoadAssetFromFile(AssetType::Texture, "Assets/Textures/awesomeface.png", "awesomeface");
 		AssetManager::LoadAssetFromFile(AssetType::Model, "Assets/objects/backpack/backpack.obj", "backpack");
 
-		class CameraControllerScript : public  ScriptableEntity
-		{
-		public:
-			CameraControllerScript() = default;
-			void OnCreate() override
-			{
-
-			}
-
-			void OnUpdate(TimeStep ts) override
-			{
-				auto& cam = GetComponent<CameraComponent>();
-				auto& transform = GetComponent<TransformComponent>();
-				float velocity = cam.moveSpeed * ts;
-				if (cam.type == CameraTypes::Orthographic)
-				{
-					if (Input::IsKeyPressed(GLFW_KEY_W))
-						transform.Position += cam.up * velocity;
-					if (Input::IsKeyPressed(GLFW_KEY_S))
-						transform.Position -= cam.up * velocity;
-					if (Input::IsKeyPressed(GLFW_KEY_A))
-						transform.Position -= cam.right * velocity;
-					if (Input::IsKeyPressed(GLFW_KEY_D))
-						transform.Position += cam.right * velocity;
-				}
-
-				if (cam.type == CameraTypes::Perspective)
-				{
-					if (Input::IsKeyPressed(GLFW_KEY_W))
-						transform.Position += cam.front * velocity;
-					if (Input::IsKeyPressed(GLFW_KEY_S))
-						transform.Position -= cam.front * velocity;
-					if (Input::IsKeyPressed(GLFW_KEY_E))
-						transform.Position += cam.up * velocity;
-					if (Input::IsKeyPressed(GLFW_KEY_Q))
-						transform.Position -= cam.up * velocity;
-					if (Input::IsKeyPressed(GLFW_KEY_A))
-						transform.Position -= cam.right * velocity;
-					if (Input::IsKeyPressed(GLFW_KEY_D))
-						transform.Position += cam.right * velocity;
-				}
-			}
-		};
-
-		m_Scene.OnInit();
-		{
-			//Entity cameraEntity = m_Scene.CreateEntity("MainCamera");
-			//cameraEntity.AddComponent< CameraComponent>();
-			//cameraEntity.GetComponent< CameraComponent>().primary = true;
-			//cameraEntity.GetComponent< CameraComponent>().type = CameraTypes::Orthographic;
-			//cameraEntity.GetComponent< CameraComponent>().Zoom = 2.0f;
-			//cameraEntity.AddComponent< NativeScriptingComponent>();
-			//cameraEntity.GetComponent< NativeScriptingComponent>().Bind<CameraControllerScript>();
-		}
-
+		m_Scene.OnInit(); 
 		m_FBO = FrameBuffer::Create(window.GetWidth(), window.GetHeight());
+		std::string scene = "Assets/Scenes/Example.flapi";
+		m_Scene.LoadScene(scene);
 	}
 
 	void EditorLayer::OnDetach()
@@ -115,6 +63,52 @@ namespace FL
 			m_Scene.OnEvent(e);
 		}
 		EventHandler handler(e);
+		handler.Handle<FL::KeyPressedEvent>([&](const FL::KeyPressedEvent& ev) { OnKeyPressed(ev); });
+	}
+
+	void EditorLayer::OnKeyPressed(const KeyPressedEvent& e)
+	{
+		if (e.IsRepeat())
+			return;
+
+		bool control = Input::IsKeyPressed(GLFW_KEY_LEFT_CONTROL) || Input::IsKeyPressed(GLFW_KEY_RIGHT_CONTROL);
+		bool shift = Input::IsKeyPressed(GLFW_KEY_LEFT_SHIFT) || Input::IsKeyPressed(GLFW_KEY_RIGHT_SHIFT);
+
+		//ShortCuts
+		switch (e.GetKeyCode())
+		{
+			case GLFW_KEY_N:
+			{
+				if (control)
+				{
+					AddScene(m_Scene);
+				}
+				break;
+			}
+			case GLFW_KEY_L:
+			{
+				if (control)
+				{
+					LoadScene(m_Scene);
+				}
+				break;
+			}
+			case GLFW_KEY_S:
+			{
+				if (control)
+				{
+					if (shift)
+					{
+						SaveAsScene(m_Scene);
+					}
+					else
+					{
+						SaveScene(m_Scene);
+					}
+				}
+				break;
+			}
+		}
 	}
 
 	void EditorLayer::OnImGuiRender()
@@ -150,7 +144,7 @@ namespace FL
 		ImGuiID dockspaceID = ImGui::GetID("MyDockspace");
 		ImGui::DockSpace(dockspaceID, ImVec2(0, 0), dockspaceFlags);
 
-		DrawMenuBar();
+		DrawMenuBar(m_Scene);
 
 		ImGui::End();
 

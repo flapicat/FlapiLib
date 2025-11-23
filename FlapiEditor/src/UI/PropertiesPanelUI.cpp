@@ -5,10 +5,10 @@
 #include "Core/AssetManager.h"
 
 #include "ImGuiMainUI.h"
+#include "../NativeScripts/Scripts.h"
 
 namespace FL
 {
-
 	void DrawPropertiesPanel()
 	{
 		ImGui::SetNextWindowSize(ImVec2(360, 400), ImGuiCond_FirstUseEver);
@@ -23,8 +23,15 @@ namespace FL
 
 		if (s_UIData.s_HasSelectedEntity)
 		{
-			DrawComponent<TagComponent>("Tag", DrawTagComponent, false);
-			DrawComponent<TransformComponent>("Transform", DrawTransformComponent, false);
+			if (s_UIData.s_SelectedEntity.HasComponent<TagComponent>())
+			{
+				DrawComponent<TagComponent>("Tag", DrawTagComponent, false);
+			}
+
+			if (s_UIData.s_SelectedEntity.HasComponent<TransformComponent>())
+			{
+				DrawComponent<TransformComponent>("Transform", DrawTransformComponent, false);
+			}
 
 			if (s_UIData.s_SelectedEntity.HasComponent<SpriteComponent2D>())
 			{
@@ -34,6 +41,11 @@ namespace FL
 			if (s_UIData.s_SelectedEntity.HasComponent<CameraComponent>())
 			{
 				DrawComponent<CameraComponent>("Camera", DrawCameraComponent);
+			}
+
+			if (s_UIData.s_SelectedEntity.HasComponent<NativeScriptingComponent>())
+			{
+				DrawComponent<NativeScriptingComponent>("Native Script", DrawNativeScriptingComponent);
 			}
 
 			ImGui::Separator();
@@ -76,11 +88,20 @@ namespace FL
 						s_UIData.s_SelectedEntity.AddComponent<SpriteComponent2D>();
 					}
 				}
+
 				if (!s_UIData.s_SelectedEntity.HasComponent<CameraComponent>())
 				{
 					if (ImGui::MenuItem("Camera"))
 					{
 						s_UIData.s_SelectedEntity.AddComponent<CameraComponent>();
+					}
+				}
+
+				if (!s_UIData.s_SelectedEntity.HasComponent<NativeScriptingComponent>())
+				{
+					if (ImGui::MenuItem("Native Script"))
+					{
+						s_UIData.s_SelectedEntity.AddComponent<NativeScriptingComponent>();
 					}
 				}
 
@@ -298,8 +319,10 @@ namespace FL
 				if (isSelected) ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.8f, 0.8f, 0.1f, 1.0f));
 
 				if (ImGui::ImageButton(texID, ImVec2(thumbnailSize, thumbnailSize), ImVec2(0, 1), ImVec2(1, 0)))
+				{
+					sprite2D.TextureName = tex.first;
 					sprite2D.Texture = tex.second;
-
+				}
 				if (isSelected) ImGui::PopStyleColor();
 
 				colIndex++;
@@ -433,5 +456,37 @@ namespace FL
 		}
 		ImGui::Columns(1);
 		ImGui::PopStyleVar();
+	}
+
+	void DrawNativeScriptingComponent()
+	{
+		auto& nsc = s_UIData.s_SelectedEntity.GetComponent<NativeScriptingComponent>();
+
+		static int selectedIndex = 0;
+
+		if (nsc.Instance)
+		{
+			ImGui::Text("Script Active: true");
+		}
+		else
+		{
+			ImGui::Text("Script Active: false");
+		}
+
+		if (ImGui::Combo("Script Type", &selectedIndex, [](void* data, int idx, const char** out_text) {
+			auto& names = *static_cast<std::vector<std::string>*>(data);
+			*out_text = names[idx].c_str();
+			return true;
+			}, &scriptNames, (int)scriptNames.size()))
+		{
+			if (nsc.DestroyScript)
+				nsc.DestroyScript();
+
+			const std::string& name = scriptNames[selectedIndex];
+			if (name == "None")
+				nsc.Bind<DummyScript>();
+			if (name == "CameraControllerScript")
+				nsc.Bind<CameraControllerScript>();
+		}
 	}
 }

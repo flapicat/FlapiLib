@@ -18,8 +18,10 @@ namespace FL
 		virtual void OnEvent(Event& e);
 		virtual void OnImGuiRender() override;
 	private:
+		void OnKeyPressed(const KeyPressedEvent& event);
+	private:
 		float m_fps = 0.0f;
 		Scene m_Scene;
-		Ref< FrameBuffer> m_FBO;
+		Ref<FrameBuffer> m_FBO;
 	};
 }
